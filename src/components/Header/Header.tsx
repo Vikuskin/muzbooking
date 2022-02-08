@@ -26,14 +26,14 @@ const ResponsiveAppBar = () => {
   };
 
   return (
-    <AppBar position="static" color='transparent'>
+    <AppBar position="fixed" color='inherit'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+            sx={{ mr: 2, ml: 3, display: { xs: 'none', md: 'flex' } }}
           >
             <img style={{ width: '30px' }} src={logo} alt='Logo'/>
           </Typography>
@@ -66,8 +66,8 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
+              {pages.map((page, i) => (
+                <MenuItem key={i} onClick={handleCloseNavMenu}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -75,12 +75,11 @@ const ResponsiveAppBar = () => {
             <img style={{ width: '30px', height: '30px' }} src={logo} alt='Logo'/>
           </Box>
           
-            
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'right' }}>
-            {pages.map((page) => (
+            {pages.map((page, i) => (
             <Tooltip title={page}>
                 <Button
-                    key={page}
+                    key={i}
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'black', display: 'block' }}
                     >

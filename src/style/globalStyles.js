@@ -25,7 +25,10 @@ const useStyles = makeStyles(() =>
       a: {
         textDecoration: 'none',
         color: 'inherit',
-        cursor: 'pointer'
+        cursor: 'pointer',
+        '&:hover': {
+          opacity: '0.5'
+        },
       },
       ul: {
         listStyle: 'none',
@@ -42,6 +45,9 @@ const useStyles = makeStyles(() =>
       },
       button: {
         cursor: 'pointer',
+        '&:hover': {
+          opacity: '0.5'
+        },
       },
     }
   })
