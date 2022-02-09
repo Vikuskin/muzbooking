@@ -1,9 +1,9 @@
 import { Box } from "@mui/system"
 import React from "react"
-import vkontakte from '../../image/vkontakte.png'
-import facebook from '../../image/facebook.png'
-import youtube from '../../image/youtube.png'
-import instagram from '../../image/instagram.png'
+import vkontakte from '../../image/Footer/vkontakte.png'
+import facebook from '../../image/Footer/facebook.png'
+import youtube from '../../image/Footer/youtube.png'
+import instagram from '../../image/Footer/instagram.png'
 import { Container } from "@mui/material"
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';

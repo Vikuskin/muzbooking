@@ -11,8 +11,8 @@ import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import logo from '../../image/logo.png';
 import Tooltip from '@mui/material/Tooltip';
+import { Link } from 'react-router-dom';
 
-const pages = ['Поиск площадки', 'Добавить площадку'];
 
 const ResponsiveAppBar = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
@@ -29,14 +29,16 @@ const ResponsiveAppBar = () => {
     <AppBar position="fixed" color='inherit'>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
+          <Link to='/'>
           <Typography
             variant="h6"
             noWrap
             component="div"
             sx={{ mr: 2, ml: 3, display: { xs: 'none', md: 'flex' } }}
           >
-            <img style={{ width: '30px' }} src={logo} alt='Logo'/>
+            <img style={{ width: '40px' }} src={logo} alt='Logo'/>
           </Typography>
+          </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center', justifyContent: 'space-between' }}>
             <IconButton
               size="large"
@@ -66,29 +68,44 @@ const ResponsiveAppBar = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page, i) => (
-                <MenuItem key={i} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              <Link to='/'>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Поиск площадки</Typography>
                 </MenuItem>
-              ))}
+              </Link>
+              <Link to='/addArea'>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Добавить площадку</Typography>
+                </MenuItem>
+              </Link>
             </Menu>
-            <img style={{ width: '30px', height: '30px' }} src={logo} alt='Logo'/>
+            <Link to='/'>
+              <img style={{ width: '30px', height: '30px' }} src={logo} alt='Logo'/>
+            </Link>
           </Box>
           
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'right' }}>
-            {pages.map((page, i) => (
-            <Tooltip title={page}>
+            <Tooltip title='Поиск площадки'>
+              <Link to='/'>
                 <Button
-                    key={i}
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'black', display: 'block' }}
-                    >
-                    {page}
-              </Button>
+                  >
+                  Поиск площадки
+                </Button>
+              </Link>
             </Tooltip>
-            ))}
+            <Tooltip title='Добавить площадку'>
+              <Link to='/addArea'>
+                <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                  Добавить площадку
+              </Button>
+              </Link>
+            </Tooltip>
           </Box>
-
         </Toolbar>
       </Container>
     </AppBar>

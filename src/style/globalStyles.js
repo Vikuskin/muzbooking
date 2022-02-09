@@ -38,6 +38,7 @@ const useStyles = makeStyles(() =>
       'h1, h2, h3': {
         padding: '0',
         margin: '0',
+        lineHeight: '1'
       },
       p: {
         padding: '0',
@@ -49,6 +50,11 @@ const useStyles = makeStyles(() =>
           opacity: '0.5'
         },
       },
+      '.rec.rec-arrow': {
+        border: 'none',
+        backgroundColor: 'transparent',
+        boxShadow: 'none'
+      }
     }
   })
 );

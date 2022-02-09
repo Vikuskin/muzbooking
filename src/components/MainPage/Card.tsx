@@ -11,7 +11,7 @@ interface CardProps {
 export const Cards: React.FC<CardProps> = (props) => {
 
     return (
-    <Box sx={{ width: { xs: 250, sm: 300, md: 350 }, height: { xs: 280, sm: 320, md: 380 }, margin: { xs: '0 0 10px 0' } }}>
+    <Box sx={{ width: { xs: '200px', sm: 300, md: 350 }, height: { xs: '220px', sm: 320, md: 380 }, margin: { xs: '0 0 10px 0' } }}>
     <Box sx={{
         backgroundImage: `url(${props.img})`,
         backgroundPosition: 'center',
@@ -31,7 +31,7 @@ export const Cards: React.FC<CardProps> = (props) => {
              padding: '20px 5px',
              margin: 0,
              width: '100%',
-             minHeight: '100px',
+             minHeight: {xs: '50px', md: '100px'},
              display: 'flex',
              alignItems: 'center',
              justifyContent: 'center',
