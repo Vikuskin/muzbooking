@@ -11,18 +11,18 @@ import { styled } from '@mui/material';
  
 const Slide = styled('div')({
     display: 'flex',
-    aligntems: 'center',
+    alignItems: 'center',
     justifyContent: 'space-evenly',
     width: '100%',
-    mb: 5,
+    marginBottom: '50px',
     '@media (max-width: 900px)': {
         flexWrap: 'wrap'
     }
 });
 
-export const Slider = () => {
-    const myArrow = (type: any, onClick: any) => {
-        const pointer = type === 'PREV' ? <Button><img style={{ width: '40px' }} src={arrowLeft}/></Button> : <Button><img style={{ width: '40px' }} src={arrowRight}/></Button>
+export const Slider: React.FC = () => {
+    const myArrow = (type: string, onClick: any) => {
+        const pointer = type === 'PREV' ? <img style={{ width: '40px' }} src={arrowLeft}/> : <img style={{ width: '40px' }} src={arrowRight}/>
         return (
           <Button onClick={onClick}>
             {pointer}

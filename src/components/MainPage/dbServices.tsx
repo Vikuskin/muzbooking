@@ -1,4 +1,4 @@
-export default [
+export const dbServices = [
     {
         "img": "image/record.png",
         "title": "студии звукозаписи",

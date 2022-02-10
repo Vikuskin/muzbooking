@@ -1,4 +1,4 @@
-export default [
+export const dbCardBenefits = [
     {
         "img": "image/cardBenefits/benefitsCard1.svg",
         "description": "Моментальная синхронизация с любым каналом бронирования при помощи soket-соединений."

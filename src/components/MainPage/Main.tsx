@@ -1,5 +1,5 @@
 import { Box } from "@mui/system"
-import services from './dbServices'
+import { dbServices } from './dbServices'
 import { Cards } from './Card'
 import assistant1 from '../../image/MainPage/assistant.png'
 import assistant2 from '../../image/MainPage/assistant2.png'
@@ -24,7 +24,7 @@ export const Main: React.FC = () => {
                 <h1>Поиск и бронирование творческих площадок и услуг</h1>
             </Typography>
             <Box sx={{ mb: 5, display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
-               {services.map((service, i) => 
+               {dbServices.map((service, i) => 
                         <Cards
                         key={i}
                         title={service.title} 
