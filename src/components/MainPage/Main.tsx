@@ -8,21 +8,16 @@ import assistant4 from '../../image/MainPage/assistant4.png'
 import { Container, Typography } from "@mui/material"
 import phoneLeft from '../../image/MainPage/mainPhone.png'
 import phoneRight from '../../image/MainPage/mainPhone2.png'
+import { Header } from '../Header/Header';
+import { Footer } from "../Footer/Footer";
+import { TitleH1 } from "../../style/otherStyles"
 
 export const Main: React.FC = () => {
     return (
         <>
+        <Header/>
         <Container maxWidth="xl" sx={{ pt: '50px' }}>
-            <Typography component='h1' sx={{ 
-                textAlign: 'center', 
-                fontSize: { xs: '15px', sm: '20px', md: '25px' }, 
-                ml: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-                mr: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-                mt: { xs: 5, sm: 10, md: 15 }, 
-                mb: { xs: 2, sm: 4 } 
-            }}>
-                <h1>Поиск и бронирование творческих площадок и услуг</h1>
-            </Typography>
+            <TitleH1>Поиск и бронирование творческих площадок и услуг</TitleH1>
             <Box sx={{ mb: 5, display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}>
                {dbServices.map((service, i) => 
                         <Cards
@@ -30,7 +25,8 @@ export const Main: React.FC = () => {
                         title={service.title} 
                         img={service.img} 
                         description={service.description} 
-                        icon={service.icon}/>
+                        icon={service.icon}
+                        id={service.id}/>
                 )} 
             </Box>
             
@@ -66,16 +62,7 @@ export const Main: React.FC = () => {
                     <p style={{ padding: '5px' }}>Накопительная система скидок и бонусов.</p>
             </Box>
 
-            <Typography component='h1' sx={{ 
-                textAlign: 'center', 
-                fontSize: { xs: '15px', sm: '20px', md: '25px' }, 
-                ml: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-                mr: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-                mt: { xs: 5, sm: 5, md: 10 }, 
-                mb: { xs: 2, sm: 4 } 
-            }}>
-                <h1>Незаменимый помощник</h1>
-            </Typography>
+            <TitleH1>Незаменимый помощник</TitleH1>
         </Container>
         <Box sx={{ display: 'flex', m: 0, p: 0, width: '100%', mb: '80px' }}>
             <img src={assistant1} style={{ width: '25%' }} alt='Helper'/>
@@ -83,6 +70,7 @@ export const Main: React.FC = () => {
             <img src={assistant3} style={{ width: '25%' }} alt='Helper'/>
             <img src={assistant4} style={{ width: '25%' }} alt='Helper'/>
         </Box>
+        <Footer/>
         </>
     )
 }

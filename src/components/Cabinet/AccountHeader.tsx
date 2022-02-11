@@ -9,12 +9,12 @@ import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
-import logo from '../../image/logo.png';
+import logo from '../../image/logoAccount.png';
 import Tooltip from '@mui/material/Tooltip';
 import { Link } from 'react-router-dom';
 
 
-export const Header: React.FC = () => {
+export const AccountHeader: React.FC = () => {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -36,7 +36,7 @@ export const Header: React.FC = () => {
             component="div"
             sx={{ mr: 2, ml: 3, display: { xs: 'none', md: 'flex' } }}
           >
-            <img style={{ width: '40px' }} src={logo} alt='Logo'/>
+            <img style={{ width: '100px' }} src={logo} alt='Logo'/>
           </Typography>
           </Link>
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' }, alignItems: 'center', justifyContent: 'space-between' }}>
@@ -68,55 +68,84 @@ export const Header: React.FC = () => {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              <Link to='/'>
+                <Link to='/login'>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Поиск площадки</Typography>
-                </MenuItem>
-              </Link>
-              <Link to='/addArea'>
-                <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Добавить площадку</Typography>
+                  <Typography textAlign="center">Календарь</Typography>
                 </MenuItem>
               </Link>
               <Link to='/login'>
                 <MenuItem onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">Войти</Typography>
+                  <Typography textAlign="center">Заявки</Typography>
+                </MenuItem>
+              </Link>
+              <Link to='/login'>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Контент</Typography>
+                </MenuItem>
+              </Link>
+              <Link to='/login'>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Заказы</Typography>
+                </MenuItem>
+              </Link>
+              <Link to='/login'>
+                <MenuItem onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">Выйти</Typography>
                 </MenuItem>
               </Link>
             </Menu>
             <Link to='/'>
-              <img style={{ width: '30px', height: '30px' }} src={logo} alt='Logo'/>
+              <img style={{ width: '105px', height: '35px' }} src={logo} alt='Logo'/>
             </Link>
           </Box>
-          
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }, justifyContent: 'right' }}>
-            <Tooltip title='Поиск площадки'>
-              <Link to='/'>
-                <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'black', display: 'block' }}
-                  >
-                  Поиск площадки
-                </Button>
-              </Link>
-            </Tooltip>
-            <Tooltip title='Добавить площадку'>
-              <Link to='/addArea'>
-                <Button
-                    onClick={handleCloseNavMenu}
-                    sx={{ my: 2, color: 'black', display: 'block' }}
-                  >
-                  Добавить площадку
-              </Button>
-              </Link>
-            </Tooltip>
-            <Tooltip title='Войти'>
+            <Tooltip title='Выйти'>
               <Link to='/login'>
                 <Button
                     onClick={handleCloseNavMenu}
                     sx={{ my: 2, color: 'black', display: 'block' }}
                   >
-                  Войти
+                  Календарь
+              </Button>
+              </Link>
+            </Tooltip>
+            <Tooltip title='Выйти'>
+              <Link to='/login'>
+                <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                  Заявки
+              </Button>
+              </Link>
+            </Tooltip>
+            <Tooltip title='Выйти'>
+              <Link to='/login'>
+                <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                  Контент
+              </Button>
+              </Link>
+            </Tooltip>
+            <Tooltip title='Выйти'>
+              <Link to='/login'>
+                <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                  Заказы
+              </Button>
+              </Link>
+            </Tooltip>
+            <Tooltip title='Выйти'>
+              <Link to='/login'>
+                <Button
+                    onClick={handleCloseNavMenu}
+                    sx={{ my: 2, color: 'black', display: 'block' }}
+                  >
+                  Выйти
               </Button>
               </Link>
             </Tooltip>

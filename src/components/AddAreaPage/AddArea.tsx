@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material"
 import { Box } from "@mui/system"
 import bgMain from '../../image/AddAreaPage/bgMain.png';
-import { styled } from '@mui/styles';
 import benefitsItem1 from '../../image/AddAreaPage/benefits1.png.webp'
 import benefitsItem2 from '../../image/AddAreaPage/benefits2.png.webp'
 import benefitsItem3 from '../../image/AddAreaPage/benefits3.png.webp'
@@ -11,43 +10,18 @@ import benefitsMid3 from '../../image/AddAreaPage/benefitsMid3.png';
 import { dbCardBenefits } from './dbCardBenefits'
 import { CardBenefits } from './CardBenefits';
 import partners from '../../image/AddAreaPage/partners.png';
-import { Slider } from './Slider'
+import { Slider } from './Slider';
+import { Link } from 'react-router-dom';
+import { Header } from '../Header/Header';
+import { Footer } from "../Footer/Footer";
+import { TitleH1 } from "../../style/otherStyles";
+import { CustomButton } from "../../style/otherStyles";
 
 
-const CustomButton = styled('button')({
-    textTransform: 'uppercase',
-    padding: '15px 29px 15px 29px',
-    fontWeight: 'bold',
-    fontSize: '30px',
-    lineHeight: '36px',
-    color: '#000000',
-    borderRadius: '10px',
-    background: '#FFDBB8',
-    marginLeft: '30px',
-    '@media (max-width: 1200px)': {
-        fontWeight: 'normal',
-        fontSize: '25px',
-        marginRight: '20px',
-        marginLeft: 0
-    },
-    '@media (max-width: 900px)': {
-        fontSize: '20px',
-        marginRight: '5px'
-    },
-    '@media (max-width: 599px)': {
-        fontSize: '15px',
-        padding: '10px 15px 10px 15px',
-        maxWidth: '150px',
-        lineHeight: '1',
-        marginBottom: '5px',
-        textTransform: 'lowercase'
-    }
-});
-
-export const AddAreaPage = () => {
-
+export const AddAreaPage: React.FC = () => {
     return (
         <>
+        <Header/>
         <Box sx={{
             backgroundImage: `url(${bgMain})`,
             height: {xs: '600px', sm: '800px'},
@@ -93,31 +67,41 @@ export const AddAreaPage = () => {
                 justifyContent: { sm: 'center', md: 'center', lg: 'right' },
                 alignItems: 'bottom',
                 pr: { md: 0, lg: '110px' },
-                margin: { xs: 'auto', sm: '0' }
+                margin: { xs: 'auto', sm: '5px', md: '5px', lg: '10px', xl: '15px' },
+                lineHeight: '1'
             }}>
-                <CustomButton>Регистрация</CustomButton>
-                <CustomButton>Тарифы</CustomButton>
-                <CustomButton>Вход в кабинет</CustomButton>
+                <Link to='/registration'>
+                    <CustomButton sx={{ 
+                        margin: { xs: '2px auto', sm: '2px', md: '5px', lg: '10px', xl: '15px' },
+                        lineHeight: '1',
+                        minWidth: '140px'
+                    }}>Регистрация</CustomButton> 
+                </Link>
+                <Link to='/'>
+                    <CustomButton sx={{ 
+                        margin: { xs: '2px auto', sm: '2px', md: '5px', lg: '10px', xl: '15px' },
+                        lineHeight: '1',
+                        minWidth: '140px'
+                    }}>Тарифы</CustomButton>
+                </Link>
+                <Link to='/login'>
+                    <CustomButton sx={{ 
+                        margin: { xs: '2px auto', sm: '2px', md: '5px', lg: '10px', xl: '15px' }, 
+                        lineHeight: '1',
+                        minWidth: '140px'
+                    }}>Вход в кабинет</CustomButton>
+                </Link>
             </Box>
         </Box>
 
         {/* //benefits */}
-        <Box sx={{ 
-            fontWeight: 'bold',
-            fontSize: { xs: 24, sm: 30, md: 35, lg: 45 },
-            lineHeight: 1,
-            textAlign: 'center', 
-            ml: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mr: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mt: { xs: 5, sm: 10, md: 15 }, 
-            mb: { xs: 2, sm: 4 } 
-        }}>
-            MUSbooking — это не очередная CRM система или система онлайн бронирования.
+        <Box sx={{ ml: '30px', mr: '30px', mb: '20px' }}>
+        <TitleH1 sx={{ mb: '0!important' }}>MUSbooking — это не очередная CRM система или система онлайн бронирования.</TitleH1>
             <Typography sx={{ 
                 fontWeight: 'normal', 
                 fontSize: { xs: '15px', sm: '20px', md: '25px' }, 
             }}>Это сервис, который приведет нового клиента напрямую в ваше расписание по самой низкой цене.</Typography>
-        </Box>
+        </Box>    
         <Box sx={{
             display: 'flex',
             justifyContent: 'space-evenly',
@@ -126,15 +110,15 @@ export const AddAreaPage = () => {
             flexWrap: { xs: 'wrap',sm: 'wrap', md: 'nowrap', lg: 'nowrap', xl: 'nowrap' }
         }}>
             <Box>
-                <Typography sx={{ height: { md: '250px', lg: '300px' } }}><img src={benefitsItem1}/></Typography>
+                <Typography sx={{ height: { md: '250px', lg: '300px' } }}><img src={benefitsItem1} alt=''/></Typography>
                 <Typography sx={{ fontSize: { xs: '15px', sm: '20px', md: '25px' } }}>Ваша целевая аудитория</Typography>
             </Box>
             <Box>
-                <Typography sx={{ height: { md: '250px', lg: '300px' } }}><img src={benefitsItem2}/></Typography>
+                <Typography sx={{ height: { md: '250px', lg: '300px' } }}><img src={benefitsItem2} alt=''/></Typography>
                 <Typography sx={{ fontSize: { xs: '15px', sm: '20px', md: '25px' } }}>Экосистема продуктов MUSbooking</Typography>
             </Box>
             <Box>
-                <Typography sx={{ height: { md: '250px', lg: '300px' } }}><img src={benefitsItem3}/></Typography>
+                <Typography sx={{ height: { md: '250px', lg: '300px' } }}><img src={benefitsItem3} alt=''/></Typography>
                 <Typography sx={{ fontSize: { xs: '15px', sm: '20px', md: '25px' } }}>Пустой слот в вашем расписании</Typography>
             </Box>
         </Box>
@@ -166,14 +150,14 @@ export const AddAreaPage = () => {
             </Box>
         </Box>
 
-
+        {/* benefits MIDDLE */}
         <Box sx={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             flexWrap: { xs: 'wrap',sm: 'wrap', md: 'nowrap', lg: 'nowrap', xl: 'nowrap' },
         }}>
-            <Typography sx={{ maxWidth: '600px' }}><img src={benefitsMid1}/></Typography>
+            <Typography sx={{ maxWidth: '600px' }}><img src={benefitsMid1} alt=''/></Typography>
             <Box sx={{
                 textAlign: 'center',
                 pr: 5,
@@ -205,7 +189,7 @@ export const AddAreaPage = () => {
                     <Typography sx={{ fontSize: { xs: '15px', sm: 15, md: 20 } }}>гибкие отношения с клиентом, система штрафов, скидок и условий оплаты;</Typography>
                     <Typography sx={{ fontSize: { xs: '15px', sm: 15, md: 20 } }}>работа с отзывами пользователей.</Typography>
             </Box>
-            <Typography sx={{ maxWidth: '600px' }}><img src={benefitsMid2}/></Typography>
+            <Typography sx={{ maxWidth: '600px' }}><img src={benefitsMid2} alt=''/></Typography>
         </Box>
         <Box sx={{
             display: 'flex',
@@ -216,7 +200,7 @@ export const AddAreaPage = () => {
             pl: 5,
             textAlign: 'center'
         }}>
-            <Typography sx={{ maxWidth: '600px' }}><img style={{ maxHeight: '350px' }} src={benefitsMid3}/></Typography>
+            <Typography sx={{ maxWidth: '600px' }}><img style={{ maxHeight: '350px' }} src={benefitsMid3} alt=''/></Typography>
             <Box sx={{ maxWidth: '600px' }}>
                 <Typography sx={{ marginBottom: { xs: '10px', sm: '20px'}, fontWeight: 'bold', fontSize: { xs: '1rem', sm: '20px', md: '25px' } }}>Простая интеграция и персональная поддержка.</Typography>
                     <Typography sx={{ fontSize: { xs: '15px', sm: 15, md: 20 } }}>полная синхронизация с вашей crm/erp платформой;</Typography>
@@ -226,18 +210,9 @@ export const AddAreaPage = () => {
                     <Typography sx={{ fontSize: { xs: '15px', sm: 15, md: 20 } }}>прием онлайн платежей напрямую на ваш расчетный счет.</Typography>
             </Box>
         </Box>
-        <Typography component='h1' sx={{ 
-            fontWeight: 'bold',
-            fontSize: { xs: 24, sm: 30, md: 35, lg: 45 },
-            lineHeight: 1,
-            textAlign: 'center', 
-            ml: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mr: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mt: { xs: 5, sm: 5, md: 10 }, 
-            mb: 5 
-        }}>
-            Уникальные преимущества MUSbooking
-        </Typography>
+        
+        {/* benefits cards */}
+        <TitleH1>Уникальные преимущества MUSbooking</TitleH1>
         <Box sx={{
             display: 'flex',
             flexWrap: 'wrap',
@@ -255,35 +230,14 @@ export const AddAreaPage = () => {
         </Box>
 
         {/* partners */}
-        <Typography component='h1' sx={{ 
-            fontWeight: 'bold',
-            fontSize: { xs: 24, sm: 30, md: 35, lg: 45 },
-            lineHeight: 1,
-            textAlign: 'center', 
-            ml: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mr: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mt: { xs: 5, sm: 10, md: 15 }, 
-            mb: 5 
-        }}>
-            С нами работают более 500 компаний
-        </Typography>
-        <img src={partners} style={{ width: '100%' }}/>
+        <TitleH1>С нами работают более 500 компаний</TitleH1>
+        <img src={partners} style={{ width: '100%' }} alt='Partners'/>
         
 
         {/* slider */}
-        <Typography component='h1' sx={{ 
-            fontWeight: 'bold',
-            fontSize: { xs: 24, sm: 30, md: 35, lg: 45 },
-            lineHeight: 1,
-            textAlign: 'center', 
-            ml: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mr: { xs: 5, sm: 10, md: 25, lg: 30 }, 
-            mt: { xs: 5, sm: 10, md: 15 }, 
-            mb: 5 
-        }}>
-           Отзывы наших партнеров
-        </Typography>
+        <TitleH1>Отзывы наших партнеров</TitleH1>
         <Slider/>
+        <Footer/>
         </>
     )
 }

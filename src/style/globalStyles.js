@@ -54,7 +54,10 @@ const useStyles = makeStyles(() =>
         border: 'none',
         backgroundColor: 'transparent',
         boxShadow: 'none'
-      }
+      },
+      '.flip-card': {
+        transform: 'rotateY(180deg)',
+      },
     }
   })
 );

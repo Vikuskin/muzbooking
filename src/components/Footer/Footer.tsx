@@ -11,7 +11,6 @@ import ListItemText from '@mui/material/ListItemText';
 import Grid from '@mui/material/Grid';
 
 export const Footer: React.FC = () => {
-
     return (
         <Container maxWidth={false} sx={{ backgroundColor: '#ccc', borderTop: '1px dashed black', p: { xs: 0 } }}>
         <Container maxWidth="xl">

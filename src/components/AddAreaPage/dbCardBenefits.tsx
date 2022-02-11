@@ -1,4 +1,4 @@
-export const dbCardBenefits = [
+export const dbCardBenefits: any[] = [
     {
         "img": "image/cardBenefits/benefitsCard1.svg",
         "description": "Моментальная синхронизация с любым каналом бронирования при помощи soket-соединений."

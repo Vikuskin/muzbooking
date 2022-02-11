@@ -1,11 +1,9 @@
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/system';
 import addressIcon from '../../image/SearchPage/address.svg';
 import subwayIcon from '../../image/SearchPage/subway.svg';
 import timetableIcon from '../../image/SearchPage/timetable.svg';
-
 
 interface CardProps {
     id: number,
@@ -30,9 +28,7 @@ export const CardPlace: React.FC<CardProps> = props => {
             verticalAlign: 'baseline',
             boxShadow: '0px 0px 10px rgba(0,0,0,.25)'
         }}>
-            <Box sx={{
-                p: 0,
-            }}>
+            <Box>
                 <Typography sx={{ fontWeight: 'bold' }}>{props.title}</Typography>
                 <Typography sx={{
                     display: 'flex',
