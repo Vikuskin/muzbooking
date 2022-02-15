@@ -1,99 +1,168 @@
-import { Box, Button, Typography } from '@mui/material';
 import * as React from 'react';
-import { CustomButton } from '../../style/otherStyles';
-import { Link } from 'react-router-dom'
-import { useActions } from '../../hooks/useActions'
-import { useTypedSelector } from '../../hooks/useTypedSelector'
+import { styled } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { useActions } from 'hooks/useActions';
 
 interface CardProps {
-    title: string,
-    img: string,
-    icon: string,
-    description: string,
-    id: string
+    title: string;
+    img: string;
+    icon: string;
+    description: string;
+    id: string;
 }
 
-export const Cards: React.FC<CardProps> = props => {
+const Card = styled('div')({
+    margin: 'auto',
+    transform: 'rotateY(360deg)',
+    transition: 'all ease-in-out .5s',
+    boxShadow: '0 4px 30px rgba(0,0,0,.25)',
+    cursor: 'pointer',
+    width: '300px',
+    height: '320px',
+    borderRadius: '60px',
+    marginBottom: '10px',
+    '@media (max-width: 899px)': {
+        width: '250px',
+        height: '280px',
+    },
+    '@media (max-width: 599px)': {
+        width: '250px',
+        height: '320px',
+    },
+});
 
+const CardFrontImage = styled('div')({
+    backgroundPosition: 'center',
+    backgroundSize: 'cover',
+    backgroundRepeat: 'no-repeat',
+    display: 'flex',
+    alignItems: 'end',
+    width: '100%',
+    height: '100%',
+    transform: 'rotateY(360deg)',
+    overflow: 'hidden',
+    borderRadius: '60px',
+});
+
+const CardFrontContent = styled('div')({
+    width: '100%',
+});
+
+const CardFrontText = styled('div')({
+    fontSize: '25px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    opacity: 0.6,
+    minHeight: '100px',
+    textAlign: 'center',
+    backgroundColor: 'white',
+    '@media (max-width: 899px)': {
+        fontSize: '20px',
+    },
+    '@media (max-width: 599px)': {
+        fontSize: '15px',
+        minHeight: '70px',
+    },
+});
+
+const CardBackContent = styled('div')({
+    backgroundColor: '#fff',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    transform: 'rotateY(360deg)',
+    padding: '10px',
+    width: '100%',
+    height: '100%',
+    borderRadius: '60px',
+});
+
+const CardBackText = styled('div')({
+    fontSize: '15px',
+    '@media (max-width: 899px)': {
+        fontSize: '13px',
+    },
+    '@media (max-width: 599px)': {
+        fontSize: '13px',
+        margin: '0 10px',
+        minHeight: '50px',
+    },
+});
+
+const CardBackBottom = styled('button')({
+    textTransform: 'uppercase',
+    padding: '10px',
+    fontSize: '20px',
+    color: 'black',
+    borderRadius: '10px',
+    background: '#FFDBB8',
+    lineHeight: '1',
+    maxWidth: '200px',
+    '@media (max-width: 1199px)': {
+        fontWeight: 'normal',
+        fontSize: '20px',
+    },
+    '@media (max-width: 899px)': {
+        fontSize: '18px',
+        textTransform: 'lowercase',
+        padding: '5px 10px'
+    },
+    '@media (max-width: 599px)': {
+        fontSize: '15px',
+        padding: '10px 15px 10px 15px',
+        maxWidth: '150px',
+        marginBottom: '5px',
+        
+    },
+});
+
+export const Cards: React.FC<CardProps> = ({
+    title,
+    img,
+    icon,
+    description,
+    id,
+}) => {
     const [style, setStyle] = React.useState<string>('front-card');
-    const services: string = useTypedSelector(state => state.services.services);
-    console.log(services);
-    const {chooseServices} = useActions()
-
+    const { chooseServices } = useActions();
     const flipCard = () => {
         if (style === 'front-card') {
-            setStyle('back-card')
+            setStyle('back-card');
         } else {
-            setStyle('front-card')
+            setStyle('front-card');
         }
-    }
+    };
 
     return (
-        <Box onClick={() => flipCard()} sx={{
-            margin: '10px',
-            transform: 'rotateY(360deg)',
-            transition: 'all ease-in-out .5s',
-            boxShadow: '0 4px 30px rgba(0,0,0,.25)',
-            cursor: 'pointer',
-            width: { xs: '200px', sm: 300, md: 350 }, 
-            height: { xs: '220px', sm: 320, md: 380 },
-            borderRadius: '60px'
-        }}>
-            {style === 'front-card' ? 
-            <Box sx={{
-                backgroundImage: `url(${props.img})`,
-                backgroundPosition: 'center',
-                backgroundSize: 'cover',
-                backgroundRepeat: 'no-repeat',
-                display: 'flex',
-                alignItems: 'end',
-                width: '100%',
-                height: '100%',
-                transform: 'rotateY(360deg)',
-                overflow:'hidden',
-                borderRadius: '60px'
-            }}>
-                <Box sx={{
-                    textAlign: 'center',
-                    color: 'black',
-                    backgroundColor: 'white',
-                    opacity: 0.6,
-                    padding: '20px 5px',
-                    margin: 0,
-                    width: '100%',
-                    minHeight: {xs: '50px', md: '100px'},
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                }}>
-               <Box sx={{ fontSize: { xs: '15px', sm: '20px', md: '25px' }, margin: { xs: '0 10px' } }}>
-                  {props.title.toUpperCase()} 
-               </Box>
-                </Box>
-           </Box> :
-           <Box sx={{ 
-                backgroundColor: '#fff',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'space-evenly',
-                transform: 'rotateY(360deg)',
-                padding: '10px',
-                width: '100%',
-                height: '100%',
-                borderRadius: '60px'
-            }}>
-                <img src={props.icon}/>
-                <Typography>{props.description}</Typography>
-                <Link to='/search'>
-                <CustomButton style={{ maxWidth: '250px', marginLeft: 0, fontWeight: 'normal', fontSize: '20px', lineHeight: '1', padding: '10px 20px' }}
-                onClick={() => chooseServices(props.id)}    
+        <Card onClick={() => flipCard()}>
+            {style === 'front-card' ? (
+                <CardFrontImage
+                    sx={{
+                        backgroundImage: `url(${img})`,
+                    }}
                 >
-                    Найти площадку
-                </CustomButton>
-                </Link>
-            </Box>
-        }
-        </Box>
-  );
-}
+                    <CardFrontContent>
+                        <CardFrontText>{title.toUpperCase()}</CardFrontText>
+                    </CardFrontContent>
+                </CardFrontImage>
+            ) : (
+                <CardBackContent>
+                    <img src={icon} alt={description} />
+                    <CardBackText>{description}</CardBackText>
+                    <Link to="/search">
+                        <CardBackBottom
+                            onClick={() => {
+                                chooseServices(id);
+                                window.scrollTo(0, 0);
+                            }}
+                        >
+                            Найти площадку
+                        </CardBackBottom>
+                    </Link>
+                </CardBackContent>
+            )}
+        </Card>
+    );
+};

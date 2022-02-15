@@ -1,38 +1,40 @@
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import Typography from '@mui/material/Typography';
+import React from 'react';
+import { styled } from '@mui/material';
+import { TitleH2, FlexDiv } from 'style/otherStyles';
 
-interface CardProps {
-    img: string,
-    description: string
+interface CardBenefitsProps {
+    img: string;
+    description: string;
 }
 
-export const CardBenefits: React.FC<CardProps> = props => {
-    return (
-        <Card sx={{ 
-            width: '275px',
-            height: { xs: '250px', md: '270px' },
-            fontSize: '20px', 
-            backgroundColor: '#FFEAC2',
-            margin: 'auto',
-            mb: '10px',
-            borderRadius: '25px',
-            padding: '28px 22px 20px',
-            textAlign: 'center',
-            verticalAlign: 'baseline'
-        }}>
-            <CardContent sx={{
-                p: 0,
-            }}>
-                <img src={props.img} style={{ maxWidth: '200px', maxHeight: '80px' }}/>
-                <Typography variant="h5" component="div" sx={{ 
-                    marginTop: '25px',
-                    fontSize: { xs: '15px', sm: '15px', md: '18px', lg: '18px' },
-                    lineHeight: '22px',
-                }}>
-                {props.description}
-                </Typography>
-            </CardContent>
-        </Card>
-    )
-}
+const Card = styled('div')({
+    width: '275px',
+    height: '270px',
+    fontSize: '20px',
+    backgroundColor: '#FFEAC2',
+    margin: 'auto',
+    marginBottom: '10px',
+    borderRadius: '25px',
+    padding: '28px 22px 20px',
+    textAlign: 'center',
+    verticalAlign: 'baseline',
+    '@media (max-width: 599px)': {
+        height: '200px',
+    },
+});
+
+export const CardBenefits: React.FC<CardBenefitsProps> = ({
+    img,
+    description,
+}) => (
+    <Card>
+        <FlexDiv sx={{ flexDirection: 'column', height: '100%' }}>
+            <img
+                src={img}
+                style={{ maxWidth: '200px', maxHeight: '80px' }}
+                alt={description}
+            />
+            <TitleH2 sx={{ fontSize: '20px' }}>{description}</TitleH2>
+        </FlexDiv>
+    </Card>
+);

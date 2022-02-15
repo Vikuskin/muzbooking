@@ -1,16 +1,13 @@
+import React from 'react';
 import { Box } from '@mui/system';
-import { AccountHeader } from './AccountHeader'
-import { ContentPage } from './ContentPage';
+import { AccountHeader } from 'components/Cabinet/AccountHeader';
+import { ContentPage } from 'components/Cabinet/ContentPage';
 
-export const Account: React.FC = () => {
-  return (
+export const Account: React.FC = () => (
     <>
-        <AccountHeader/>
-        <Box sx={{
-            marginTop: '70px'
-        }}>
-            <ContentPage/>
+        <AccountHeader />
+        <Box sx={{ mt: '70px' }}>
+            <ContentPage />
         </Box>
     </>
-  );
-};
+);

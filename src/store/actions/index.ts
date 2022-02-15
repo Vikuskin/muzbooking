@@ -1,5 +1,5 @@
-import * as ServicesAction from './servicesAction'
+import * as ServicesAction from 'store/actions/servicesAction';
 
 export default {
-    ...ServicesAction
-}
+    ...ServicesAction,
+};
