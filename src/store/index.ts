@@ -1,5 +1,6 @@
-import { applyMiddleware, compose, createStore } from 'redux';
+import { applyMiddleware, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { rootReducer } from 'store/reducers/index';
+import { composeWithDevTools } from 'redux-devtools-extension'
 
-export const store = createStore(rootReducer, compose(applyMiddleware(thunk)));
+export const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));

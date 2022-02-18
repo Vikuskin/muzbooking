@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box } from '@mui/system';
 import { AccountHeader } from 'components/Cabinet/AccountHeader';
-import { ContentPage } from 'components/Cabinet/ContentPage';
+import { ContentPage } from 'components/Cabinet/ContentPage/ContentPage';
 
 export const Account: React.FC = () => (
     <>

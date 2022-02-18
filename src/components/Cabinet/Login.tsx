@@ -10,9 +10,11 @@ import {
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import logo from 'image/logoRegistration.svg';
 import { CustomButton, FlexDiv } from 'style/otherStyles';
+import { useActions } from 'hooks/useActions'
+
 
 interface State {
-    name: string;
+    email: string;
     password: string;
     showPassword: boolean;
 }
@@ -53,7 +55,7 @@ const Button = styled(CustomButton)({
 
 export const Login: React.FC = () => {
     const [login, setLogin] = React.useState<State>({
-        name: '',
+        email: '',
         password: '',
         showPassword: false,
     });
@@ -76,6 +78,8 @@ export const Login: React.FC = () => {
         event.preventDefault();
     };
 
+    const {fetchLogin} = useActions()
+
     return (
         <Background>
             <LoginWindow>
@@ -96,8 +100,8 @@ export const Login: React.FC = () => {
                 <TextField
                     id="standard-multiline-flexible"
                     multiline
-                    value={login.name}
-                    onChange={handleChange('name')}
+                    value={login.email}
+                    onChange={handleChange('email')}
                     variant="standard"
                     sx={{ width: '100%', mb: '30px' }}
                 />
@@ -125,7 +129,12 @@ export const Login: React.FC = () => {
                         </InputAdornment>
                     }
                 />
-                <Button>войти</Button>
+                <Button onClick={async () => {
+                    const res = await fetchLogin(login.email, login.password);               
+                    if (res) {
+                        alert(res)
+                    }
+                }}>войти</Button>
             </LoginWindow>
         </Background>
     );

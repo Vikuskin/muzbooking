@@ -96,7 +96,7 @@ export const AccountHeader: React.FC = () => {
                                     </Typography>
                                 </MenuItem>
                             </Link>
-                            <Link to="/login">
+                            <Link to="/account">
                                 <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         Контент
@@ -111,7 +111,10 @@ export const AccountHeader: React.FC = () => {
                                 </MenuItem>
                             </Link>
                             <Link to="/login">
-                                <MenuItem onClick={handleCloseNavMenu}>
+                                <MenuItem onClick={() => {
+                                        handleCloseNavMenu();
+                                        localStorage.clear()
+                                    }}>
                                     <Typography textAlign="center">
                                         Выйти
                                     </Typography>
@@ -162,7 +165,7 @@ export const AccountHeader: React.FC = () => {
                             </Link>
                         </Tooltip>
                         <Tooltip title="Выйти">
-                            <Link to="/login">
+                            <Link to="/account">
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{
@@ -192,7 +195,10 @@ export const AccountHeader: React.FC = () => {
                         <Tooltip title="Выйти">
                             <Link to="/login">
                                 <Button
-                                    onClick={handleCloseNavMenu}
+                                    onClick={() => {
+                                        handleCloseNavMenu();
+                                        localStorage.clear()
+                                    }}
                                     sx={{
                                         my: 2,
                                         color: 'black',
