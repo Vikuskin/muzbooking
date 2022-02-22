@@ -1,83 +1,102 @@
 export interface ServicesPlace {
-    name: string,
-    id: number
+    value: string,
+    id: number,
+    checked: boolean
 }
 
 export const dbServicesPlace: ServicesPlace[] = [
     {
-        name: 'Чай/кофе',
+        value: 'Чай/кофе',
         id: 0,
+        checked: false
     },
     {
-        name: 'Кофемашина',
+        value: 'Кофемашина',
         id: 1,
+        checked: false
     },
     {
-        name: 'Кулер с водой',
+        value: 'Кулер с водой',
         id: 2,
+        checked: false
     },
     {
-        name: 'Аппарат со снеками',
+        value: 'Аппарат со снеками',
         id: 3,
+        checked: false
     },
     {
-        name: 'Кафе на территории',
+        value: 'Кафе на территории',
         id: 4,
+        checked: false
     },
 ];
 
 export interface ComfortPlace {
-    name: string,
-    id: number
+    value: string,
+    id: number,
+    checked: boolean
 }
 
 export const dbComfortPlace: ComfortPlace[] = [
     {
-        name: 'Зона для курения',
+        value: 'Зона для курения',
         id: 0,
+        checked: false
     },
     {
-        name: 'Менее 10 мин от метро ',
+        value: 'Менее 10 мин от метро ',
         id: 1,
+        checked: false
     },
     {
-        name: 'Бесплатная парковка',
+        value: 'Бесплатная парковка',
         id: 2,
+        checked: false
     },
     {
-        name: 'Кондиционер',
+        value: 'Кондиционер',
         id: 3,
+        checked: false
     },
     {
-        name: 'Туалет на территории',
+        value: 'Туалет на территории',
         id: 4,
+        checked: false
     },
     {
-        name: 'Зона отдыха(lounge)',
+        value: 'Зона отдыха(lounge)',
         id: 5,
+        checked: false
     },
     {
-        name: 'Wi-Fi Free',
+        value: 'Wi-Fi Free',
         id: 6,
+        checked: false
     },
     {
-        name: 'Не нужно переобуваться',
+        value: 'Не нужно переобуваться',
         id: 7,
+        checked: false
     },
     {
-        name: 'Отдельный вход',
+        value: 'Отдельный вход',
         id: 8,
+        checked: false
     },
     {
-        name: 'Камера хранения',
+        value: 'Камера хранения',
         id: 9,
+        checked: false
     },
     {
-        name: 'Лифт/1 этаж',
+        value: 'Лифт/1 этаж',
         id: 10,
+        checked: false
     },
     {
-        name: 'Парковка на территории',
+        value: 'Парковка на территории',
         id: 11,
+        checked: false
     },
 ];

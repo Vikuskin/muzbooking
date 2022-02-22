@@ -1,5 +1,5 @@
 export interface AccountState {
-    data: any[];
+    data: any;
     loading: boolean;
     error: any;
 }

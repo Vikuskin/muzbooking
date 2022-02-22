@@ -37,16 +37,25 @@ interface State {
     description: string;
 }
 
-export const ContentPageMainInfo: React.FC<any> = ({ data }) => {
+export const ContentPageMainInfo: React.FC<State> = ({
+    sphera,
+    nameCompany,
+    city,
+    address,
+    phone,
+    subway,
+    email,
+    description,
+}) => {
     const [value, setValue] = React.useState<State>({
-        sphera: data.sphera,
-        nameCompany: data.nameCompany,
-        city: data.city,
-        address: data.address,
-        phone: data.phone,
-        subway: data.subway,
-        email: data.email,
-        description: data.description,
+        sphera,
+        nameCompany,
+        city,
+        address,
+        phone,
+        subway,
+        email,
+        description,
     });
     const [phoneChange, setPhoneChange] = React.useState<Array<string>>(['']);
 
@@ -72,8 +81,7 @@ export const ContentPageMainInfo: React.FC<any> = ({ data }) => {
             alert(res);
         }
     };
-    console.log(value.phone)
-    console.log(phoneChange)
+
     return (
         <Box>
             <Typography>Сфера</Typography>

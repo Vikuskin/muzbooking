@@ -1,3 +1,11 @@
+/* eslint-disable no-unneeded-ternary */
+/* eslint-disable arrow-body-style */
+/* eslint-disable no-undef */
+/* eslint-disable no-else-return */
+/* eslint-disable react/no-unused-prop-types */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useState } from 'react';
@@ -11,25 +19,57 @@ import {
     Grid,
     ListItem,
     Icon,
-    InputAdornment
+    styled,
 } from '@mui/material';
-import {
-    dbServicesPlace,
-    dbComfortPlace,
-} from 'components/databases/dbCheckboxs';
-import { TitleH2 } from 'style/otherStyles';
+
+import { CustomButton, FlexDiv, TitleH2 } from 'style/otherStyles';
+import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { useActions } from 'hooks/useActions';
 
 interface StatePlatform {
     name: string;
     square: number;
     rider: string;
+    products: any[];
 }
 
-export const ContentPagePlatform: React.FC = () => {
+interface StateProducts {
+    id: number;
+    name: string;
+    price: string;
+    mon: string;
+    tue: string;
+    wed: string;
+    thu: string;
+    fri: string;
+    sat: string;
+    sun: string;
+}
+
+interface Props {
+    name: string;
+    square: number;
+    rider: string;
+    products: any[];
+    services: any[];
+    comfort: any[];
+    idPlatform: string
+}
+
+export const ContentPagePlatform: React.FC<Props> = ({
+    name,
+    square,
+    rider,
+    products,
+    services,
+    comfort,
+    idPlatform
+}) => {
     const [platform, setPlatform] = React.useState<StatePlatform>({
-        name: '',
-        square: 0,
-        rider: '',
+        name,
+        square,
+        rider,
+        products,
     });
 
     const handleChange =
@@ -37,32 +77,62 @@ export const ContentPagePlatform: React.FC = () => {
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setPlatform({ ...platform, [prop]: event.target.value });
         };
-
-    const [servicesChecked, setServicesChecked] = useState(
-        new Array(dbServicesPlace.length).fill(false)
-    );
-    const [comfortChecked, setComfortChecked] = useState(
-        new Array(dbComfortPlace.length).fill(false)
-    );
-
+    const [servicesChecked, setServicesChecked] = useState(services);
+    const [comfortChecked, setComfortChecked] = useState(comfort);
     const handleChangeServices = (position: any) => {
         const updatedCheckedState = servicesChecked.map((item, index) =>
-            index === position ? !item : item
+            index === position
+                ? { ...item, checked: !item.checked }
+                : { ...item }
         );
         setServicesChecked(updatedCheckedState);
     };
 
     const handleChangeComfort = (position: any) => {
         const updatedCheckedState = comfortChecked.map((item, index) =>
-            index === position ? !item : item
+            index === position
+                ? { ...item, checked: !item.checked }
+                : { ...item }
         );
         setComfortChecked(updatedCheckedState);
     };
 
-    const [products, setProducts] = React.useState({});
+    const [product, setProduct] = React.useState<StateProducts>({
+        id: Date.now(),
+        name: '',
+        price: '',
+        mon: '00-23',
+        tue: '00-23',
+        wed: '00-23',
+        thu: '00-23',
+        fri: '00-23',
+        sat: '00-23',
+        sun: '00-23',
+    });
+
+    const handleChangeProducts =
+        (prop: keyof StateProducts) =>
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setProduct({ ...product, [prop]: event.target.value });
+        };
+    const { fetchAccountPlatform } = useActions();
+
+    const sendPlatform = async () => {
+        await fetchAccountPlatform(
+            localStorage.token,
+            platform.name,
+            platform.square,
+            platform.rider,
+            platform.products,
+            servicesChecked,
+            comfortChecked,
+            idPlatform
+        );
+        window.location.reload();
+    };
 
     return (
-        <Box>
+        <Box sx={{ textAlign: 'left' }}>
             <Typography>Название</Typography>
             <TextField
                 id="standard-multiline-flexible"
@@ -90,31 +160,34 @@ export const ContentPagePlatform: React.FC = () => {
                 variant="standard"
                 sx={{ width: '100%', mb: '30px' }}
             />
-            
+
             {/* COMFORT SERVICES */}
-            <Box sx={{ 
-                display: 'flex', 
-                flexGrow: 1, 
-                justifyContent: 'space-between',
-                maxHeight: '420px',
-                overflow: 'scroll',
-                overflowX: 'hidden',
-                maxWidth: '100%',
-                padding: '20px',
-                border: '2px solid #e2e2e2',
-                borderRadius: '4px',
-                backgroundColor: '#ebeff2'
-            }}>
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexGrow: 1,
+                    justifyContent: 'space-between',
+                    maxHeight: '420px',
+                    overflow: 'scroll',
+                    overflowX: 'hidden',
+                    maxWidth: '100%',
+                    padding: '20px',
+                    border: '2px solid #e2e2e2',
+                    borderRadius: '4px',
+                    backgroundColor: '#ebeff2',
+                    marginBottom: '30px',
+                }}
+            >
                 <Grid item xs={12} md={6}>
                     <TitleH2>Удобства</TitleH2>
                     <List sx={{ p: 0 }}>
-                        {dbComfortPlace.map(({ name, id }) => (
+                        {comfortChecked.map(({ value, id, checked }) => (
                             <ListItem sx={{ p: 0 }} key={id}>
                                 <FormControlLabel
-                                    value={name}
+                                    value={value}
                                     control={<Checkbox />}
-                                    label={name}
-                                    checked={comfortChecked[id]}
+                                    label={value}
+                                    checked={checked}
                                     onChange={() => handleChangeComfort(id)}
                                 />
                             </ListItem>
@@ -124,13 +197,13 @@ export const ContentPagePlatform: React.FC = () => {
                 <Grid item xs={12} md={6}>
                     <TitleH2>Сервис</TitleH2>
                     <List sx={{ p: 0 }}>
-                        {dbServicesPlace.map(({ name, id }) => (
+                        {servicesChecked.map(({ value, id, checked }) => (
                             <ListItem key={id} sx={{ p: 0 }}>
                                 <FormControlLabel
-                                    value={name}
+                                    value={value}
                                     control={<Checkbox />}
-                                    label={name}
-                                    checked={servicesChecked[id]}
+                                    label={value}
+                                    checked={checked}
                                     onChange={() => handleChangeServices(id)}
                                 />
                             </ListItem>
@@ -140,35 +213,267 @@ export const ContentPagePlatform: React.FC = () => {
             </Box>
 
             {/* PRICES */}
-            <Box>
-                <TitleH2>Услуги</TitleH2>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                // value={email}
-                // onChange={(event) => setEmail([event.target.value])}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-                InputProps={{
-                    endAdornment: (
-                        <InputAdornment
-                            position="end"
-                            // onClick={() => {
-                            //     setValue({
-                            //         ...value,
-                            //         email: value.email.concat([email]),
-                            //     });
-                            //     setEmail([]);
-                            // }}
-                        >
-                            <Icon fontSize="small" sx={{ cursor: 'pointer' }}>
-                                add_circle
-                            </Icon>
-                        </InputAdornment>
-                    ),
-                }}/>
-            </Box>
+            <TitleH2>Услуги</TitleH2>
+            <FlexDiv
+                sx={{
+                    padding: '20px',
+                    border: '2px solid #e2e2e2',
+                    borderRadius: '4px',
+                    backgroundColor: '#ebeff2',
+                    marginBottom: '30px',
+                    textAlign: 'left',
+                }}
+            >
+                <Box sx={{ width: '80%' }}>
+                    <FlexDiv>
+                        <Box sx={{ width: '50%', mb: '30px' }}>
+                            <Typography>Наименование</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={product.name}
+                                onChange={handleChangeProducts('name')}
+                                variant="standard"
+                            />
+                        </Box>
 
+                        <Box sx={{ width: '50%', mb: '30px' }}>
+                            <Typography>Цена</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={product.price}
+                                onChange={handleChangeProducts('price')}
+                                variant="standard"
+                            />
+                        </Box>
+                    </FlexDiv>
+
+                    <Typography>Время работы</Typography>
+                    <FlexDiv>
+                        <Typography>Понедельник</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.mon}
+                            onChange={handleChangeProducts('mon')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                    <FlexDiv>
+                        <Typography>Вторник</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.tue}
+                            onChange={handleChangeProducts('tue')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                    <FlexDiv>
+                        <Typography>Среда</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.wed}
+                            onChange={handleChangeProducts('wed')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                    <FlexDiv>
+                        <Typography>Четверг</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.thu}
+                            onChange={handleChangeProducts('thu')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                    <FlexDiv>
+                        <Typography>Пятница</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.fri}
+                            onChange={handleChangeProducts('fri')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                    <FlexDiv>
+                        <Typography>Суббота</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.sat}
+                            onChange={handleChangeProducts('sat')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                    <FlexDiv>
+                        <Typography>Воскресенье</Typography>
+                        <TextField
+                            id="standard-multiline-flexible"
+                            multiline
+                            value={product.sun}
+                            onChange={handleChangeProducts('sun')}
+                            variant="standard"
+                            sx={{ width: '70%' }}
+                        />
+                    </FlexDiv>
+                </Box>
+                <Icon
+                    fontSize="large"
+                    sx={{ cursor: 'pointer' }}
+                    onClick={() => {
+                        setPlatform({
+                            ...platform,
+                            products: [...platform.products, product],
+                        });
+                        setProduct({
+                            id: Date.now(),
+                            name: '',
+                            price: '',
+                            mon: '00-23',
+                            tue: '00-23',
+                            wed: '00-23',
+                            thu: '00-23',
+                            fri: '00-23',
+                            sat: '00-23',
+                            sun: '00-23',
+                        });
+                    }}
+                >
+                    add_circle
+                </Icon>
+            </FlexDiv>
+            {platform.products.map((item: StateProducts) => {
+                return (<FlexDiv
+                    sx={{
+                        padding: '20px',
+                        border: '2px solid #e2e2e2',
+                        borderRadius: '4px',
+                        backgroundColor: '#ebeff2',
+                        marginBottom: '30px',
+                    }}
+                    key={item.id}
+                >
+                    <Box sx={{ width: '80%' }}>
+                        <FlexDiv>
+                            <Box sx={{ width: '50%', mb: '30px' }}>
+                                <Typography>Наименование</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.name}
+                                    onChange={handleChangeProducts('name')}
+                                    variant="standard"
+                                />
+                            </Box>
+
+                            <Box sx={{ width: '50%', mb: '30px' }}>
+                                <Typography>Цена</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.price}
+                                    onChange={handleChangeProducts('price')}
+                                    variant="standard"
+                                />
+                            </Box>
+                        </FlexDiv>
+
+                        <Typography>Время работы</Typography>
+                        <FlexDiv>
+                            <Typography>Понедельник</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.mon}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                        <FlexDiv>
+                            <Typography>Вторник</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.tue}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                        <FlexDiv>
+                            <Typography>Среда</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.wed}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                        <FlexDiv>
+                            <Typography>Четверг</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.thu}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                        <FlexDiv>
+                            <Typography>Пятница</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.fri}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                        <FlexDiv>
+                            <Typography>Суббота</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.sat}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                        <FlexDiv>
+                            <Typography>Воскресенье</Typography>
+                            <TextField
+                                id="standard-multiline-flexible"
+                                multiline
+                                value={item.sun}
+                                variant="standard"
+                                sx={{ width: '70%' }}
+                            />
+                        </FlexDiv>
+                    </Box>
+                    <RemoveCircleIcon
+                        sx={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            platform.products = platform.products.filter(
+                                (n: any) => n !== item
+                            );
+                            setPlatform({ ...platform });
+                        }}
+                    />
+                </FlexDiv>)
+            })}
+
+            <CustomButton onClick={() => sendPlatform()}>Добавить</CustomButton>
         </Box>
     );
 };

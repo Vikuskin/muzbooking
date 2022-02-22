@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const placesSchema = new Schema({
     userId: {
         ref: 'users',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
     },
     email: {
         type: String,
@@ -37,7 +37,7 @@ const placesSchema = new Schema({
     description: {
         type: String,
         required: true
-    }
+    },
 })
 
 module.exports = mongoose.model('places', placesSchema)

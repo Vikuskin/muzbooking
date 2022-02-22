@@ -111,21 +111,93 @@ export const fetchAccountContentUpdate = (
     return async (dispatch: Dispatch<AccountAction>) => {
         try {
             dispatch({ type: AccountActionTypes.FETCH_USERS });
-            const response = await axios.put('http://localhost:5000/account', {
-                city: city,
-                nameCompany: nameCompany,
-                phone: phone,
-                sphera: sphera,
-                address: address,
-                subway: subway,
-                description: description,
-            }, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            const response = await axios.put(
+                'http://localhost:5000/account',
+                {
+                    city: city,
+                    nameCompany: nameCompany,
+                    phone: phone,
+                    sphera: sphera,
+                    address: address,
+                    subway: subway,
+                    description: description,
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
             dispatch({
                 type: AccountActionTypes.FETCH_USERS_SUCCESS,
                 payload: response.data,
             });
+        } catch (e) {
+            dispatch({
+                type: AccountActionTypes.FETCH_USERS_ERROR,
+                payload: e.response.data.message,
+            });
+            return e.response.data.message;
+        }
+    };
+};
+
+export const fetchAccountPlatform = (
+    token: string,
+    name: string,
+    square: number,
+    rider: string,
+    products: any[],
+    services: any[],
+    comfort: any[],
+    idPlatform: string
+) => {
+    return async (dispatch: Dispatch<AccountAction>) => {
+        try {
+            dispatch({ type: AccountActionTypes.FETCH_USERS });
+            const response = await axios.post(
+                'http://localhost:5000/account',
+                {
+                    name,
+                    square,
+                    rider,
+                    products,
+                    services,
+                    comfort,
+                    idPlatform
+                },
+                {
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            dispatch({
+                type: AccountActionTypes.FETCH_USERS_SUCCESS,
+                payload: response.data,
+            });
+        } catch (e) {
+            dispatch({
+                type: AccountActionTypes.FETCH_USERS_ERROR,
+                payload: e.response.data.message,
+            });
+            return e.response.data.message;
+        }
+    };
+};
+
+export const fetchAccountPlatformDelete = (token: string, id: string) => {
+    return async (dispatch: Dispatch<AccountAction>) => {
+        try {
+            dispatch({ type: AccountActionTypes.FETCH_USERS });
+            const response = await axios.delete(
+                'http://localhost:5000/account',
+                {
+                    data: { token: token, id: id },
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            dispatch({
+                type: AccountActionTypes.FETCH_USERS_SUCCESS,
+                payload: response.data,
+            });
+            return response.data 
         } catch (e) {
             dispatch({
                 type: AccountActionTypes.FETCH_USERS_ERROR,
