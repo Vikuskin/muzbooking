@@ -1,10 +1,10 @@
-export interface ServicesPlace {
+export interface CheckedPlace {
     value: string,
     id: number,
     checked: boolean
 }
 
-export const dbServicesPlace: ServicesPlace[] = [
+export const dbServicesPlace: CheckedPlace[] = [
     {
         value: 'Чай/кофе',
         id: 0,
@@ -32,13 +32,7 @@ export const dbServicesPlace: ServicesPlace[] = [
     },
 ];
 
-export interface ComfortPlace {
-    value: string,
-    id: number,
-    checked: boolean
-}
-
-export const dbComfortPlace: ComfortPlace[] = [
+export const dbComfortPlace: CheckedPlace[] = [
     {
         value: 'Зона для курения',
         id: 0,

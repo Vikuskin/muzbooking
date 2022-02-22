@@ -16,15 +16,8 @@ import {
 } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { CustomButton } from 'style/otherStyles';
+import { ContentPageButton } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
-
-const Button = styled(CustomButton)({
-    fontWeight: 'normal',
-    textTransform: 'lowercase',
-    padding: '10px 20px',
-    fontSize: '20px',
-});
 
 interface State {
     sphera: string;
@@ -216,7 +209,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
                 variant="standard"
                 sx={{ width: '100%', mb: '30px' }}
             />
-            <Button onClick={() => sendUpdate()}>Сохранить</Button>
+            <ContentPageButton onClick={() => sendUpdate()}>Сохранить</ContentPageButton>
         </Box>
     );
 };

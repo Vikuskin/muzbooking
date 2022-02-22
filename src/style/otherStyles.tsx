@@ -1,5 +1,4 @@
-import InputBase from '@mui/material/InputBase';
-import { styled } from '@mui/material/styles';
+import { ListItem, InputBase, styled } from '@mui/material';
 
 export const InputTitle = styled(InputBase)({
     '& .MuiInputBase-input': {
@@ -91,8 +90,8 @@ export const CustomButton = styled('button')({
 export const FlexDiv = styled('div')({
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center'
-})
+    alignItems: 'center',
+});
 
 export const TitleH2 = styled('h2')({
     fontSize: '22px',
@@ -114,4 +113,19 @@ export const AccountTitleH1 = styled(TitleH1)({
     backgroundColor: '#f89623',
     color: 'white',
     padding: '20px',
-})
+});
+
+export const ContentPageListItem = styled(ListItem)({
+    padding: '20px',
+    border: '2px solid #e2e2e2',
+    borderRadius: '4px',
+    backgroundColor: '#ebeff2',
+    marginBottom: '30px',
+});
+
+export const ContentPageButton = styled(CustomButton)({
+    fontWeight: 'normal',
+    textTransform: 'lowercase',
+    padding: '10px 20px',
+    fontSize: '20px',
+});

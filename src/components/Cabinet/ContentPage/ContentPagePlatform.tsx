@@ -21,16 +21,16 @@ import {
     Icon,
     styled,
 } from '@mui/material';
-
-import { CustomButton, FlexDiv, TitleH2 } from 'style/otherStyles';
+import { ContentPageButton, FlexDiv, TitleH2, ContentPageListItem } from 'style/otherStyles';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useActions } from 'hooks/useActions';
+import {CheckedPlace} from 'components/databases/dbCheckboxs'
 
 interface StatePlatform {
-    name: string;
+    namePlatform: string;
     square: number;
     rider: string;
-    products: any[];
+    products: Array<StateProducts>;
 }
 
 interface StateProducts {
@@ -46,18 +46,18 @@ interface StateProducts {
     sun: string;
 }
 
-interface Props {
-    name: string;
+export interface PlatformProps {
+    namePlatform: string;
     square: number;
     rider: string;
-    products: any[];
-    services: any[];
-    comfort: any[];
+    products: Array<StateProducts>;
+    services: Array<CheckedPlace>;
+    comfort: Array<CheckedPlace>;
     idPlatform: string
 }
 
-export const ContentPagePlatform: React.FC<Props> = ({
-    name,
+export const ContentPagePlatform: React.FC<PlatformProps> = ({
+    namePlatform,
     square,
     rider,
     products,
@@ -66,7 +66,7 @@ export const ContentPagePlatform: React.FC<Props> = ({
     idPlatform
 }) => {
     const [platform, setPlatform] = React.useState<StatePlatform>({
-        name,
+        namePlatform,
         square,
         rider,
         products,
@@ -77,8 +77,8 @@ export const ContentPagePlatform: React.FC<Props> = ({
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setPlatform({ ...platform, [prop]: event.target.value });
         };
-    const [servicesChecked, setServicesChecked] = useState(services);
-    const [comfortChecked, setComfortChecked] = useState(comfort);
+    const [servicesChecked, setServicesChecked] = React.useState(services);
+    const [comfortChecked, setComfortChecked] = React.useState(comfort);
     const handleChangeServices = (position: any) => {
         const updatedCheckedState = servicesChecked.map((item, index) =>
             index === position
@@ -115,12 +115,12 @@ export const ContentPagePlatform: React.FC<Props> = ({
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setProduct({ ...product, [prop]: event.target.value });
         };
-    const { fetchAccountPlatform } = useActions();
+    const { fetchAccountPlatform, fetchAccountContent } = useActions();
 
     const sendPlatform = async () => {
         await fetchAccountPlatform(
             localStorage.token,
-            platform.name,
+            platform.namePlatform,
             platform.square,
             platform.rider,
             platform.products,
@@ -137,8 +137,8 @@ export const ContentPagePlatform: React.FC<Props> = ({
             <TextField
                 id="standard-multiline-flexible"
                 multiline
-                value={platform.name}
-                onChange={handleChange('name')}
+                value={platform.namePlatform}
+                onChange={handleChange('namePlatform')}
                 variant="standard"
                 sx={{ width: '100%', mb: '30px' }}
             />
@@ -214,18 +214,9 @@ export const ContentPagePlatform: React.FC<Props> = ({
 
             {/* PRICES */}
             <TitleH2>Услуги</TitleH2>
-            <FlexDiv
-                sx={{
-                    padding: '20px',
-                    border: '2px solid #e2e2e2',
-                    borderRadius: '4px',
-                    backgroundColor: '#ebeff2',
-                    marginBottom: '30px',
-                    textAlign: 'left',
-                }}
-            >
+            <ContentPageListItem sx={{ justifyContent: 'space-between' }}>
                 <Box sx={{ width: '80%' }}>
-                    <FlexDiv>
+                    <FlexDiv >
                         <Box sx={{ width: '50%', mb: '30px' }}>
                             <Typography>Наименование</Typography>
                             <TextField
@@ -352,16 +343,10 @@ export const ContentPagePlatform: React.FC<Props> = ({
                 >
                     add_circle
                 </Icon>
-            </FlexDiv>
+            </ContentPageListItem>
             {platform.products.map((item: StateProducts) => {
-                return (<FlexDiv
-                    sx={{
-                        padding: '20px',
-                        border: '2px solid #e2e2e2',
-                        borderRadius: '4px',
-                        backgroundColor: '#ebeff2',
-                        marginBottom: '30px',
-                    }}
+                return (
+                <ContentPageListItem sx={{ justifyContent: 'space-between' }}
                     key={item.id}
                 >
                     <Box sx={{ width: '80%' }}>
@@ -462,6 +447,7 @@ export const ContentPagePlatform: React.FC<Props> = ({
                         </FlexDiv>
                     </Box>
                     <RemoveCircleIcon
+                        fontSize="large"
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
                             platform.products = platform.products.filter(
@@ -470,10 +456,13 @@ export const ContentPagePlatform: React.FC<Props> = ({
                             setPlatform({ ...platform });
                         }}
                     />
-                </FlexDiv>)
+                </ContentPageListItem>)
             })}
 
-            <CustomButton onClick={() => sendPlatform()}>Добавить</CustomButton>
+            <ContentPageButton onClick={() => sendPlatform()}>Сохранить</ContentPageButton>
+            <ContentPageButton onClick={() => fetchAccountContent(localStorage.token)}>Назад</ContentPageButton>
+
+
         </Box>
     );
 };

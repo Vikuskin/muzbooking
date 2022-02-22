@@ -5,28 +5,34 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import {
     Box,
     Container,
-    ListItem,
     ListItemText,
     ListItemIcon,
+    Modal,
+    styled,
 } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { FlexDiv, AccountTitleH1 } from 'style/otherStyles';
-import { ContentPagePlatform } from 'components/Cabinet/ContentPage/ContentPagePlatform';
-import { ContentPageMainInfo } from 'components/Cabinet/ContentPage/ContentPageMainInfo';
-import { useTypedSelector } from 'hooks/useTypedSelector';
-import { useActions } from 'hooks/useActions';
-import { useEffect } from 'react';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import EditIcon from '@mui/icons-material/Edit';
-import Modal from '@mui/material/Modal';
+import {
+    FlexDiv,
+    AccountTitleH1,
+    ContentPageListItem,
+} from 'style/otherStyles';
+import {
+    ContentPagePlatform,
+    PlatformProps,
+} from 'components/Cabinet/ContentPage/ContentPagePlatform';
+import { ContentPageMainInfo } from 'components/Cabinet/ContentPage/ContentPageMainInfo';
 import {
     dbServicesPlace,
     dbComfortPlace,
 } from 'components/databases/dbCheckboxs';
+import { useTypedSelector } from 'hooks/useTypedSelector';
+import { useActions } from 'hooks/useActions';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -41,6 +47,13 @@ const style = {
     p: 4,
     overflow: 'scroll',
 };
+
+const OrangeCircleIcon = styled(AddCircleIcon)({
+    color: '#f89623',
+    fontSize: '60px',
+    textAlign: 'center',
+    width: '100%',
+});
 
 export const ContentPage = () => {
     const [showPlatform, setShowPlatform] = React.useState<boolean>(false);
@@ -58,18 +71,16 @@ export const ContentPage = () => {
             }, 1000);
         }
     }, []);
-    const [modal, setModal] = React.useState({
+    const [modal, setModal] = React.useState<PlatformProps>({
         namePlatform: '',
         square: 0,
         rider: '',
         products: [],
         services: [],
         comfort: [],
-        _id: ''
+        idPlatform: '',
     });
-    const [open, setOpen] = React.useState(false);
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
+    const [open, setOpen] = React.useState<boolean>(false);
 
     return (
         <Container maxWidth="xl" sx={{ p: '30px', textAlign: 'left' }}>
@@ -103,16 +114,7 @@ export const ContentPage = () => {
                         ) : (
                             data.platform.map((item: any, i: number) => (
                                 // eslint-disable-next-line react/no-array-index-key
-                                <ListItem
-                                    disablePadding
-                                    key={i}
-                                    sx={{
-                                        padding: '20px',
-                                        border: '2px solid #e2e2e2',
-                                        borderRadius: '4px',
-                                        backgroundColor: '#ebeff2',
-                                    }}
-                                >
+                                <ContentPageListItem key={i}>
                                     <ListItemText>
                                         {item.namePlatform}
                                     </ListItemText>
@@ -123,7 +125,7 @@ export const ContentPage = () => {
                                                 cursor: 'pointer',
                                             }}
                                             onClick={() => {
-                                                handleOpen();
+                                                setOpen(true);
                                                 setModal(item);
                                             }}
                                         />
@@ -145,7 +147,7 @@ export const ContentPage = () => {
                                             }}
                                         />
                                     </ListItemIcon>
-                                </ListItem>
+                                </ContentPageListItem>
                             ))
                         )
                     ) : (
@@ -153,7 +155,7 @@ export const ContentPage = () => {
                     )}
                     {showPlatform ? (
                         <ContentPagePlatform
-                            name=""
+                            namePlatform=""
                             square={0}
                             rider=""
                             products={[]}
@@ -162,13 +164,7 @@ export const ContentPage = () => {
                             idPlatform=""
                         />
                     ) : (
-                        <AddCircleIcon
-                            sx={{
-                                color: '#f89623',
-                                fontSize: '60px',
-                                textAlign: 'center',
-                                width: '100%',
-                            }}
+                        <OrangeCircleIcon
                             onClick={() => setShowPlatform(true)}
                         />
                     )}
@@ -177,20 +173,20 @@ export const ContentPage = () => {
             {modal ? (
                 <Modal
                     open={open}
-                    onClose={handleClose}
+                    onClose={() => setOpen(false)}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                     sx={{ overflow: 'scroll' }}
                 >
                     <Box sx={style}>
                         <ContentPagePlatform
-                            name={modal.namePlatform}
+                            namePlatform={modal.namePlatform}
                             square={modal.square}
                             rider={modal.rider}
                             products={modal.products}
                             services={modal.services}
                             comfort={modal.comfort}
-                            idPlatform={modal._id}
+                            idPlatform={modal.idPlatform}
                         />
                     </Box>
                 </Modal>
