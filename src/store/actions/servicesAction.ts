@@ -25,5 +25,5 @@ export const chooseServices = (id: string) => {
             dispatch({ type: ServicesActionTypes.DANCE });
         };
     }
-    return null
+    return null;
 };

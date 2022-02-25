@@ -27,6 +27,9 @@ const platformsSchema = new Schema({
     },
     comfort: {
         type: Array,
+    },
+    images: {
+        type: Array
     }
 });
 

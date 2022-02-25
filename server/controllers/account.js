@@ -45,6 +45,7 @@ module.exports.accountContentUpdate = async (req, res) => {
 module.exports.accountPlatform = async (req, res) => {
     try {
         if (req.body.idPlatform) {
+            console.log(req.body.idPlatform)
             const updatePlatform = await Platform.updateOne({
                 _id: req.body.idPlatform
             }, {
@@ -55,6 +56,7 @@ module.exports.accountPlatform = async (req, res) => {
                     products: req.body.products,
                     services: req.body.services,
                     comfort: req.body.comfort,
+                    images: req.files[0] ? req.files : ''
                 }
             })
             if (updatePlatform.modifiedCount) {
@@ -65,6 +67,12 @@ module.exports.accountPlatform = async (req, res) => {
                res.status(400).json(updatePlatform) 
             }
         } else {
+            console.log(req.body.services)
+            // const imagesPath = [];
+            // req.files.forEach(file => {
+            //     imagesPath.push(file.path)
+            // })
+            // console.log(imagesPath)
             const place = await Place.findOne({
                 email: req.user.email
             })
@@ -72,13 +80,13 @@ module.exports.accountPlatform = async (req, res) => {
                 namePlatform: req.body.name,
                 square: req.body.square,
                 rider: req.body.rider,
-                products: req.body.products,
-                services: req.body.services,
-                comfort: req.body.comfort,
-                placeId: place._id
+                products: JSON.parse(req.body.products),
+                services: JSON.parse(req.body.services),
+                comfort: JSON.parse(req.body.comfort),
+                placeId: place._id,
+                images: req.files[0] ? req.files : ''
             })
             await newPlatform.save()
-            console.log('create new')
             res.status(200).json(newPlatform) 
         }
     } catch (e) {

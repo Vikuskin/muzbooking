@@ -1,5 +1,8 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 ///
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import {
     Box,
     MenuItem,
@@ -36,9 +39,10 @@ export const SearchPage: React.FC = () => {
     const services: string = useTypedSelector(
         (state) => state.services.services
     );
-
-    const { chooseServices } = useActions();
-
+    console.log(services);
+    const { data } = useTypedSelector((state) => state.data);
+    const { chooseServices, fetchPlaces } = useActions();
+    console.log(data)
     const top100Films = [
         { label: 'The Shawshank Redemption', year: 1994 },
         { label: 'The Godfather', year: 1972 },
@@ -55,7 +59,9 @@ export const SearchPage: React.FC = () => {
         `${process.env.PUBLIC_URL}/image/dancing.png`,
         `${process.env.PUBLIC_URL}/image/dancing.png`,
     ];
-
+    useEffect(() => {
+        fetchPlaces(services);
+    }, []);
     return (
         <>
             <Header />
@@ -168,20 +174,23 @@ export const SearchPage: React.FC = () => {
                                 pr: { xs: 0, sm: 0, md: '20px' },
                             }}
                         >
-                            <CardPlace
-                                id={101}
-                                title="some title"
-                                address="saint-P"
-                                subway="Nevskiy"
-                                timetable="all time"
-                                price={100}
-                                img={imgExmp}
-                            />
+                            {data.map((item:any) => (
+                                <CardPlace
+                                    id={item._id}
+                                    title={item.nameCompany}
+                                    address={item.address}
+                                    subway={item.subway}
+                                    timetable="all time"
+                                    price={100}
+                                    img={imgExmp}
+                                />
+                            ))}
+                            
                         </Box>
                     </Box>
 
                     {/* MAP */}
-                    <Map>
+                    {/* <Map>
                         <iframe
                             title="Yandex map"
                             src="https://yandex.ru/map-widget/v1/?um=constructor%3A4cf72c2061ddf2ea4555a3b49919308b440e44d331185ac4c861c1f173393260&amp;source=constructor"
@@ -189,7 +198,7 @@ export const SearchPage: React.FC = () => {
                             height="100%"
                             style={{ border: 'none', borderRadius: '15px' }}
                         />
-                    </Map>
+                    </Map> */}
                 </FlexDiv>
             </Box>
         </>

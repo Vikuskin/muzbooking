@@ -102,7 +102,7 @@ export const Registration: React.FC = () => {
         (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
             setValue({ ...value, [prop]: event.target.value });
         };
-        const {data, loading, error} = useTypedSelector((state) => state.account);
+        const {data, loading, error} = useTypedSelector((state) => state.data);
     const {fetchRegistration} = useActions()
     
 

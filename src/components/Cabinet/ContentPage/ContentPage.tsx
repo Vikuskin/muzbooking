@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable import/namespace */
 /* eslint-disable react/jsx-boolean-value */
 /* eslint-disable react/no-array-index-key */
 /* eslint-disable no-underscore-dangle */
@@ -5,7 +7,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import {
     Box,
     Container,
@@ -21,6 +23,8 @@ import {
     FlexDiv,
     AccountTitleH1,
     ContentPageListItem,
+    CustomButton,
+    ContentPageButton,
 } from 'style/otherStyles';
 import {
     ContentPagePlatform,
@@ -33,6 +37,7 @@ import {
 } from 'components/databases/dbCheckboxs';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
+import axios from 'axios';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -57,8 +62,8 @@ const OrangeCircleIcon = styled(AddCircleIcon)({
 
 export const ContentPage = () => {
     const [showPlatform, setShowPlatform] = React.useState<boolean>(false);
-    const { data, loading } = useTypedSelector((state) => state.account);
-
+    const { data, loading } = useTypedSelector((state) => state.data);
+    console.log(data);
     const { fetchAccountContent, fetchAccountPlatformDelete } = useActions();
 
     useEffect(() => {
@@ -73,12 +78,13 @@ export const ContentPage = () => {
     }, []);
     const [modal, setModal] = React.useState<PlatformProps>({
         namePlatform: '',
-        square: 0,
+        square: '0',
         rider: '',
         products: [],
         services: [],
         comfort: [],
-        idPlatform: '',
+        _id: '',
+        images: []
     });
     const [open, setOpen] = React.useState<boolean>(false);
 
@@ -114,8 +120,17 @@ export const ContentPage = () => {
                         ) : (
                             data.platform.map((item: any, i: number) => (
                                 // eslint-disable-next-line react/no-array-index-key
-                                <ContentPageListItem key={i}>
-                                    <ListItemText>
+                                <ContentPageListItem
+                                    key={item._id}
+                                    sx={{
+                                        backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(http://localhost:5000/${item.images[0].path})`,
+                                        minHeight: '200px',
+                                        backgroundPosition: 'center',
+                                        backgroundSize: 'cover',
+                                        alignItems: 'flex-end'
+                                    }}
+                                >
+                                    <ListItemText sx={{ color: 'white', textTransform: 'uppercase' }}>
                                         {item.namePlatform}
                                     </ListItemText>
                                     <ListItemIcon>
@@ -123,6 +138,7 @@ export const ContentPage = () => {
                                             sx={{
                                                 mr: '10px',
                                                 cursor: 'pointer',
+                                                color: 'white'
                                             }}
                                             onClick={() => {
                                                 setOpen(true);
@@ -131,13 +147,12 @@ export const ContentPage = () => {
                                         />
 
                                         <RemoveCircleIcon
-                                            sx={{ cursor: 'pointer' }}
-                                            onClick={async () => {
-                                                const res =
-                                                    await fetchAccountPlatformDelete(
-                                                        localStorage.token,
-                                                        item._id
-                                                    );
+                                            sx={{ cursor: 'pointer', color: 'white' }}
+                                            onClick={() => {
+                                                fetchAccountPlatformDelete(
+                                                    localStorage.token,
+                                                    item._id
+                                                );
                                                 alert(
                                                     'Площадка успешно удалена'
                                                 );
@@ -154,15 +169,23 @@ export const ContentPage = () => {
                         <></>
                     )}
                     {showPlatform ? (
-                        <ContentPagePlatform
-                            namePlatform=""
-                            square={0}
-                            rider=""
-                            products={[]}
-                            services={dbServicesPlace}
-                            comfort={dbComfortPlace}
-                            idPlatform=""
-                        />
+                        <>
+                            <ContentPagePlatform
+                                namePlatform=""
+                                square='0'
+                                rider=""
+                                products={[]}
+                                services={dbServicesPlace}
+                                comfort={dbComfortPlace}
+                                _id=""
+                                images={[]}
+                            />
+                            <ContentPageButton
+                                onClick={() => setShowPlatform(false)}
+                            >
+                                Назад
+                            </ContentPageButton>
+                        </>
                     ) : (
                         <OrangeCircleIcon
                             onClick={() => setShowPlatform(true)}
@@ -186,7 +209,8 @@ export const ContentPage = () => {
                             products={modal.products}
                             services={modal.services}
                             comfort={modal.comfort}
-                            idPlatform={modal.idPlatform}
+                            _id={modal._id}
+                            images={modal.images}
                         />
                     </Box>
                 </Modal>

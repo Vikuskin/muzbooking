@@ -1,3 +1,5 @@
+/* eslint-disable react/button-has-type */
+/* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable no-unneeded-ternary */
 /* eslint-disable arrow-body-style */
 /* eslint-disable no-undef */
@@ -8,7 +10,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
     FormControlLabel,
     Checkbox,
@@ -21,14 +23,20 @@ import {
     Icon,
     styled,
 } from '@mui/material';
-import { ContentPageButton, FlexDiv, TitleH2, ContentPageListItem } from 'style/otherStyles';
+import {
+    ContentPageButton,
+    FlexDiv,
+    TitleH2,
+    ContentPageListItem,
+} from 'style/otherStyles';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useActions } from 'hooks/useActions';
-import {CheckedPlace} from 'components/databases/dbCheckboxs'
+import { CheckedPlace } from 'components/databases/dbCheckboxs';
+import { useDropzone } from 'react-dropzone';
 
 interface StatePlatform {
     namePlatform: string;
-    square: number;
+    square: string;
     rider: string;
     products: Array<StateProducts>;
 }
@@ -48,13 +56,37 @@ interface StateProducts {
 
 export interface PlatformProps {
     namePlatform: string;
-    square: number;
+    square: string;
     rider: string;
     products: Array<StateProducts>;
     services: Array<CheckedPlace>;
     comfort: Array<CheckedPlace>;
-    idPlatform: string
+    _id: string;
+    images: Array<string>;
 }
+
+const baseStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    padding: '20px',
+    borderWidth: 2,
+    borderRadius: 2,
+    borderColor: '#eeeeee',
+    borderStyle: 'dashed',
+    backgroundColor: '#fafafa',
+    color: '#bdbdbd',
+    transition: 'border .3s ease-in-out',
+    marginBottom: '30px',
+};
+const activeStyle = {
+    borderColor: '#2196f3',
+};
+const acceptStyle = {
+    borderColor: '#00e676',
+};
+const rejectStyle = {
+    borderColor: '#ff1744',
+};
 
 export const ContentPagePlatform: React.FC<PlatformProps> = ({
     namePlatform,
@@ -63,7 +95,8 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     products,
     services,
     comfort,
-    idPlatform
+    _id,
+    images,
 }) => {
     const [platform, setPlatform] = React.useState<StatePlatform>({
         namePlatform,
@@ -71,7 +104,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
         rider,
         products,
     });
-
+    console.log(_id)
     const handleChange =
         (prop: keyof StatePlatform) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,8 +150,76 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
         };
     const { fetchAccountPlatform, fetchAccountContent } = useActions();
 
+    // images
+    const [files, setFiles] = useState(images);
+    console.log(images);
+    const onDrop = useCallback((acceptedFiles) => {
+        setFiles(
+            acceptedFiles.map((file: Blob | MediaSource) =>
+                Object.assign(file, {
+                    preview: URL.createObjectURL(file),
+                })
+            )
+        );
+    }, []);
+
+    const {
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isDragAccept,
+        isDragReject,
+    } = useDropzone({
+        onDrop,
+        accept: 'image/jpeg, image/png, image/jpg',
+        maxFiles: 3,
+    });
+
+    const style = useMemo(
+        () => ({
+            ...baseStyle,
+            ...(isDragActive ? activeStyle : {}),
+            ...(isDragAccept ? acceptStyle : {}),
+            ...(isDragReject ? rejectStyle : {}),
+        }),
+        [isDragActive, isDragReject, isDragAccept]
+    );
+
+    const thumbs = files.map((file: any) => (
+        <div key={file.name} style={{ position: 'relative' }}>
+            <img
+                src={file.preview ? file.preview : `http://localhost:5000/${file.path}`}
+                alt={file.name}
+                style={{ minHeight: '300px', marginRight: '10px' }}
+            />
+            <RemoveCircleIcon
+                fontSize="large"
+                sx={{ position: 'absolute', top: '10px', right: '10px' }}
+                onClick={() => {
+                    const fileRemove: any = files.filter(
+                        (n: any) => n !== file
+                    );
+                    setFiles(fileRemove);
+                }}
+            />
+        </div>
+    ));
+
+    // clean up
+    useEffect(
+        () => () => {
+            files.forEach((file: any) => URL.revokeObjectURL(file.preview));
+        },
+        [files]
+    );
+
     const sendPlatform = async () => {
-        await fetchAccountPlatform(
+        const dataImg = new FormData();
+        files.forEach((file) => {
+            dataImg.append('images', file);
+        });
+
+        fetchAccountPlatform(
             localStorage.token,
             platform.namePlatform,
             platform.square,
@@ -126,7 +227,8 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             platform.products,
             servicesChecked,
             comfortChecked,
-            idPlatform
+            _id,
+            dataImg
         );
         window.location.reload();
     };
@@ -160,6 +262,14 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                 variant="standard"
                 sx={{ width: '100%', mb: '30px' }}
             />
+
+            {/* IMAGES */}
+            <Typography>Изображения</Typography>
+            <Box {...getRootProps({ style })}>
+                <input {...getInputProps()} />
+                <Box>Перетащите изображения сюда</Box>
+            </Box>
+            <Box>{thumbs}</Box>
 
             {/* COMFORT SERVICES */}
             <Box
@@ -216,7 +326,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             <TitleH2>Услуги</TitleH2>
             <ContentPageListItem sx={{ justifyContent: 'space-between' }}>
                 <Box sx={{ width: '80%' }}>
-                    <FlexDiv >
+                    <FlexDiv>
                         <Box sx={{ width: '50%', mb: '30px' }}>
                             <Typography>Наименование</Typography>
                             <TextField
@@ -346,123 +456,124 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             </ContentPageListItem>
             {platform.products.map((item: StateProducts) => {
                 return (
-                <ContentPageListItem sx={{ justifyContent: 'space-between' }}
-                    key={item.id}
-                >
-                    <Box sx={{ width: '80%' }}>
-                        <FlexDiv>
-                            <Box sx={{ width: '50%', mb: '30px' }}>
-                                <Typography>Наименование</Typography>
+                    <ContentPageListItem
+                        sx={{ justifyContent: 'space-between' }}
+                        key={item.id}
+                    >
+                        <Box sx={{ width: '80%' }}>
+                            <FlexDiv>
+                                <Box sx={{ width: '50%', mb: '30px' }}>
+                                    <Typography>Наименование</Typography>
+                                    <TextField
+                                        id="standard-multiline-flexible"
+                                        multiline
+                                        value={item.name}
+                                        onChange={handleChangeProducts('name')}
+                                        variant="standard"
+                                    />
+                                </Box>
+
+                                <Box sx={{ width: '50%', mb: '30px' }}>
+                                    <Typography>Цена</Typography>
+                                    <TextField
+                                        id="standard-multiline-flexible"
+                                        multiline
+                                        value={item.price}
+                                        onChange={handleChangeProducts('price')}
+                                        variant="standard"
+                                    />
+                                </Box>
+                            </FlexDiv>
+
+                            <Typography>Время работы</Typography>
+                            <FlexDiv>
+                                <Typography>Понедельник</Typography>
                                 <TextField
                                     id="standard-multiline-flexible"
                                     multiline
-                                    value={item.name}
-                                    onChange={handleChangeProducts('name')}
+                                    value={item.mon}
                                     variant="standard"
+                                    sx={{ width: '70%' }}
                                 />
-                            </Box>
-
-                            <Box sx={{ width: '50%', mb: '30px' }}>
-                                <Typography>Цена</Typography>
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Typography>Вторник</Typography>
                                 <TextField
                                     id="standard-multiline-flexible"
                                     multiline
-                                    value={item.price}
-                                    onChange={handleChangeProducts('price')}
+                                    value={item.tue}
                                     variant="standard"
+                                    sx={{ width: '70%' }}
                                 />
-                            </Box>
-                        </FlexDiv>
-
-                        <Typography>Время работы</Typography>
-                        <FlexDiv>
-                            <Typography>Понедельник</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.mon}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                        <FlexDiv>
-                            <Typography>Вторник</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.tue}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                        <FlexDiv>
-                            <Typography>Среда</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.wed}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                        <FlexDiv>
-                            <Typography>Четверг</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.thu}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                        <FlexDiv>
-                            <Typography>Пятница</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.fri}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                        <FlexDiv>
-                            <Typography>Суббота</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.sat}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                        <FlexDiv>
-                            <Typography>Воскресенье</Typography>
-                            <TextField
-                                id="standard-multiline-flexible"
-                                multiline
-                                value={item.sun}
-                                variant="standard"
-                                sx={{ width: '70%' }}
-                            />
-                        </FlexDiv>
-                    </Box>
-                    <RemoveCircleIcon
-                        fontSize="large"
-                        sx={{ cursor: 'pointer' }}
-                        onClick={() => {
-                            platform.products = platform.products.filter(
-                                (n: any) => n !== item
-                            );
-                            setPlatform({ ...platform });
-                        }}
-                    />
-                </ContentPageListItem>)
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Typography>Среда</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.wed}
+                                    variant="standard"
+                                    sx={{ width: '70%' }}
+                                />
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Typography>Четверг</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.thu}
+                                    variant="standard"
+                                    sx={{ width: '70%' }}
+                                />
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Typography>Пятница</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.fri}
+                                    variant="standard"
+                                    sx={{ width: '70%' }}
+                                />
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Typography>Суббота</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.sat}
+                                    variant="standard"
+                                    sx={{ width: '70%' }}
+                                />
+                            </FlexDiv>
+                            <FlexDiv>
+                                <Typography>Воскресенье</Typography>
+                                <TextField
+                                    id="standard-multiline-flexible"
+                                    multiline
+                                    value={item.sun}
+                                    variant="standard"
+                                    sx={{ width: '70%' }}
+                                />
+                            </FlexDiv>
+                        </Box>
+                        <RemoveCircleIcon
+                            fontSize="large"
+                            sx={{ cursor: 'pointer' }}
+                            onClick={() => {
+                                platform.products = platform.products.filter(
+                                    (n: any) => n !== item
+                                );
+                                setPlatform({ ...platform });
+                            }}
+                        />
+                    </ContentPageListItem>
+                );
             })}
 
-            <ContentPageButton onClick={() => sendPlatform()}>Сохранить</ContentPageButton>
-            <ContentPageButton onClick={() => fetchAccountContent(localStorage.token)}>Назад</ContentPageButton>
-
-
+            <ContentPageButton onClick={() => sendPlatform()}>
+                Сохранить
+            </ContentPageButton>
         </Box>
     );
 };
