@@ -14,6 +14,7 @@ import {
     Typography,
     styled,
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 import { InputSearch, InputTitle, FlexDiv } from 'style/otherStyles';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
@@ -42,13 +43,9 @@ export const SearchPage: React.FC = () => {
     console.log(services);
     const { data } = useTypedSelector((state) => state.data);
     const { chooseServices, fetchPlaces } = useActions();
-    console.log(data)
-    const top100Films = [
-        { label: 'The Shawshank Redemption', year: 1994 },
-        { label: 'The Godfather', year: 1972 },
-        { label: 'The Godfather: Part II', year: 1974 },
-        { label: 'The Dark Knight', year: 2008 },
-    ];
+    console.log(data);
+    const autoComplete: any = [];
+    autoComplete.push(data);
 
     const handleChangeSort = (event: SelectChangeEvent) => {
         setSort(event.target.value as string);
@@ -61,7 +58,7 @@ export const SearchPage: React.FC = () => {
     ];
     useEffect(() => {
         fetchPlaces(services);
-    }, []);
+    }, [services]);
     return (
         <>
             <Header />
@@ -72,9 +69,9 @@ export const SearchPage: React.FC = () => {
                             id="service"
                             key={`service-${services}`}
                             defaultValue={services || 'RECORD'}
-                            onChange={(event: SelectChangeEvent) =>
-                                chooseServices(event.target.value)
-                            }
+                            onChange={(event: SelectChangeEvent) => {
+                                chooseServices(event.target.value);
+                            }}
                             input={<InputTitle />}
                         >
                             <MenuItem value="RECORD">
@@ -127,7 +124,7 @@ export const SearchPage: React.FC = () => {
                                 <Autocomplete
                                     disablePortal
                                     id="searchName"
-                                    options={top100Films}
+                                    options={autoComplete}
                                     sx={{ minWidth: 200, p: 0 }}
                                     renderInput={(params) => (
                                         <TextField
@@ -174,18 +171,20 @@ export const SearchPage: React.FC = () => {
                                 pr: { xs: 0, sm: 0, md: '20px' },
                             }}
                         >
-                            {data.map((item:any) => (
-                                <CardPlace
-                                    id={item._id}
-                                    title={item.nameCompany}
-                                    address={item.address}
-                                    subway={item.subway}
-                                    timetable="all time"
-                                    price={100}
-                                    img={imgExmp}
-                                />
-                            ))}
-                            
+                            {data.map((item: any) => {
+                                const images = []
+                                return (<Link to="/catalog">
+                                    <CardPlace
+                                        key={item._id}
+                                        title={item.nameCompany}
+                                        address={item.address}
+                                        subway={item.subway}
+                                        timetable="all time"
+                                        price={100}
+                                        imgFolder={`images/${item.userId}`}
+                                    />
+                                </Link>)
+})}
                         </Box>
                     </Box>
 

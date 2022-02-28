@@ -1,6 +1,7 @@
 const User = require('../models/Users');
 const Place = require('../models/Places');
-const Platform = require('../models/Platforms')
+const Platform = require('../models/Platforms');
+const fs = require('fs')
 
 module.exports.accountContent = async (req, res) => {
     try {
@@ -45,7 +46,16 @@ module.exports.accountContentUpdate = async (req, res) => {
 module.exports.accountPlatform = async (req, res) => {
     try {
         if (req.body.idPlatform) {
-            console.log(req.body.idPlatform)
+            console.log(req.files)
+            const platform = await Platform.findOne({
+                _id: req.body.idPlatform
+            })
+            if (platform.images[0]) {
+                platform.images.map(file => {
+                    console.log(file.path)
+                    fs.unlinkSync(file.path)
+                })  
+            }
             const updatePlatform = await Platform.updateOne({
                 _id: req.body.idPlatform
             }, {
@@ -53,9 +63,9 @@ module.exports.accountPlatform = async (req, res) => {
                     namePlatform: req.body.name,
                     square: req.body.square,
                     rider: req.body.rider,
-                    products: req.body.products,
-                    services: req.body.services,
-                    comfort: req.body.comfort,
+                    products: JSON.parse(req.body.products),
+                    services: JSON.parse(req.body.services),
+                    comfort: JSON.parse(req.body.comfort),
                     images: req.files[0] ? req.files : ''
                 }
             })
@@ -67,12 +77,7 @@ module.exports.accountPlatform = async (req, res) => {
                res.status(400).json(updatePlatform) 
             }
         } else {
-            console.log(req.body.services)
-            // const imagesPath = [];
-            // req.files.forEach(file => {
-            //     imagesPath.push(file.path)
-            // })
-            // console.log(imagesPath)
+            console.log(req.files)
             const place = await Place.findOne({
                 email: req.user.email
             })
@@ -96,10 +101,20 @@ module.exports.accountPlatform = async (req, res) => {
 
 module.exports.accountPlatformDelete = async (req, res) => {
     try {
-        const platform = await Platform.deleteOne({
+        const platform = await Platform.findOne({
             _id: req.body.id
         })
-        if (platform.deletedCount === 1) {
+        console.log(platform.images)
+        if (platform.images[0]) {
+            platform.images.map(file => {
+                console.log(file.path)
+                fs.unlinkSync(file.path)
+            })  
+        }
+        const platformDelete = await Platform.deleteOne({
+            _id: req.body.id
+        })
+        if (platformDelete.deletedCount === 1) {
             res.status(200).json('Deleted')
         } 
     } catch (e) {

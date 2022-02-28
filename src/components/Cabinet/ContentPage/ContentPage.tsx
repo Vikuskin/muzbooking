@@ -7,7 +7,7 @@
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect } from 'react';
 import {
     Box,
     Container,
@@ -23,7 +23,6 @@ import {
     FlexDiv,
     AccountTitleH1,
     ContentPageListItem,
-    CustomButton,
     ContentPageButton,
 } from 'style/otherStyles';
 import {
@@ -37,7 +36,6 @@ import {
 } from 'components/databases/dbCheckboxs';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
-import axios from 'axios';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -203,6 +201,7 @@ export const ContentPage = () => {
                 >
                     <Box sx={style}>
                         <ContentPagePlatform
+                            key={modal._id}
                             namePlatform={modal.namePlatform}
                             square={modal.square}
                             rider={modal.rider}

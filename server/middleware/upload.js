@@ -1,8 +1,16 @@
 const multer = require('multer')
+const fs = require('fs')
 
 const storage = multer.diskStorage({
     destination(req, file, cb) {
-        cb(null, 'images/')
+        console.log(req.user)
+        const dir = 'images/' + req.user._id + '/'
+        console.log(dir)
+        fs.mkdir(dir, (err) => {
+            console.log(err)
+        })
+            
+        cb(null, dir)
     },
     fileName(req, file, cb) {
         cb(null, new Date().toISOString() + '-' + file.originalName)

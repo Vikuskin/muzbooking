@@ -21,8 +21,8 @@ import {
     Grid,
     ListItem,
     Icon,
-    styled,
 } from '@mui/material';
+import { useDropzone } from 'react-dropzone';
 import {
     ContentPageButton,
     FlexDiv,
@@ -32,7 +32,7 @@ import {
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useActions } from 'hooks/useActions';
 import { CheckedPlace } from 'components/databases/dbCheckboxs';
-import { useDropzone } from 'react-dropzone';
+
 
 interface StatePlatform {
     namePlatform: string;
@@ -104,7 +104,6 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
         rider,
         products,
     });
-    console.log(_id)
     const handleChange =
         (prop: keyof StatePlatform) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -149,10 +148,10 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             setProduct({ ...product, [prop]: event.target.value });
         };
     const { fetchAccountPlatform, fetchAccountContent } = useActions();
-
+    
     // images
     const [files, setFiles] = useState(images);
-    console.log(images);
+    console.log(files)
     const onDrop = useCallback((acceptedFiles) => {
         setFiles(
             acceptedFiles.map((file: Blob | MediaSource) =>
@@ -204,8 +203,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             />
         </div>
     ));
-
-    // clean up
+    
     useEffect(
         () => () => {
             files.forEach((file: any) => URL.revokeObjectURL(file.preview));
@@ -214,11 +212,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     );
 
     const sendPlatform = async () => {
-        const dataImg = new FormData();
-        files.forEach((file) => {
-            dataImg.append('images', file);
-        });
-
+        console.log(files)
         fetchAccountPlatform(
             localStorage.token,
             platform.namePlatform,
@@ -228,9 +222,9 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             servicesChecked,
             comfortChecked,
             _id,
-            dataImg
+            files
         );
-        window.location.reload();
+        // window.location.reload();
     };
 
     return (
@@ -269,7 +263,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                 <input {...getInputProps()} />
                 <Box>Перетащите изображения сюда</Box>
             </Box>
-            <Box>{thumbs}</Box>
+            <Box>{files[0] ? thumbs : <></>}</Box>
 
             {/* COMFORT SERVICES */}
             <Box

@@ -149,9 +149,13 @@ export const fetchAccountPlatform = (
     services: any[],
     comfort: any[],
     idPlatform: string,
-    data: any
+    files: any
 ) => {
     return async (dispatch: Dispatch<DataAction>) => {
+        const data = new FormData();
+        files.forEach((file: any) => {
+            data.append('images', file);
+        });
         data.append('name', name);
         data.append('square', square);
         data.append('rider', rider);
@@ -159,7 +163,7 @@ export const fetchAccountPlatform = (
         data.append('services', JSON.stringify(services));
         data.append('comfort', JSON.stringify(comfort));
         data.append('idPlatform', idPlatform);
-
+        console.log(data)
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
@@ -179,9 +183,9 @@ export const fetchAccountPlatform = (
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
-                payload: e.response.data.message,
+                payload: e.response,
             });
-            return e.response.data.message;
+            return e.response;
         }
     };
 };
