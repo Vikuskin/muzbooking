@@ -82,7 +82,6 @@ export interface State {
     sphera: string;
     address: string;
     subway: string;
-    description: string;
 }
 
 export const Registration: React.FC = () => {
@@ -94,8 +93,7 @@ export const Registration: React.FC = () => {
         city: '',
         sphera: '',
         address: '',
-        subway: '',
-        description: '',
+        subway: ''
     });
     const [phone, setPhone] = React.useState<Array<string>>(['']);
     const handleChange =
@@ -115,8 +113,7 @@ export const Registration: React.FC = () => {
             value.phone,
             value.sphera,
             value.address,
-            value.subway,
-            value.description
+            value.subway
         );
         if (res) {
             alert(res)
@@ -304,16 +301,6 @@ export const Registration: React.FC = () => {
                             multiline
                             value={value.email}
                             onChange={handleChange('email')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
-
-                        <Typography>Описание</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.description}
-                            onChange={handleChange('description')}
                             variant="standard"
                             sx={{ width: '100%', mb: '30px' }}
                         />

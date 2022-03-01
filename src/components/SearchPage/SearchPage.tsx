@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -13,6 +14,7 @@ import {
     Autocomplete,
     Typography,
     styled,
+    Button,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { InputSearch, InputTitle, FlexDiv } from 'style/otherStyles';
@@ -22,7 +24,7 @@ import { CardPlace } from 'components/SearchPage/CardPlace';
 import { Header } from 'components/Header/Header';
 
 const Map = styled('div')({
-    minWidth: '40%',
+    minWidth: '45%',
     borderRadius: '10px',
     height: '800px',
     '@media (max-width: 900px)': {
@@ -41,8 +43,8 @@ export const SearchPage: React.FC = () => {
         (state) => state.services.services
     );
     console.log(services);
-    const { data } = useTypedSelector((state) => state.data);
-    const { chooseServices, fetchPlaces } = useActions();
+    const { data, loading } = useTypedSelector((state) => state.data);
+    const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
     console.log(data);
     const autoComplete: any = [];
     autoComplete.push(data);
@@ -51,11 +53,6 @@ export const SearchPage: React.FC = () => {
         setSort(event.target.value as string);
     };
 
-    const imgExmp = [
-        `${process.env.PUBLIC_URL}/image/dancing.png`,
-        `${process.env.PUBLIC_URL}/image/dancing.png`,
-        `${process.env.PUBLIC_URL}/image/dancing.png`,
-    ];
     useEffect(() => {
         fetchPlaces(services);
     }, [services]);
@@ -104,6 +101,7 @@ export const SearchPage: React.FC = () => {
                                 xs: 'wrap',
                                 sm: 'nowrap',
                             },
+                            width: '100%',
                         }}
                     >
                         {/* FILTERS */}
@@ -111,7 +109,7 @@ export const SearchPage: React.FC = () => {
                             sx={{
                                 flexBasis: {
                                     xs: '100%',
-                                    sm: '35%',
+                                    sm: '40%',
                                 },
                                 textAlign: 'left',
                                 pr: { xs: 0, sm: '20px' },
@@ -171,25 +169,37 @@ export const SearchPage: React.FC = () => {
                                 pr: { xs: 0, sm: 0, md: '20px' },
                             }}
                         >
-                            {data.map((item: any) => {
-                                const images = []
-                                return (<Link to="/catalog">
-                                    <CardPlace
-                                        key={item._id}
-                                        title={item.nameCompany}
-                                        address={item.address}
-                                        subway={item.subway}
-                                        timetable="all time"
-                                        price={100}
-                                        imgFolder={`images/${item.userId}`}
-                                    />
-                                </Link>)
-})}
+                            {loading ? (
+                                <>Загрузка...</>
+                            ) : data[0] ? (
+                                data.map((item: any) => (
+                                    <Link to="/catalog">
+                                        <Button
+                                            sx={{ color:' black', textTransform: 'inherit' }}
+                                            onClick={() =>
+                                                fetchCatalogPlace(item._id)
+                                            }
+                                        >
+                                            <CardPlace
+                                                key={item._id}
+                                                title={item.nameCompany}
+                                                address={item.address}
+                                                subway={item.subway}
+                                                timetable={item.timetable}
+                                                price={item.price}
+                                                images={item.images}
+                                            />
+                                        </Button>
+                                    </Link>
+                                ))
+                            ) : (
+                                <>Нет площадок</>
+                            )}
                         </Box>
                     </Box>
 
                     {/* MAP */}
-                    {/* <Map>
+                    <Map>
                         <iframe
                             title="Yandex map"
                             src="https://yandex.ru/map-widget/v1/?um=constructor%3A4cf72c2061ddf2ea4555a3b49919308b440e44d331185ac4c861c1f173393260&amp;source=constructor"
@@ -197,7 +207,7 @@ export const SearchPage: React.FC = () => {
                             height="100%"
                             style={{ border: 'none', borderRadius: '15px' }}
                         />
-                    </Map> */}
+                    </Map>
                 </FlexDiv>
             </Box>
         </>

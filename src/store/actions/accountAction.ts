@@ -40,8 +40,7 @@ export const fetchRegistration = (
     phone: string[][],
     sphera: string,
     address: string,
-    subway: string,
-    description: string
+    subway: string
 ) => {
     return async (dispatch: Dispatch<DataAction>) => {
         try {
@@ -56,8 +55,7 @@ export const fetchRegistration = (
                     phone,
                     sphera,
                     address,
-                    subway,
-                    description,
+                    subway
                 }
             );
             dispatch({
@@ -106,7 +104,9 @@ export const fetchAccountContentUpdate = (
     sphera: string,
     address: string,
     subway: string,
-    description: string
+    description: string,
+    timetable: string,
+    price: number
 ) => {
     return async (dispatch: Dispatch<DataAction>) => {
         try {
@@ -121,6 +121,8 @@ export const fetchAccountContentUpdate = (
                     address: address,
                     subway: subway,
                     description: description,
+                    timetable: timetable,
+                    price: price,
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -130,6 +132,7 @@ export const fetchAccountContentUpdate = (
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
             });
+            return response.data
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,

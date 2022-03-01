@@ -36,8 +36,16 @@ const placesSchema = new Schema({
     },
     description: {
         type: String,
-        required: true
     },
+    images: {
+        type: Array
+    },
+    timetable: {
+        type: String,
+    },
+    price: {
+        type: Number
+    }
 })
 
 module.exports = mongoose.model('places', placesSchema)

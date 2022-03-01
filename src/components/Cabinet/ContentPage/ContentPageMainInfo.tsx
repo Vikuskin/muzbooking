@@ -28,6 +28,8 @@ interface State {
     subway: string;
     email: string;
     description: string;
+    timetable: string,
+    price: number
 }
 
 export const ContentPageMainInfo: React.FC<State> = ({
@@ -39,6 +41,8 @@ export const ContentPageMainInfo: React.FC<State> = ({
     subway,
     email,
     description,
+    timetable,
+    price
 }) => {
     const [value, setValue] = React.useState<State>({
         sphera,
@@ -49,6 +53,8 @@ export const ContentPageMainInfo: React.FC<State> = ({
         subway,
         email,
         description,
+        timetable,
+        price
     });
     const [phoneChange, setPhoneChange] = React.useState<Array<string>>(['']);
 
@@ -68,11 +74,11 @@ export const ContentPageMainInfo: React.FC<State> = ({
             value.sphera,
             value.address,
             value.subway,
-            value.description
+            value.description,
+            value.timetable,
+            value.price
         );
-        if (res) {
-            alert(res);
-        }
+        window.location.reload()
     };
 
     return (
@@ -206,6 +212,24 @@ export const ContentPageMainInfo: React.FC<State> = ({
                 multiline
                 value={value.description}
                 onChange={handleChange('description')}
+                variant="standard"
+                sx={{ width: '100%', mb: '30px' }}
+            />
+            <Typography>Время работы</Typography>
+            <TextField
+                id="standard-multiline-flexible"
+                multiline
+                value={value.timetable}
+                onChange={handleChange('timetable')}
+                variant="standard"
+                sx={{ width: '100%', mb: '30px' }}
+            />
+            <Typography>Средняя цена за час</Typography>
+            <TextField
+                id="standard-multiline-flexible"
+                multiline
+                value={value.price}
+                onChange={handleChange('price')}
                 variant="standard"
                 sx={{ width: '100%', mb: '30px' }}
             />

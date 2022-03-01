@@ -3,12 +3,12 @@ import axios from 'axios';
 import { Dispatch } from 'redux';
 import { DataAction, DataActionTypes } from '../reducers/dataReducer';
 
-export const fetchPlaces =
-    (sphera: string) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchCatalogPlace =
+    (id: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
-            const response = await axios.get('http://localhost:5000/search', {
-                params: { sphera },
+            const response = await axios.get('http://localhost:5000/catalog', {
+                params: { id },
             });
             dispatch({
                 type: DataActionTypes.FETCH_DATA_SUCCESS,

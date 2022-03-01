@@ -25,9 +25,11 @@ module.exports.register = async (req, res) => {
                     sphera: req.body.sphera,
                     address: req.body.address,
                     subway: req.body.subway,
-                    description: req.body.description,
+                    description: '',
                     email: req.body.email,
-                    userId: user._id
+                    userId: user._id,
+                    timetable: '',
+                    price: 0
                 })
                 try {
                     await place.save()

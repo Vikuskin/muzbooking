@@ -21,6 +21,7 @@ import {
     Grid,
     ListItem,
     Icon,
+    styled,
 } from '@mui/material';
 import { useDropzone } from 'react-dropzone';
 import {
@@ -32,7 +33,6 @@ import {
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useActions } from 'hooks/useActions';
 import { CheckedPlace } from 'components/databases/dbCheckboxs';
-
 
 interface StatePlatform {
     namePlatform: string;
@@ -87,6 +87,20 @@ const acceptStyle = {
 const rejectStyle = {
     borderColor: '#ff1744',
 };
+const Comfort = styled('div')({
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'space-between',
+    maxHeight: '420px',
+    overflow: 'scroll',
+    overflowX: 'hidden',
+    maxWidth: '100%',
+    padding: '20px',
+    border: '2px solid #e2e2e2',
+    borderRadius: '4px',
+    backgroundColor: '#ebeff2',
+    marginBottom: '30px',
+});
 
 export const ContentPagePlatform: React.FC<PlatformProps> = ({
     namePlatform,
@@ -148,10 +162,10 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             setProduct({ ...product, [prop]: event.target.value });
         };
     const { fetchAccountPlatform, fetchAccountContent } = useActions();
-    
+
     // images
     const [files, setFiles] = useState(images);
-    console.log(files)
+    console.log(files);
     const onDrop = useCallback((acceptedFiles) => {
         setFiles(
             acceptedFiles.map((file: Blob | MediaSource) =>
@@ -185,10 +199,14 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     );
 
     const thumbs = files.map((file: any) => (
-        <div key={file.name} style={{ position: 'relative' }}>
+        <div key={file.filename} style={{ position: 'relative' }}>
             <img
-                src={file.preview ? file.preview : `http://localhost:5000/${file.path}`}
-                alt={file.name}
+                src={
+                    file.preview
+                        ? file.preview
+                        : `http://localhost:5000/${file.path}`
+                }
+                alt={file.originalname}
                 style={{ minHeight: '300px', marginRight: '10px' }}
             />
             <RemoveCircleIcon
@@ -203,7 +221,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             />
         </div>
     ));
-    
+
     useEffect(
         () => () => {
             files.forEach((file: any) => URL.revokeObjectURL(file.preview));
@@ -212,7 +230,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     );
 
     const sendPlatform = async () => {
-        console.log(files)
+        console.log(files);
         fetchAccountPlatform(
             localStorage.token,
             platform.namePlatform,
@@ -224,7 +242,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             _id,
             files
         );
-        // window.location.reload();
+        window.location.reload();
     };
 
     return (
@@ -266,21 +284,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
             <Box>{files[0] ? thumbs : <></>}</Box>
 
             {/* COMFORT SERVICES */}
-            <Box
-                sx={{
-                    display: 'flex',
-                    flexGrow: 1,
-                    justifyContent: 'space-between',
-                    maxHeight: '420px',
-                    overflow: 'scroll',
-                    overflowX: 'hidden',
-                    maxWidth: '100%',
-                    padding: '20px',
-                    border: '2px solid #e2e2e2',
-                    borderRadius: '4px',
-                    backgroundColor: '#ebeff2',
-                    marginBottom: '30px',
-                }}
+            <Comfort
             >
                 <Grid item xs={12} md={6}>
                     <TitleH2>Удобства</TitleH2>
@@ -314,7 +318,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                         ))}
                     </List>
                 </Grid>
-            </Box>
+            </Comfort>
 
             {/* PRICES */}
             <TitleH2>Услуги</TitleH2>

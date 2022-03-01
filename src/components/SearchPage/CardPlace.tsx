@@ -6,7 +6,7 @@ import timetableIcon from 'image/SearchPage/timetable.svg';
 import { FlexDiv } from 'style/otherStyles';
 
 interface CardProps {
-    imgFolder: string;
+    images: [];
     title: string;
     address: string;
     subway: string;
@@ -32,51 +32,50 @@ const DescCard = styled(FlexDiv)({
 });
 
 export const CardPlace: React.FC<CardProps> = ({
-    imgFolder,
+    images,
     title,
     address,
     subway,
     timetable,
     price,
-}) => {
-    console.log(imgFolder);
-   
-    return (
-        <Card>
-            <Box>
-                <Typography sx={{ fontWeight: 'bold' }}>{title}</Typography>
-                <DescCard>
-                    <img src="images/621ce1cc90f6c9262cdec4f9/" alt="Images" />
-                    {/* {img.map((photo: string) => (
-                    <img style={{ width: '32%' }} src={photo} alt='Images of platform'/>
-                ))} */}
-                </DescCard>
+}) => (
+    <Card>
+        <Box>
+            <Typography sx={{ fontWeight: 'bold' }}>{title.toUpperCase()}</Typography>
+            <DescCard sx={{ justifyContent: 'space-evenly' }}>
+                {images.map((item: any) => (
+                    <img
+                        style={{ maxWidth: '200px', maxHeight: '130px', marginRight: '5px' }}
+                        src={`http://localhost:5000/${item.destination}/${item.filename}`}
+                        alt="Images of platform"
+                    />
+                ))}
+            </DescCard>
 
-                <DescCard>
-                    <img src={addressIcon} alt="Address icon" />
-                    <Typography sx={{ ml: '5px' }}>{address}</Typography>
-                </DescCard>
+            <DescCard>
+                <img src={addressIcon} alt="Address icon" />
+                <Typography sx={{ ml: '5px' }}>{address}</Typography>
+            </DescCard>
 
-                <DescCard>
-                    <img src={subwayIcon} alt="Subway icon" />
-                    <Typography sx={{ ml: '5px' }}>{subway}</Typography>
-                </DescCard>
+            <DescCard>
+                <img src={subwayIcon} alt="Subway icon" />
+                <Typography sx={{ ml: '5px' }}>{subway}</Typography>
+            </DescCard>
 
-                <DescCard>
-                    <img src={timetableIcon} alt="Timetable icon" />
-                    <Typography sx={{ ml: '5px' }}>{timetable}</Typography>
-                </DescCard>
+            <DescCard>
+                <img src={timetableIcon} alt="Timetable icon" />
+                <Typography sx={{ ml: '5px' }}>{timetable}</Typography>
+            </DescCard>
 
-                <Typography
-                    sx={{
-                        textAlign: 'right',
-                        fontWeight: 'bold',
-                        fontSize: '25px',
-                    }}
-                >
-                    {price} ₽/ч
-                </Typography>
-            </Box>
-        </Card>
-    );
-};
+            <Typography
+                sx={{
+                    textAlign: 'right',
+                    fontWeight: 'bold',
+                    fontSize: '25px',
+                }}
+            >
+                {price} ₽/ч
+            </Typography>
+        </Box>
+    </Card>
+);

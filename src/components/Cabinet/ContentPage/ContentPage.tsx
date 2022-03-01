@@ -103,6 +103,8 @@ export const ContentPage = () => {
                             subway={data.place.subway}
                             email={data.place.email}
                             description={data.place.description}
+                            timetable={data.place.timetable}
+                            price={data.place.price}
                         />
                     ) : (
                         <></>
@@ -201,7 +203,6 @@ export const ContentPage = () => {
                 >
                     <Box sx={style}>
                         <ContentPagePlatform
-                            key={modal._id}
                             namePlatform={modal.namePlatform}
                             square={modal.square}
                             rider={modal.rider}
