@@ -54,8 +54,7 @@ const useStyles = makeStyles(() =>
                 border: 'none',
                 backgroundColor: 'transparent',
                 boxShadow: 'none',
-            }
-            
+            },
         },
     })
 );

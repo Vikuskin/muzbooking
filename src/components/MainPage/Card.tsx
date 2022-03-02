@@ -107,14 +107,13 @@ const CardBackBottom = styled('button')({
     '@media (max-width: 899px)': {
         fontSize: '18px',
         textTransform: 'lowercase',
-        padding: '5px 10px'
+        padding: '5px 10px',
     },
     '@media (max-width: 599px)': {
         fontSize: '15px',
         padding: '10px 15px 10px 15px',
         maxWidth: '150px',
         marginBottom: '5px',
-        
     },
 });
 

@@ -1,12 +1,3 @@
-/* eslint-disable react/button-has-type */
-/* eslint-disable import/namespace */
-/* eslint-disable react/jsx-boolean-value */
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-nested-ternary */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import {
     Box,
@@ -82,7 +73,7 @@ export const ContentPage = () => {
         services: [],
         comfort: [],
         _id: '',
-        images: []
+        images: [],
     });
     const [open, setOpen] = React.useState<boolean>(false);
 
@@ -93,86 +84,87 @@ export const ContentPage = () => {
                     <AccountTitleH1>Основная информация</AccountTitleH1>
                     {loading ? (
                         <>Загрузка...</>
-                    ) : data.place ? (
-                        <ContentPageMainInfo
-                            sphera={data.place.sphera}
-                            nameCompany={data.place.nameCompany}
-                            city={data.place.city}
-                            address={data.place.address}
-                            phone={data.place.phone}
-                            subway={data.place.subway}
-                            email={data.place.email}
-                            description={data.place.description}
-                            timetable={data.place.timetable}
-                            price={data.place.price}
-                        />
                     ) : (
-                        <></>
+                        data.place && (
+                            <ContentPageMainInfo
+                                sphera={data.place.sphera}
+                                nameCompany={data.place.nameCompany}
+                                city={data.place.city}
+                                address={data.place.address}
+                                phone={data.place.phone}
+                                subway={data.place.subway}
+                                email={data.place.email}
+                                description={data.place.description}
+                                timetable={data.place.timetable}
+                                price={data.place.price}
+                            />
+                        )
                     )}
                 </Box>
                 <Box sx={{ width: '50%' }}>
                     <AccountTitleH1>Площадки</AccountTitleH1>
                     {loading ? (
                         <>Загрузка...</>
-                    ) : data.platform ? (
-                        showPlatform ? (
-                            <></>
-                        ) : (
-                            data.platform.map((item: any, i: number) => (
-                                // eslint-disable-next-line react/no-array-index-key
-                                <ContentPageListItem
-                                    key={item._id}
+                    ) : (
+                        data.platform &&
+                        !showPlatform &&
+                        data.platform.map((item: any) => (
+                            <ContentPageListItem
+                                key={item._id}
+                                sx={{
+                                    backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(http://localhost:5000/${item.images[0].path})`,
+                                    minHeight: '200px',
+                                    backgroundPosition: 'center',
+                                    backgroundSize: 'cover',
+                                    alignItems: 'flex-end',
+                                }}
+                            >
+                                <ListItemText
                                     sx={{
-                                        backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(http://localhost:5000/${item.images[0].path})`,
-                                        minHeight: '200px',
-                                        backgroundPosition: 'center',
-                                        backgroundSize: 'cover',
-                                        alignItems: 'flex-end'
+                                        color: 'white',
+                                        textTransform: 'uppercase',
                                     }}
                                 >
-                                    <ListItemText sx={{ color: 'white', textTransform: 'uppercase' }}>
-                                        {item.namePlatform}
-                                    </ListItemText>
-                                    <ListItemIcon>
-                                        <EditIcon
-                                            sx={{
-                                                mr: '10px',
-                                                cursor: 'pointer',
-                                                color: 'white'
-                                            }}
-                                            onClick={() => {
-                                                setOpen(true);
-                                                setModal(item);
-                                            }}
-                                        />
+                                    {item.namePlatform}
+                                </ListItemText>
+                                <ListItemIcon>
+                                    <EditIcon
+                                        sx={{
+                                            mr: '10px',
+                                            cursor: 'pointer',
+                                            color: 'white',
+                                        }}
+                                        onClick={() => {
+                                            setOpen(true);
+                                            setModal(item);
+                                        }}
+                                    />
 
-                                        <RemoveCircleIcon
-                                            sx={{ cursor: 'pointer', color: 'white' }}
-                                            onClick={() => {
-                                                fetchAccountPlatformDelete(
-                                                    localStorage.token,
-                                                    item._id
-                                                );
-                                                alert(
-                                                    'Площадка успешно удалена'
-                                                );
-                                                fetchAccountContent(
-                                                    localStorage.token
-                                                );
-                                            }}
-                                        />
-                                    </ListItemIcon>
-                                </ContentPageListItem>
-                            ))
-                        )
-                    ) : (
-                        <></>
+                                    <RemoveCircleIcon
+                                        sx={{
+                                            cursor: 'pointer',
+                                            color: 'white',
+                                        }}
+                                        onClick={() => {
+                                            fetchAccountPlatformDelete(
+                                                localStorage.token,
+                                                item._id
+                                            );
+                                            alert('Площадка успешно удалена');
+                                            fetchAccountContent(
+                                                localStorage.token
+                                            );
+                                        }}
+                                    />
+                                </ListItemIcon>
+                            </ContentPageListItem>
+                        ))
                     )}
                     {showPlatform ? (
                         <>
                             <ContentPagePlatform
                                 namePlatform=""
-                                square='0'
+                                square="0"
                                 rider=""
                                 products={[]}
                                 services={dbServicesPlace}
@@ -193,7 +185,7 @@ export const ContentPage = () => {
                     )}
                 </Box>
             </FlexDiv>
-            {modal ? (
+            {modal && (
                 <Modal
                     open={open}
                     onClose={() => setOpen(false)}
@@ -214,8 +206,6 @@ export const ContentPage = () => {
                         />
                     </Box>
                 </Modal>
-            ) : (
-                <></>
             )}
         </Container>
     );

@@ -111,10 +111,12 @@ export const AccountHeader: React.FC = () => {
                                 </MenuItem>
                             </Link>
                             <Link to="/login">
-                                <MenuItem onClick={() => {
+                                <MenuItem
+                                    onClick={() => {
                                         handleCloseNavMenu();
-                                        localStorage.clear()
-                                    }}>
+                                        localStorage.clear();
+                                    }}
+                                >
                                     <Typography textAlign="center">
                                         Выйти
                                     </Typography>
@@ -197,7 +199,7 @@ export const AccountHeader: React.FC = () => {
                                 <Button
                                     onClick={() => {
                                         handleCloseNavMenu();
-                                        localStorage.clear()
+                                        localStorage.clear();
                                     }}
                                     sx={{
                                         my: 2,

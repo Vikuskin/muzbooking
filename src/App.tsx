@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Main } from 'components/MainPage/Main';
 import GlobalStyles from 'style/globalStyles';
+import { Main } from 'components/MainPage/Main';
 import { AddAreaPage } from 'components/AddAreaPage/AddArea';
 import { SearchPage } from 'components/SearchPage/SearchPage';
 import { Registration } from 'components/Cabinet/Registration';

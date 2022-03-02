@@ -8,16 +8,16 @@ import benefitsItem3 from 'image/AddAreaPage/benefits3.png.webp';
 import benefitsMid1 from 'image/AddAreaPage/benefitsMid1.png.webp';
 import benefitsMid2 from 'image/AddAreaPage/benefitsMid2.png.webp';
 import benefitsMid3 from 'image/AddAreaPage/benefitsMid3.png';
+import partners from 'image/AddAreaPage/partners.png';
 import {
     dbCardBenefits,
     CardBeneftsInterface,
 } from 'components/databases/dbCardBenefits';
-import partners from 'image/AddAreaPage/partners.png';
 import { Slider } from 'components/AddAreaPage/Slider';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
-import { TitleH1, TitleH2, CustomButton, FlexDiv } from 'style/otherStyles';
 import { CardBenefits } from 'components/AddAreaPage/CardBenefits';
+import { TitleH1, TitleH2, CustomButton, FlexDiv } from 'style/otherStyles';
 
 const List = styled('ul')({
     color: 'black',
@@ -69,7 +69,7 @@ const MainContent = styled('div')({
     '@media (max-width: 599px)': {
         height: '640px',
     },
-})
+});
 
 const TitleH1MainContent = styled(TitleH1)({
     color: 'white',
@@ -79,18 +79,18 @@ const TitleH1MainContent = styled(TitleH1)({
     margin: 0,
     fontSize: '35px',
     '@media (max-width: 1199px)': {
-        fontSize: '35px'
+        fontSize: '35px',
     },
     '@media (max-width: 899px)': {
         textAlign: 'center',
-        padding: '0 50px'
+        padding: '0 50px',
     },
     '@media (max-width: 599px)': {
         padding: 0,
         fontSize: '25px',
-        marginTop: 0
+        marginTop: 0,
     },
-})
+});
 
 const ButtonMainContent = styled(CustomButton)({
     margin: '15px',
@@ -98,8 +98,8 @@ const ButtonMainContent = styled(CustomButton)({
     '@media (max-width: 899px)': {
         margin: '5px',
         minWidth: '140px',
-    }
-})
+    },
+});
 
 const BenefitsStrip = styled(FlexDiv)({
     padding: '40px',
@@ -108,27 +108,36 @@ const BenefitsStrip = styled(FlexDiv)({
     margin: 'auto',
     marginBottom: '50px',
     '@media (max-width: 599px)': {
-        flexWrap: 'wrap'
-    }
-})
+        flexWrap: 'wrap',
+    },
+});
 
 const WrapDiv = styled(FlexDiv)({
     flexWrap: 'nowrap',
     '@media (max-width: 599px)': {
-        flexWrap: 'wrap'
-    }
-})
+        flexWrap: 'wrap',
+    },
+});
 
 const TitleH1BenefitsMid = styled(TitleH1)({
     margin: '0 0 20px 0',
     '@media (max-width: 899px)': {
-        fontSize: '20px'
+        fontSize: '20px',
     },
     '@media (max-width: 599px)': {
-        fontSize: '18px'
+        fontSize: '18px',
     },
-})
+});
 
+const BenefitsMid1 = styled(Box)({
+    paddingRight: '40px',
+    paddingLeft: '40px',
+    minWidth: '220px',
+    maxWidth: '620px',
+    margin: 'auto',
+    marginBottom: '20px',
+    marginTop: 0,
+});
 export const AddAreaPage: React.FC = () => (
     <>
         <Header />
@@ -154,19 +163,13 @@ export const AddAreaPage: React.FC = () => (
 
             <ButtonDiv>
                 <Link to="/registration">
-                    <ButtonMainContent>
-                        Регистрация
-                    </ButtonMainContent>
+                    <ButtonMainContent>Регистрация</ButtonMainContent>
                 </Link>
                 <Link to="/">
-                    <ButtonMainContent>
-                        Тарифы
-                    </ButtonMainContent>
+                    <ButtonMainContent>Тарифы</ButtonMainContent>
                 </Link>
                 <Link to="/login">
-                    <ButtonMainContent>
-                        Вход в кабинет
-                    </ButtonMainContent>
+                    <ButtonMainContent>Вход в кабинет</ButtonMainContent>
                 </Link>
             </ButtonDiv>
         </MainContent>
@@ -185,7 +188,7 @@ export const AddAreaPage: React.FC = () => (
         <WrapDiv
             sx={{
                 justifyContent: 'space-evenly',
-                m: 4
+                m: 4,
             }}
         >
             <Box>
@@ -240,7 +243,7 @@ export const AddAreaPage: React.FC = () => (
             <Box
                 sx={{
                     pr: 4,
-                    maxWidth: {sm: '320px', md: '600px'},
+                    maxWidth: { sm: '320px', md: '600px' },
                     pl: 4,
                     margin: 'auto',
                 }}
@@ -263,20 +266,10 @@ export const AddAreaPage: React.FC = () => (
                     sm: 'right',
                 },
                 flexWrap: { xs: 'wrap-reverse', sm: 'nowrap' },
-                pb: 4
+                pb: 4,
             }}
         >
-            <Box
-                sx={{
-                    pr: 4,
-                    pl: 4,
-                    minWidth: '220px',
-                    maxWidth: '620px',
-                    margin: 'auto',
-                    marginBottom: '20px',
-                    marginTop: 0,
-                }}
-            >
+            <BenefitsMid1>
                 <TitleH1BenefitsMid sx={{ margin: '0 0 20px 0 !important' }}>
                     Личный кабинет с любого устройства.
                 </TitleH1BenefitsMid>
@@ -290,7 +283,7 @@ export const AddAreaPage: React.FC = () => (
                     <br />
                     работа с отзывами пользователей.
                 </TitleH2>
-            </Box>
+            </BenefitsMid1>
             <Typography sx={{ maxWidth: '600px' }}>
                 <img src={benefitsMid2} alt="" />
             </Typography>
@@ -305,7 +298,9 @@ export const AddAreaPage: React.FC = () => (
             <Typography sx={{ maxWidth: '600px' }}>
                 <img style={{ maxHeight: '350px' }} src={benefitsMid3} alt="" />
             </Typography>
-            <Box sx={{ maxWidth: {sm: '270px', md: '500px'}, margin: 'auto' }}>
+            <Box
+                sx={{ maxWidth: { sm: '270px', md: '500px' }, margin: 'auto' }}
+            >
                 <TitleH1BenefitsMid sx={{ margin: '0 0 20px 0 !important' }}>
                     Простая интеграция и персональная поддержка.
                 </TitleH1BenefitsMid>

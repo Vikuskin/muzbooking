@@ -1,8 +1,3 @@
-/* eslint-disable no-nested-ternary */
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-///
 import React, { useEffect } from 'react';
 import {
     Box,
@@ -171,11 +166,15 @@ export const SearchPage: React.FC = () => {
                         >
                             {loading ? (
                                 <>Загрузка...</>
-                            ) : data[0] ? (
+                            ) : (
+                                data[0] &&
                                 data.map((item: any) => (
                                     <Link to="/catalog">
                                         <Button
-                                            sx={{ color:' black', textTransform: 'inherit' }}
+                                            sx={{
+                                                color: ' black',
+                                                textTransform: 'inherit',
+                                            }}
                                             onClick={() =>
                                                 fetchCatalogPlace(item._id)
                                             }
@@ -192,8 +191,6 @@ export const SearchPage: React.FC = () => {
                                         </Button>
                                     </Link>
                                 ))
-                            ) : (
-                                <>Нет площадок</>
                             )}
                         </Box>
                     </Box>

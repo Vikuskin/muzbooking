@@ -1,7 +1,6 @@
 import React from 'react';
 import {
     Typography,
-    TextField,
     IconButton,
     InputAdornment,
     Input,
@@ -9,9 +8,8 @@ import {
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import logo from 'image/logoRegistration.svg';
-import { CustomButton, FlexDiv } from 'style/otherStyles';
-import { useActions } from 'hooks/useActions'
-
+import { CustomButton, FlexDiv, input } from 'style/otherStyles';
+import { useActions } from 'hooks/useActions';
 
 interface State {
     email: string;
@@ -78,7 +76,7 @@ export const Login: React.FC = () => {
         event.preventDefault();
     };
 
-    const {fetchLogin} = useActions()
+    const { fetchLogin } = useActions();
 
     return (
         <Background>
@@ -97,16 +95,9 @@ export const Login: React.FC = () => {
                 </FlexDiv>
 
                 <Typography>Логин</Typography>
-                <TextField
-                    id="standard-multiline-flexible"
-                    multiline
-                    value={login.email}
-                    onChange={handleChange('email')}
-                    variant="standard"
-                    sx={{ width: '100%', mb: '30px' }}
-                />
+                {input(login.email, handleChange('email'))}
 
-                <Typography>Пароль</Typography>
+                <Typography sx={{ mt: '30px' }}>Пароль</Typography>
                 <Input
                     id="standard-adornment-password"
                     type={login.showPassword ? 'text' : 'password'}
@@ -129,12 +120,19 @@ export const Login: React.FC = () => {
                         </InputAdornment>
                     }
                 />
-                <Button onClick={async () => {
-                    const res = await fetchLogin(login.email, login.password);               
-                    if (res) {
-                        alert(res)
-                    }
-                }}>войти</Button>
+                <Button
+                    onClick={async () => {
+                        const res = await fetchLogin(
+                            login.email,
+                            login.password
+                        );
+                        if (res) {
+                            alert(res);
+                        }
+                    }}
+                >
+                    войти
+                </Button>
             </LoginWindow>
         </Background>
     );

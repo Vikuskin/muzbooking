@@ -1,9 +1,9 @@
 export interface Services {
-    img: string,
-    title: string,
-    icon: string,
-    description: string,
-    id: string
+    img: string;
+    title: string;
+    icon: string;
+    description: string;
+    id: string;
 }
 
 export const dbServices: Services[] = [

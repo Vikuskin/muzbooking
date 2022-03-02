@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { servicesReducer } from 'store/reducers/servicesReducer';
-import { dataReducer } from 'store/reducers/dataReducer'
+import { dataReducer } from 'store/reducers/dataReducer';
 
 export const rootReducer = combineReducers({
     services: servicesReducer,

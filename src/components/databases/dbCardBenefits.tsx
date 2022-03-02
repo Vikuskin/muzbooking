@@ -1,9 +1,8 @@
 export interface CardBeneftsInterface {
-    img: string,
-    description: string,
-    id: number
+    img: string;
+    description: string;
+    id: number;
 }
-
 
 export const dbCardBenefits: CardBeneftsInterface[] = [
     {

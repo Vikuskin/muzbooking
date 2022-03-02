@@ -54,7 +54,8 @@
                 "amd": false
             }
         ],
-        "@typescript-eslint/default-param-last": ["off"]
+        "@typescript-eslint/default-param-last": ["off"],
+        "no-underscore-dangle": "off"
     },
     "settings": {
         "import/resolver": {

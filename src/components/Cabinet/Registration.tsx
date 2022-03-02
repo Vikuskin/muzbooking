@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {
     Typography,
@@ -16,13 +14,9 @@ import {
 } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
 import logo from 'image/logoRegistration.svg';
-import { InputDefault, FlexDiv } from 'style/otherStyles';
-import { Link } from 'react-router-dom';
+import { FlexDiv, input } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
-import { useTypedSelector } from 'hooks/useTypedSelector';
-
 
 const Background = styled('div')({
     width: '100%',
@@ -49,11 +43,6 @@ const FormColumn = styled('div')({
     '@media (max-width: 599px)': {
         width: '100%',
     },
-});
-
-const FormLabel = styled('p')({
-    lineHeight: 1,
-    fontSize: '1rem',
 });
 
 const Button = styled('button')({
@@ -93,16 +82,15 @@ export const Registration: React.FC = () => {
         city: '',
         sphera: '',
         address: '',
-        subway: ''
+        subway: '',
     });
     const [phone, setPhone] = React.useState<Array<string>>(['']);
     const handleChange =
         (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
             setValue({ ...value, [prop]: event.target.value });
         };
-        const {data, loading, error} = useTypedSelector((state) => state.data);
-    const {fetchRegistration} = useActions()
-    
+
+    const { fetchRegistration } = useActions();
 
     const sendRegistration = async () => {
         const res = await fetchRegistration(
@@ -116,11 +104,11 @@ export const Registration: React.FC = () => {
             value.subway
         );
         if (res) {
-            alert(res)
+            alert(res);
         } else {
-            alert('Учетная запись партнера успешно создана')
+            alert('Учетная запись партнера успешно создана');
         }
-    }
+    };
     return (
         <Background>
             <RegistrationWindow>
@@ -157,42 +145,14 @@ export const Registration: React.FC = () => {
                         </Typography>
 
                         <Typography>Название компании</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.nameCompany}
-                            onChange={handleChange('nameCompany')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
-                        <Typography>Город</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.city}
-                            onChange={handleChange('city')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
-                        <Typography>Адрес</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.address}
-                            onChange={handleChange('address')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
-                        <Typography>Пароль</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.password}
-                            onChange={handleChange('password')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
-                        <Typography>Телефоны</Typography>
+                        {input(value.nameCompany, handleChange('nameCompany'))}
+                        <Typography sx={{ mt: '20px' }}>Город</Typography>
+                        {input(value.city, handleChange('city'))}
+                        <Typography sx={{ mt: '20px' }}>Адрес</Typography>
+                        {input(value.address, handleChange('address'))}
+                        <Typography sx={{ mt: '20px' }}>Пароль</Typography>
+                        {input(value.password, handleChange('password'))}
+                        <Typography sx={{ mt: '20px' }}>Телефоны</Typography>
                         <TextField
                             id="standard-multiline-flexible"
                             multiline
@@ -224,7 +184,7 @@ export const Registration: React.FC = () => {
                                 ),
                             }}
                         />
-                        {value.phone ? (
+                        {value.phone && (
                             <List
                                 sx={{
                                     width: '100%',
@@ -258,9 +218,6 @@ export const Registration: React.FC = () => {
                                     )
                                 )}
                             </List>
-                        ) : (
-                            // eslint-disable-next-line react/jsx-no-useless-fragment
-                            <></>
                         )}
                     </FormColumn>
                     <FormColumn>
@@ -275,7 +232,7 @@ export const Registration: React.FC = () => {
                             value={value.sphera}
                             onChange={handleChange('sphera')}
                             variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
+                            sx={{ width: '100%' }}
                         >
                             <MenuItem value="RECORD">
                                 Студии звукозаписи
@@ -286,24 +243,10 @@ export const Registration: React.FC = () => {
                             </MenuItem>
                             <MenuItem value="DANCE">Танцевальные залы</MenuItem>
                         </TextField>
-                        <Typography>Метро</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.subway}
-                            onChange={handleChange('subway')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
-                        <Typography>Email</Typography>
-                        <TextField
-                            id="standard-multiline-flexible"
-                            multiline
-                            value={value.email}
-                            onChange={handleChange('email')}
-                            variant="standard"
-                            sx={{ width: '100%', mb: '30px' }}
-                        />
+                        <Typography sx={{ mt: '20px' }}>Метро</Typography>
+                        {input(value.subway, handleChange('subway'))}
+                        <Typography sx={{ mt: '20px' }}>Email</Typography>
+                        {input(value.email, handleChange('email'))}
                     </FormColumn>
                 </Box>
                 <Button onClick={() => sendRegistration()}>

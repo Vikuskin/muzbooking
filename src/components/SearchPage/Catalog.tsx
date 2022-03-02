@@ -1,26 +1,19 @@
-/* eslint-disable no-underscore-dangle */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable jsx-a11y/alt-text */
+/* eslint-disable react/no-children-prop */
 import React from 'react';
-import { Container, Typography, styled, Button } from '@mui/material';
+import { Container, styled, Button, Box } from '@mui/material';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import Carousel from 'react-elastic-carousel';
+import ReactMarkdown from 'react-markdown';
+import { FlexDiv, TitleH1 } from 'style/otherStyles';
+import Fancybox from 'components/Fancybox/Fancybox';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
+import { CatalogPlatformCard } from 'components/SearchPage/CatalogPlatformCard';
 import { useTypedSelector } from 'hooks/useTypedSelector';
-import { FlexDiv, TitleH1, TitleH2 } from 'style/otherStyles';
 import addressIcon from 'image/SearchPage/address.svg';
 import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
-import { Box } from '@mui/system';
-import Carousel from 'react-elastic-carousel';
-import { CatalogPlatformCard } from 'components/SearchPage/CatalogPlatformCard';
-import Fancybox from 'components/Fancybox/Fancybox';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-
-
+import noImage from 'image/noImage.png';
 
 const Title = styled(TitleH1)({
     textAlign: 'left',
@@ -39,35 +32,38 @@ export const Catalog: React.FC = () => {
                 <>Загрузка...</>
             ) : (
                 <>
-                    <Container
-                        maxWidth="xl"
-                        sx={{ pt: '100px', textAlign: 'left' }}
-                    >
+                    <Container maxWidth="xl" sx={{ pt: '100px' }}>
                         <Title>{data.place.nameCompany}</Title>
-                        <Box sx={{ display: 'flex', marginBottom: '20px' }}>
-                            <FlexDiv sx={{ mr: '15px' }}>
-                                <img src={addressIcon} alt="Address icon" />
-                                <Typography sx={{ ml: '5px' }}>
-                                    {data.place.address}
-                                </Typography>
+                        <Box sx={{ display: 'flex', mb: '20px' }}>
+                            <FlexDiv sx={{ mr: '15px', fontSize: '16px' }}>
+                                <img
+                                    src={addressIcon}
+                                    alt="Address icon"
+                                    style={{ marginRight: '5px' }}
+                                />
+                                {data.place.address}
                             </FlexDiv>
-                            <FlexDiv sx={{ mr: '15px' }}>
-                                <img src={subwayIcon} alt="Subway icon" />
-                                <Typography sx={{ ml: '5px' }}>
-                                    {data.place.subway}
-                                </Typography>
+                            <FlexDiv sx={{ mr: '15px', fontSize: '16px' }}>
+                                <img
+                                    src={subwayIcon}
+                                    alt="Subway icon"
+                                    style={{ marginRight: '5px' }}
+                                />
+                                {data.place.subway}
                             </FlexDiv>
-                            <FlexDiv>
-                                <img src={timetableIcon} alt="Timetable icon" />
-                                <Typography sx={{ ml: '5px' }}>
-                                    {data.place.timetable}
-                                </Typography>
+                            <FlexDiv sx={{ mr: '15px', fontSize: '16px' }}>
+                                <img
+                                    src={timetableIcon}
+                                    alt="Timetable icon"
+                                    style={{ marginRight: '5px' }}
+                                />
+                                {data.place.timetable}
                             </FlexDiv>
-                            <FlexDiv>
-                                <LocalPhoneIcon/>
-                                <Typography sx={{ ml: '5px' }}>
-                                    {data.place.phone[0]}
-                                </Typography>
+                            <FlexDiv sx={{ mr: '15px', fontSize: '16px' }}>
+                                <LocalPhoneIcon
+                                    style={{ marginRight: '5px' }}
+                                />
+                                {data.place.phone[0]}
                             </FlexDiv>
                         </Box>
                     </Container>
@@ -80,19 +76,23 @@ export const Catalog: React.FC = () => {
                             isRTL={false}
                         >
                             {data.platforms.map((item: any) =>
-                                item.images.map((img: any) => (
-                                    <Fancybox options={{ infinite: false }}>
-                                        <Button
-                                            data-fancybox="gallery"
-                                            data-src={`http://localhost:5000/${img.destination}/${img.filename}`}
-                                        >
-                                            <img
-                                                src={`http://localhost:5000/${img.destination}/${img.filename}`}
-                                                alt="Images of platform"
-                                            />
-                                        </Button>
-                                    </Fancybox>
-                                ))
+                                item.images[0] ? (
+                                    item.images.map((img: any) => (
+                                        <Fancybox options={{ infinite: false }}>
+                                            <Button
+                                                data-fancybox="gallery"
+                                                data-src={`http://localhost:5000/${img.destination}/${img.filename}`}
+                                            >
+                                                <img
+                                                    src={`http://localhost:5000/${img.destination}/${img.filename}`}
+                                                    alt="Images of platform"
+                                                />
+                                            </Button>
+                                        </Fancybox>
+                                    ))
+                                ) : (
+                                    <img src={noImage} alt="No platform's images"/>
+                                )
                             )}
                         </Carousel>
                     </Box>
@@ -108,13 +108,14 @@ export const Catalog: React.FC = () => {
                                 comfort={platform.comfort}
                                 services={platform.services}
                                 images={platform.images}
+                                products={platform.products}
                             />
                         ))}
 
                         <Title>Описание</Title>
-                        <Typography sx={{ mb: '30px' }}>
-                            {data.place.description}
-                        </Typography>
+                        <Box sx={{ mb: '30px', fontSize: '18px' }}>
+                            <ReactMarkdown children={data.place.description} />
+                        </Box>
                     </Container>
                 </>
             )}

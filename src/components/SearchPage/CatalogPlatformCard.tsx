@@ -1,21 +1,42 @@
-/* eslint-disable react/no-children-prop */
-/* eslint-disable react/button-has-type */
-/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
+/* eslint-disable react/no-children-prop */
 import React from 'react';
-import { Typography, Button, styled } from '@mui/material';
+import { Typography, Button, styled, Box, Modal } from '@mui/material';
+import ReactMarkdown from 'react-markdown';
 import { FlexDiv, TitleH2 } from 'style/otherStyles';
-import { Box } from '@mui/system';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import { CheckedPlace } from 'components/databases/dbCheckboxs';
 import Fancybox from 'components/Fancybox/Fancybox';
-import ReactMarkdown from 'react-markdown';
+import { StateProducts } from 'components/Cabinet/ContentPage/ContentPagePlatform';
+import { BookingModal } from 'components/SearchPage/BookingModal';
 
 const Subtitle = styled(TitleH2)({
     padding: 0,
     marginBottom: '5px',
+    marginTop: '20px',
 });
+
+const Card = styled(FlexDiv)({
+    padding: '20px',
+    border: '2px solid #e2e2e2',
+    borderRadius: '4px',
+    backgroundColor: '#ebeff2',
+    marginBottom: '30px',
+});
+const style = {
+    position: 'absolute' as 'absolute',
+    top: '10%',
+    bottom: '10%',
+    left: '50%',
+    transform: 'translate(-50%, 0)',
+    width: '70%',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    overflow: 'scroll',
+};
 
 interface CatalogPlatformCardProps {
     namePlatform: string;
@@ -24,6 +45,7 @@ interface CatalogPlatformCardProps {
     comfort: Array<CheckedPlace>;
     services: Array<CheckedPlace>;
     images: Array<string>;
+    products: Array<StateProducts>;
 }
 
 export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
@@ -33,6 +55,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
     comfort,
     services,
     images,
+    products,
 }) => {
     const [showMore, setShowMore] = React.useState<boolean>(false);
     const comfortChecked = comfort.filter((item) => {
@@ -46,17 +69,11 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
         }
     });
 
+    const [open, setOpen] = React.useState<boolean>(false);
+
     return (
-        <FlexDiv
-            sx={{
-                padding: '20px',
-                border: '2px solid #e2e2e2',
-                borderRadius: '4px',
-                backgroundColor: '#ebeff2',
-                mb: '30px',
-            }}
-        >
-            <Box sx={{ flexBasis: '30%' }}>
+        <Card>
+            <Box sx={{ flexBasis: '30%', fontSize: '1rem', lineHeight: 1.5 }}>
                 <Subtitle sx={{ fontWeight: 'bold' }}>{namePlatform}</Subtitle>
                 <FlexDiv sx={{ justifyContent: 'flex-start' }}>
                     <CropSquareIcon fontSize="small" />
@@ -68,9 +85,9 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
 
                 {!showMore ? (
                     <>
-                        <Typography>
-                            <ReactMarkdown children={rider.slice(0, 100)}/>...
-                        </Typography>
+                        <ReactMarkdown
+                            children={rider.slice(0, 100).concat('...')}
+                        />
 
                         <Button
                             sx={{
@@ -85,35 +102,29 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                         </Button>
                     </>
                 ) : (
-                   <ReactMarkdown children={rider}/>
+                    <ReactMarkdown children={rider} />
                 )}
 
-                {showMore ? (
+                {showMore && (
                     <>
-                        {comfortChecked[0] ? (
+                        {comfortChecked[0] && (
                             <>
                                 <Subtitle>Комфорт</Subtitle>
                                 {comfortChecked.map((item: any) => (
                                     <Typography>{item.value}</Typography>
                                 ))}
                             </>
-                        ) : (
-                            <></>
                         )}
 
-                        {servicesChecked[0] ? (
+                        {servicesChecked[0] && (
                             <>
                                 <Subtitle>Удобства</Subtitle>
                                 {servicesChecked.map((item: any) => (
                                     <Typography>{item.value}</Typography>
                                 ))}
                             </>
-                        ) : (
-                            <></>
                         )}
                     </>
-                ) : (
-                    <>...</>
                 )}
             </Box>
             <Box>
@@ -136,7 +147,23 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                     </Fancybox>
                 ))}
             </Box>
-            <Button>Забронировать</Button>
-        </FlexDiv>
+            <Button onClick={() => setOpen(true)}>Забронировать</Button>
+            {open && (
+                <Modal
+                    open={open}
+                    onClose={() => setOpen(false)}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                    sx={{ overflow: 'scroll' }}
+                >
+                    <Box sx={style}>
+                        <BookingModal
+                            namePlatform={namePlatform}
+                            products={products}
+                        />
+                    </Box>
+                </Modal>
+            )}
+        </Card>
     );
 };

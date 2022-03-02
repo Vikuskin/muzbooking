@@ -55,7 +55,7 @@ export const fetchRegistration = (
                     phone,
                     sphera,
                     address,
-                    subway
+                    subway,
                 }
             );
             dispatch({
@@ -132,7 +132,7 @@ export const fetchAccountContentUpdate = (
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
             });
-            return response.data
+            return response.data;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
@@ -166,7 +166,7 @@ export const fetchAccountPlatform = (
         data.append('services', JSON.stringify(services));
         data.append('comfort', JSON.stringify(comfort));
         data.append('idPlatform', idPlatform);
-        console.log(data)
+        console.log(data);
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
@@ -175,7 +175,7 @@ export const fetchAccountPlatform = (
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
-                        "Content-Type": "application/x-www-form-urlencoded"
+                        'Content-Type': 'application/x-www-form-urlencoded',
                     },
                 }
             );

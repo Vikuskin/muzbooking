@@ -1,4 +1,5 @@
-import { ListItem, InputBase, styled } from '@mui/material';
+import React from 'react';
+import { ListItem, InputBase, styled, TextField } from '@mui/material';
 
 export const InputTitle = styled(InputBase)({
     '& .MuiInputBase-input': {
@@ -129,3 +130,19 @@ export const ContentPageButton = styled(CustomButton)({
     padding: '10px 20px',
     fontSize: '20px',
 });
+
+export const input = (
+    value: unknown,
+    onChange:
+        | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+        | undefined
+) => (
+    <TextField
+        id="standard-multiline-flexible"
+        multiline
+        variant="standard"
+        value={value}
+        onChange={onChange}
+        sx={{ width: '100%' }}
+    />
+);

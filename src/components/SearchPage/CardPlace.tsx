@@ -3,10 +3,11 @@ import { Typography, Box, styled } from '@mui/material';
 import addressIcon from 'image/SearchPage/address.svg';
 import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
+import noImages from 'image/noImage.png';
 import { FlexDiv } from 'style/otherStyles';
 
 interface CardProps {
-    images: [];
+    images: string[];
     title: string;
     address: string;
     subway: string;
@@ -41,15 +42,33 @@ export const CardPlace: React.FC<CardProps> = ({
 }) => (
     <Card>
         <Box>
-            <Typography sx={{ fontWeight: 'bold' }}>{title.toUpperCase()}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>
+                {title.toUpperCase()}
+            </Typography>
             <DescCard sx={{ justifyContent: 'space-evenly' }}>
-                {images.map((item: any) => (
+                {images[0] ? (
+                    images.map((item: any) => (
+                        <img
+                            style={{
+                                maxWidth: '200px',
+                                maxHeight: '130px',
+                                marginRight: '5px',
+                            }}
+                            src={`http://localhost:5000/${item.destination}/${item.filename}`}
+                            alt="Images of platform"
+                        />
+                    ))
+                ) : (
                     <img
-                        style={{ maxWidth: '200px', maxHeight: '130px', marginRight: '5px' }}
-                        src={`http://localhost:5000/${item.destination}/${item.filename}`}
-                        alt="Images of platform"
+                        style={{
+                            maxWidth: '200px',
+                            maxHeight: '130px',
+                            marginRight: '5px',
+                        }}
+                        src={noImages}
+                        alt="Platform's images"
                     />
-                ))}
+                )}
             </DescCard>
 
             <DescCard>

@@ -36,10 +36,14 @@ export const Footer: React.FC = () => {
                             flexWrap: 'wrap',
                         }}
                     >
-                        <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>MUSBOOKING<br/>
-                            <span style={{ fontWeight: 'normal' }}>© 2016 — 2022</span>
+                        <p style={{ fontWeight: 'bold', marginBottom: '5px' }}>
+                            MUSBOOKING
+                            <br />
+                            <span style={{ fontWeight: 'normal' }}>
+                                © 2016 — 2022
+                            </span>
                         </p>
-                        
+
                         <Box sx={{ ml: { xs: '-10px' } }}>
                             <a href="/">
                                 <img
@@ -93,7 +97,7 @@ export const Footer: React.FC = () => {
                                 display: 'flex',
                                 justifyContent: 'space-between',
                                 mr: '-24px',
-                                flexDirection: {xs: 'column', sm: 'row'}
+                                flexDirection: { xs: 'column', sm: 'row' },
                             }}
                         >
                             <Grid item>

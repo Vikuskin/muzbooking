@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as React from 'react';
 import {
     Box,
@@ -12,11 +10,10 @@ import {
     ListItem,
     ListItemIcon,
     ListItemText,
-    styled,
 } from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import { ContentPageButton } from 'style/otherStyles';
+import { ContentPageButton, input } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 
 interface State {
@@ -28,8 +25,8 @@ interface State {
     subway: string;
     email: string;
     description: string;
-    timetable: string,
-    price: number
+    timetable: string;
+    price: number;
 }
 
 export const ContentPageMainInfo: React.FC<State> = ({
@@ -42,7 +39,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
     email,
     description,
     timetable,
-    price
+    price,
 }) => {
     const [value, setValue] = React.useState<State>({
         sphera,
@@ -54,7 +51,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
         email,
         description,
         timetable,
-        price
+        price,
     });
     const [phoneChange, setPhoneChange] = React.useState<Array<string>>(['']);
 
@@ -65,8 +62,8 @@ export const ContentPageMainInfo: React.FC<State> = ({
 
     const { fetchAccountContentUpdate } = useActions();
 
-    const sendUpdate = async () => {
-        const res = await fetchAccountContentUpdate(
+    const sendUpdate = () => {
+        fetchAccountContentUpdate(
             localStorage.token,
             value.city,
             value.nameCompany,
@@ -78,7 +75,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
             value.timetable,
             value.price
         );
-        window.location.reload()
+        window.location.reload();
     };
 
     return (
@@ -99,33 +96,12 @@ export const ContentPageMainInfo: React.FC<State> = ({
                 <MenuItem value="DANCE">Танцевальные залы</MenuItem>
             </TextField>
             <Typography>Название</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.nameCompany}
-                onChange={handleChange('nameCompany')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Город</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.city}
-                onChange={handleChange('city')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Адрес</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.address}
-                onChange={handleChange('address')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Телефоны</Typography>
+            {input(value.nameCompany, handleChange('nameCompany'))}
+            <Typography sx={{ mt: '20px' }}>Город</Typography>
+            {input(value.city, handleChange('city'))}
+            <Typography sx={{ mt: '20px' }}>Адрес</Typography>
+            {input(value.address, handleChange('address'))}
+            <Typography sx={{ mt: '20px' }}>Телефоны</Typography>
             <TextField
                 id="standard-multiline-flexible"
                 multiline
@@ -152,7 +128,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
                     ),
                 }}
             />
-            {value.phone ? (
+            {value.phone && (
                 <List
                     sx={{
                         width: '100%',
@@ -182,58 +158,21 @@ export const ContentPageMainInfo: React.FC<State> = ({
                         </ListItem>
                     ))}
                 </List>
-            ) : (
-                // eslint-disable-next-line react/jsx-no-useless-fragment
-                <></>
             )}
 
             <Typography>Метро</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.subway}
-                onChange={handleChange('subway')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Email</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                disabled
-                value={value.email}
-                onChange={handleChange('email')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Описание</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.description}
-                onChange={handleChange('description')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Время работы</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.timetable}
-                onChange={handleChange('timetable')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <Typography>Средняя цена за час</Typography>
-            <TextField
-                id="standard-multiline-flexible"
-                multiline
-                value={value.price}
-                onChange={handleChange('price')}
-                variant="standard"
-                sx={{ width: '100%', mb: '30px' }}
-            />
-            <ContentPageButton onClick={() => sendUpdate()}>Сохранить</ContentPageButton>
+            {input(value.subway, handleChange('subway'))}
+            <Typography sx={{ mt: '20px' }}>Email</Typography>
+            {input(value.email, handleChange('email'))}
+            <Typography sx={{ mt: '20px' }}>Описание</Typography>
+            {input(value.description, handleChange('description'))}
+            <Typography sx={{ mt: '20px' }}>Время работы</Typography>
+            {input(value.timetable, handleChange('timetable'))}
+            <Typography sx={{ mt: '20px' }}>Средняя цена за час</Typography>
+            {input(value.price, handleChange('price'))}
+            <ContentPageButton onClick={() => sendUpdate()} sx={{ mt: '20px' }}>
+                Сохранить
+            </ContentPageButton>
         </Box>
     );
 };

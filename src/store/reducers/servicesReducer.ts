@@ -17,7 +17,8 @@ const initialState: ServicesState = {
 };
 
 export const servicesReducer = (
-    state = initialState, action: ServicesAction
+    state = initialState,
+    action: ServicesAction
 ): ServicesState => {
     switch (action.type) {
         case ServicesActionTypes.DANCE:
