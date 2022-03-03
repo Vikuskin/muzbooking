@@ -39,7 +39,10 @@ const style = {
 };
 
 interface CatalogPlatformCardProps {
+    idPlace: string;
+    idPlatform: string;
     namePlatform: string;
+    nameCompany: string;
     square: string;
     rider: string;
     comfort: Array<CheckedPlace>;
@@ -49,6 +52,9 @@ interface CatalogPlatformCardProps {
 }
 
 export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
+    idPlace,
+    idPlatform,
+    nameCompany,
     namePlatform,
     square,
     rider,
@@ -158,6 +164,9 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                 >
                     <Box sx={style}>
                         <BookingModal
+                            idPlace={idPlace}
+                            idPlatform={idPlatform}
+                            nameCompany={nameCompany}
                             namePlatform={namePlatform}
                             products={products}
                         />

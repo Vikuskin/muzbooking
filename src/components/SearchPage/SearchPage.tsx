@@ -174,6 +174,7 @@ export const SearchPage: React.FC = () => {
                                             sx={{
                                                 color: ' black',
                                                 textTransform: 'inherit',
+                                                width: '100%',
                                             }}
                                             onClick={() =>
                                                 fetchCatalogPlace(item._id)

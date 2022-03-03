@@ -163,7 +163,15 @@ export const ContentPageMainInfo: React.FC<State> = ({
             <Typography>Метро</Typography>
             {input(value.subway, handleChange('subway'))}
             <Typography sx={{ mt: '20px' }}>Email</Typography>
-            {input(value.email, handleChange('email'))}
+            <TextField
+                id="standard-multiline-flexible"
+                multiline
+                disabled
+                value={value.email}
+                onChange={handleChange('email')}
+                variant="standard"
+                sx={{ width: '100%' }}
+            />
             <Typography sx={{ mt: '20px' }}>Описание</Typography>
             {input(value.description, handleChange('description'))}
             <Typography sx={{ mt: '20px' }}>Время работы</Typography>

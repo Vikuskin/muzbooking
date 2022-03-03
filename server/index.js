@@ -14,6 +14,7 @@ const accountRoutes = require('./routes/account');
 const searchRoutes = require('./routes/search');
 const uploadRoutes = require('./routes/upload')
 const catalogRoutes = require('./routes/catalog')
+const bookingRoutes = require('./routes/booking')
 
 app.use(morgan('dev'));
 app.use(cors());
@@ -34,6 +35,7 @@ app.use('/registration', registerRoutes);
 app.use('/account', accountRoutes);
 app.use('/search', searchRoutes);
 app.use('/catalog', catalogRoutes);
+app.use('/booking', bookingRoutes);
 
 app.listen(port, () => console.log(port));
 module.exports = app;

@@ -31,7 +31,7 @@ interface StatePlatform {
 }
 
 export interface StateProducts {
-    id: number;
+    id: string;
     name: string;
     price: string;
     mon: string;
@@ -133,7 +133,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     };
 
     const [product, setProduct] = React.useState<StateProducts>({
-        id: Date.now(),
+        id: Date.now().toString(),
         name: '',
         price: '',
         mon: '00-23',
@@ -366,7 +366,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                             products: [...platform.products, product],
                         });
                         setProduct({
-                            id: Date.now(),
+                            id: Date.now().toString(),
                             name: '',
                             price: '',
                             mon: '00-23',

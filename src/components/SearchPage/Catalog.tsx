@@ -91,7 +91,10 @@ export const Catalog: React.FC = () => {
                                         </Fancybox>
                                     ))
                                 ) : (
-                                    <img src={noImage} alt="No platform's images"/>
+                                    <img
+                                        src={noImage}
+                                        alt="No platform's images"
+                                    />
                                 )
                             )}
                         </Carousel>
@@ -102,6 +105,9 @@ export const Catalog: React.FC = () => {
                         {data.platforms.map((platform: any) => (
                             <CatalogPlatformCard
                                 key={platform._id}
+                                idPlace={data.place._id}
+                                nameCompany={data.place.nameCompany}
+                                idPlatform={platform._id}
                                 namePlatform={platform.namePlatform}
                                 square={platform.square}
                                 rider={platform.rider}
