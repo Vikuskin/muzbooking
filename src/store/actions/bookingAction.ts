@@ -47,13 +47,14 @@ export const postBooking =
 
 export const getBooking =
     (
-        idPlatform: string
+        idPlatform: string,
+        selectProduct: string
     ) =>
     async (dispatch: Dispatch<BookingDataAction>) => {
         try {
             dispatch({ type: BookingDataActionTypes.FETCH_BOOKING_DATA });
             const response = await axios.get('http://localhost:5000/booking', {
-                params: { idPlatform },
+                params: { idPlatform, selectProduct },
             });
             dispatch({
                 type: BookingDataActionTypes.FETCH_BOOKING_DATA_SUCCESS,

@@ -25,9 +25,11 @@ module.exports.postBooking = async (req, res) => {
 };
 
 module.exports.getBooking = async (req, res) => {
-    console.log(req.query)
+    console.log(req.query.idPlatform)
     const booking = await Booking.find({
-        idPlatform: req.query.idPlatform
+        platformId: req.query.idPlatform,
+        product: req.query.selectProduct
     })
+    console.log(booking)
     res.status(200).json(booking)
 };

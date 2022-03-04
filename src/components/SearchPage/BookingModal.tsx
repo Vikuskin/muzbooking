@@ -1,3 +1,4 @@
+/* eslint-disable no-else-return */
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable no-console */
 /* eslint-disable consistent-return */
@@ -85,6 +86,9 @@ export const BookingModal: React.FC<Props> = ({
     namePlatform,
     products,
 }) => {
+    console.log(idPlatform)
+    console.log(namePlatform)
+
     // NEXT WEEK ARRAY
     const days = [
         'Воскресенье',
@@ -119,10 +123,9 @@ export const BookingModal: React.FC<Props> = ({
         sat: products[0].sat,
         sun: products[0].sun,
     });
-    console.log(selectProduct);
 
     // TABLE
-    function createData(hour: string | null, price: string | null) {
+    function createData(hour: string, price: string) {
         return { hour, price };
     }
 
@@ -130,48 +133,29 @@ export const BookingModal: React.FC<Props> = ({
         for (const key in selectProduct) {
             if (key !== 'id' && key !== 'name' && key !== 'price') {
                 if (
-                    +possibleTime.split(':')[0] <
+                    possibleTime <
                         +selectProduct[key as keyof typeof selectProduct].split(
                             '-'
                         )[0] ||
-                    +possibleTime.split(':')[0] >
+                    possibleTime >
                         +selectProduct[key as keyof typeof selectProduct].split(
                             '-'
                         )[1]
                 ) {
                     return;
                 }
-                return createData(possibleTime, selectProduct.price);
+                return createData(`${possibleTime}:00`, selectProduct.price);
             }
         }
     };
-
-    const rows = [
-        checkTime('00:00'),
-        checkTime('01:00'),
-        checkTime('02:00'),
-        checkTime('03:00'),
-        checkTime('04:00'),
-        checkTime('05:00'),
-        checkTime('06:00'),
-        checkTime('07:00'),
-        checkTime('08:00'),
-        checkTime('09:00'),
-        checkTime('10:00'),
-        checkTime('11:00'),
-        checkTime('12:00'),
-        checkTime('13:00'),
-        checkTime('14:00'),
-        checkTime('15:00'),
-        checkTime('16:00'),
-        checkTime('17:00'),
-        checkTime('18:00'),
-        checkTime('19:00'),
-        checkTime('20:00'),
-        checkTime('21:00'),
-        checkTime('22:00'),
-        checkTime('23:00'),
-    ].filter((e) => e);
+    const rows: any = [ ];
+    const tableRows = () => {
+        for (let i = 0; i < 24; i++) {
+            rows.push(checkTime(i))
+        }
+    }
+    tableRows()
+    
 
     // BOOk
     const [booking, setBooking] = useState<Booking>({
@@ -180,7 +164,6 @@ export const BookingModal: React.FC<Props> = ({
         chooseProduct: selectProduct.name,
         price: selectProduct.price,
     });
-    console.log(booking);
 
     // client data
     const [clientWindow, setClientWindow] = useState<boolean>(false);
@@ -197,10 +180,10 @@ export const BookingModal: React.FC<Props> = ({
     const { postBooking, fetchCatalogPlace, getBooking } = useActions();
 
     useEffect(() => {
-        getBooking(idPlatform)
-    }, [])
-    const { bookingData, loading } = useTypedSelector((state) => state.bookingData);
-    console.log(bookingData)
+        getBooking(idPlatform, selectProduct.name);
+    }, [idPlatform]);
+    const { bookingData } = useTypedSelector((state) => state.bookingData);
+    console.log(bookingData);
     return (
         <>
             <FlexDiv sx={{ justifyContent: 'space-between' }}>
@@ -226,19 +209,21 @@ export const BookingModal: React.FC<Props> = ({
                             defaultValue={products[0].name}
                             onChange={(event: SelectChangeEvent) => {
                                 // eslint-disable-next-line consistent-return
-                                setSelectProduct(
-                                    products.filter((item: any) => {
+                                const selectInInput = products.filter(
+                                    (item: any) => {
                                         if (item.name === event.target.value) {
                                             return item;
                                         }
-                                    })[0]
-                                );
+                                    }
+                                )[0];
+                                setSelectProduct(selectInInput);
                                 setBooking({
                                     date: '',
                                     time: '',
                                     chooseProduct: '',
                                     price: '',
                                 });
+                                getBooking(idPlatform, selectInInput.name);
                             }}
                             input={<InputTitle style={{ padding: 0 }} />}
                         >
@@ -328,7 +313,7 @@ export const BookingModal: React.FC<Props> = ({
                                 client.phone
                             );
                             alert('Заявка успешно оформлена');
-                            fetchCatalogPlace(idPlace)                          
+                            fetchCatalogPlace(idPlace);
                         }}
                     >
                         Оставить заявку
@@ -352,7 +337,7 @@ export const BookingModal: React.FC<Props> = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.map((row: any) => (
+                                {rows.filter((e: any) => e).map((row: any) => (
                                     <TableRow
                                         key={row.hour}
                                         sx={{
@@ -365,132 +350,39 @@ export const BookingModal: React.FC<Props> = ({
                                         <TableCell component="th" scope="row">
                                             {row.hour}
                                         </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[0]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[1]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[2]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[3]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[4]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[5]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
-                                        <TableCell align="center">
-                                            <Button
-                                                onClick={() => {
-                                                    setBooking({
-                                                        ...booking,
-                                                        date: getReadDate(
-                                                            nextWeek[6]
-                                                        ),
-                                                        time: row.hour,
-                                                        chooseProduct:
-                                                            selectProduct.name,
-                                                        price: selectProduct.price,
-                                                    });
-                                                }}
-                                            >
-                                                {row.price}
-                                            </Button>
-                                        </TableCell>
+                                        {nextWeek.map((day: any) => (
+                                            <TableCell align="center">
+                                                {bookingData.some(
+                                                    (item: any) =>
+                                                        +item.date.split(
+                                                            '/'
+                                                        )[0] ===
+                                                            day.getDate() &&
+                                                        item.time === row.hour
+                                                ) ? (
+                                                    <Button disabled>
+                                                        Бронь
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        onClick={() => {
+                                                            setBooking({
+                                                                ...booking,
+                                                                date: getReadDate(
+                                                                    day
+                                                                ),
+                                                                time: row.hour,
+                                                                chooseProduct:
+                                                                    selectProduct.name,
+                                                                price: selectProduct.price,
+                                                            });
+                                                        }}
+                                                    >
+                                                        {row.price}
+                                                    </Button>
+                                                )}
+                                            </TableCell>
+                                        ))}
                                     </TableRow>
                                 ))}
                             </TableBody>
