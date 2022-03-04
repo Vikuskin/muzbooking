@@ -17,5 +17,17 @@ module.exports.postBooking = async (req, res) => {
         phone: req.body.phone,
     })
     await booking.save()
+    const place = await Place.findOne({
+        _id: req.body.idPlace
+    })
+    const platforms = await Platform.find({ placeId: req.body.idPlatform })
+    res.status(200).json({place: place, platforms: platforms})
+};
+
+module.exports.getBooking = async (req, res) => {
+    console.log(req.query)
+    const booking = await Booking.find({
+        idPlatform: req.query.idPlatform
+    })
     res.status(200).json(booking)
 };

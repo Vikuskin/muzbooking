@@ -24,7 +24,7 @@ const Title = styled(TitleH1)({
 export const Catalog: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);
     console.log(data);
-
+    
     return (
         <>
             <Header />

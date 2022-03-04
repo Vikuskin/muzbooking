@@ -6,7 +6,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-plusplus */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     Box,
     FormControl,
@@ -35,6 +35,7 @@ import {
     input,
 } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
+import { useTypedSelector } from 'hooks/useTypedSelector';
 
 interface Props {
     idPlace: string;
@@ -193,8 +194,13 @@ export const BookingModal: React.FC<Props> = ({
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setClient({ ...client, [prop]: event.target.value });
         };
-    const { postBooking, fetchCatalogPlace } = useActions();
+    const { postBooking, fetchCatalogPlace, getBooking } = useActions();
 
+    useEffect(() => {
+        getBooking(idPlatform)
+    }, [])
+    const { bookingData, loading } = useTypedSelector((state) => state.bookingData);
+    console.log(bookingData)
     return (
         <>
             <FlexDiv sx={{ justifyContent: 'space-between' }}>
@@ -322,8 +328,7 @@ export const BookingModal: React.FC<Props> = ({
                                 client.phone
                             );
                             alert('Заявка успешно оформлена');
-                            // fetchCatalogPlace(idPlace)
-                            // window.location.replace('http://localhost:3000/catalog')
+                            fetchCatalogPlace(idPlace)                          
                         }}
                     >
                         Оставить заявку

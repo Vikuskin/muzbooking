@@ -49,8 +49,13 @@ export const SearchPage: React.FC = () => {
     };
 
     useEffect(() => {
-        fetchPlaces(services);
+        if (services) {
+            fetchPlaces(services);
+        } else {
+            fetchPlaces('RECORD');
+        }
     }, [services]);
+
     return (
         <>
             <Header />
