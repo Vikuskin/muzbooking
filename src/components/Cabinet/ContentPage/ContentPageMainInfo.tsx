@@ -15,21 +15,9 @@ import PhoneIcon from '@mui/icons-material/Phone';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { ContentPageButton, input } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
+import { ContentPageMainInfoProps } from 'types/Cabinet';
 
-interface State {
-    sphera: string;
-    nameCompany: string;
-    city: string;
-    address: string;
-    phone: string[][];
-    subway: string;
-    email: string;
-    description: string;
-    timetable: string;
-    price: number;
-}
-
-export const ContentPageMainInfo: React.FC<State> = ({
+export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
     sphera,
     nameCompany,
     city,
@@ -41,7 +29,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
     timetable,
     price,
 }) => {
-    const [value, setValue] = React.useState<State>({
+    const [info, setInfo] = React.useState<ContentPageMainInfoProps>({
         sphera,
         nameCompany,
         city,
@@ -56,8 +44,9 @@ export const ContentPageMainInfo: React.FC<State> = ({
     const [phoneChange, setPhoneChange] = React.useState<Array<string>>(['']);
 
     const handleChange =
-        (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-            setValue({ ...value, [prop]: event.target.value });
+        (prop: keyof ContentPageMainInfoProps) =>
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setInfo({ ...info, [prop]: event.target.value });
         };
 
     const { fetchAccountContentUpdate } = useActions();
@@ -65,15 +54,15 @@ export const ContentPageMainInfo: React.FC<State> = ({
     const sendUpdate = () => {
         fetchAccountContentUpdate(
             localStorage.token,
-            value.city,
-            value.nameCompany,
-            value.phone,
-            value.sphera,
-            value.address,
-            value.subway,
-            value.description,
-            value.timetable,
-            value.price
+            info.city,
+            info.nameCompany,
+            info.phone,
+            info.sphera,
+            info.address,
+            info.subway,
+            info.description,
+            info.timetable,
+            info.price
         );
         window.location.reload();
     };
@@ -85,7 +74,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
                 id="standard-multiline-flexible"
                 multiline
                 select
-                value={value.sphera}
+                value={info.sphera}
                 onChange={handleChange('sphera')}
                 variant="standard"
                 sx={{ width: '100%', mb: '30px' }}
@@ -96,11 +85,11 @@ export const ContentPageMainInfo: React.FC<State> = ({
                 <MenuItem value="DANCE">Танцевальные залы</MenuItem>
             </TextField>
             <Typography>Название</Typography>
-            {input(value.nameCompany, handleChange('nameCompany'))}
+            {input(info.nameCompany, handleChange('nameCompany'))}
             <Typography sx={{ mt: '20px' }}>Город</Typography>
-            {input(value.city, handleChange('city'))}
+            {input(info.city, handleChange('city'))}
             <Typography sx={{ mt: '20px' }}>Адрес</Typography>
-            {input(value.address, handleChange('address'))}
+            {input(info.address, handleChange('address'))}
             <Typography sx={{ mt: '20px' }}>Телефоны</Typography>
             <TextField
                 id="standard-multiline-flexible"
@@ -114,9 +103,9 @@ export const ContentPageMainInfo: React.FC<State> = ({
                         <InputAdornment
                             position="end"
                             onClick={() => {
-                                setValue({
-                                    ...value,
-                                    phone: value.phone.concat([phoneChange]),
+                                setInfo({
+                                    ...info,
+                                    phone: info.phone.concat([phoneChange]),
                                 });
                                 setPhoneChange([]);
                             }}
@@ -128,7 +117,7 @@ export const ContentPageMainInfo: React.FC<State> = ({
                     ),
                 }}
             />
-            {value.phone && (
+            {info.phone && (
                 <List
                     sx={{
                         width: '100%',
@@ -137,9 +126,8 @@ export const ContentPageMainInfo: React.FC<State> = ({
                     }}
                     aria-label="contacts"
                 >
-                    {value.phone.map((item: string[], i: number) => (
-                        // eslint-disable-next-line react/no-array-index-key
-                        <ListItem disablePadding key={i}>
+                    {info.phone.map((item: string[], i: number) => (
+                        <ListItem disablePadding key={item[i]}>
                             <ListItemIcon>
                                 <PhoneIcon />
                             </ListItemIcon>
@@ -148,10 +136,10 @@ export const ContentPageMainInfo: React.FC<State> = ({
                                 <RemoveCircleIcon
                                     sx={{ cursor: 'pointer' }}
                                     onClick={() => {
-                                        value.phone = value.phone.filter(
-                                            (n: any) => n !== item
+                                        info.phone = info.phone.filter(
+                                            (n: string[]) => n !== item
                                         );
-                                        setValue({ ...value });
+                                        setInfo({ ...info });
                                     }}
                                 />
                             </ListItemIcon>
@@ -161,23 +149,23 @@ export const ContentPageMainInfo: React.FC<State> = ({
             )}
 
             <Typography>Метро</Typography>
-            {input(value.subway, handleChange('subway'))}
+            {input(info.subway, handleChange('subway'))}
             <Typography sx={{ mt: '20px' }}>Email</Typography>
             <TextField
                 id="standard-multiline-flexible"
                 multiline
                 disabled
-                value={value.email}
+                value={info.email}
                 onChange={handleChange('email')}
                 variant="standard"
                 sx={{ width: '100%' }}
             />
             <Typography sx={{ mt: '20px' }}>Описание</Typography>
-            {input(value.description, handleChange('description'))}
+            {input(info.description, handleChange('description'))}
             <Typography sx={{ mt: '20px' }}>Время работы</Typography>
-            {input(value.timetable, handleChange('timetable'))}
+            {input(info.timetable, handleChange('timetable'))}
             <Typography sx={{ mt: '20px' }}>Средняя цена за час</Typography>
-            {input(value.price, handleChange('price'))}
+            {input(info.price, handleChange('price'))}
             <ContentPageButton onClick={() => sendUpdate()} sx={{ mt: '20px' }}>
                 Сохранить
             </ContentPageButton>

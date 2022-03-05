@@ -1,11 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material';
 import { TitleH2, FlexDiv } from 'style/otherStyles';
-
-interface CardBenefitsProps {
-    img: string;
-    description: string;
-}
+import { CardBenefitsProps } from 'types/AddArea';
 
 const Card = styled('div')({
     width: '275px',

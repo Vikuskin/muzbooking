@@ -21,38 +21,12 @@ import {
 } from 'style/otherStyles';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { useActions } from 'hooks/useActions';
-import { CheckedPlace } from 'components/databases/dbCheckboxs';
-
-interface StatePlatform {
-    namePlatform: string;
-    square: string;
-    rider: string;
-    products: Array<StateProducts>;
-}
-
-export interface StateProducts {
-    id: string;
-    name: string;
-    price: string;
-    mon: string;
-    tue: string;
-    wed: string;
-    thu: string;
-    fri: string;
-    sat: string;
-    sun: string;
-}
-
-export interface PlatformProps {
-    namePlatform: string;
-    square: string;
-    rider: string;
-    products: Array<StateProducts>;
-    services: Array<CheckedPlace>;
-    comfort: Array<CheckedPlace>;
-    _id: string;
-    images: Array<string>;
-}
+import {
+    ContentCompanyImages,
+    ContentPagePlatformProps,
+    PlatformState,
+    ProductsState,
+} from 'types/Cabinet';
 
 const baseStyle = {
     display: 'flex',
@@ -91,7 +65,7 @@ const Comfort = styled('div')({
     marginBottom: '30px',
 });
 
-export const ContentPagePlatform: React.FC<PlatformProps> = ({
+export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
     namePlatform,
     square,
     rider,
@@ -101,20 +75,20 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     _id,
     images,
 }) => {
-    const [platform, setPlatform] = React.useState<StatePlatform>({
+    const [platform, setPlatform] = React.useState<PlatformState>({
         namePlatform,
         square,
         rider,
         products,
     });
     const handleChange =
-        (prop: keyof StatePlatform) =>
+        (prop: keyof PlatformState) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setPlatform({ ...platform, [prop]: event.target.value });
         };
     const [servicesChecked, setServicesChecked] = React.useState(services);
     const [comfortChecked, setComfortChecked] = React.useState(comfort);
-    const handleChangeServices = (position: any) => {
+    const handleChangeServices = (position: number) => {
         const updatedCheckedState = servicesChecked.map((item, index) =>
             index === position
                 ? { ...item, checked: !item.checked }
@@ -123,7 +97,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
         setServicesChecked(updatedCheckedState);
     };
 
-    const handleChangeComfort = (position: any) => {
+    const handleChangeComfort = (position: number) => {
         const updatedCheckedState = comfortChecked.map((item, index) =>
             index === position
                 ? { ...item, checked: !item.checked }
@@ -132,7 +106,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
         setComfortChecked(updatedCheckedState);
     };
 
-    const [product, setProduct] = React.useState<StateProducts>({
+    const [product, setProduct] = React.useState<ProductsState>({
         id: Date.now().toString(),
         name: '',
         price: '',
@@ -146,7 +120,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
     });
 
     const handleChangeProducts =
-        (prop: keyof StateProducts) =>
+        (prop: keyof ProductsState) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setProduct({ ...product, [prop]: event.target.value });
         };
@@ -154,7 +128,6 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
 
     // images
     const [files, setFiles] = useState(images);
-    console.log(files);
     const onDrop = useCallback((acceptedFiles) => {
         setFiles(
             acceptedFiles.map((file: Blob | MediaSource) =>
@@ -187,7 +160,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
         [isDragActive, isDragReject, isDragAccept]
     );
 
-    const thumbs = files.map((file: any) => (
+    const thumbs = files.map((file: ContentCompanyImages) => (
         <div key={file.filename} style={{ position: 'relative' }}>
             <img
                 src={
@@ -202,8 +175,8 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                 fontSize="large"
                 sx={{ position: 'absolute', top: '10px', right: '10px' }}
                 onClick={() => {
-                    const fileRemove: any = files.filter(
-                        (n: any) => n !== file
+                    const fileRemove: Array<ContentCompanyImages> = files.filter(
+                        (n: ContentCompanyImages) => n !== file
                     );
                     setFiles(fileRemove);
                 }}
@@ -213,13 +186,12 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
 
     useEffect(
         () => () => {
-            files.forEach((file: any) => URL.revokeObjectURL(file.preview));
+            files.forEach((file: ContentCompanyImages) => URL.revokeObjectURL(file.preview!));
         },
         [files]
     );
 
     const sendPlatform = async () => {
-        console.log(files);
         fetchAccountPlatform(
             localStorage.token,
             platform.namePlatform,
@@ -382,7 +354,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                     add_circle
                 </Icon>
             </ContentPageListItem>
-            {platform.products.map((item: StateProducts) => (
+            {platform.products.map((item: ProductsState) => (
                 <ContentPageListItem
                     sx={{ justifyContent: 'space-between' }}
                     key={item.id}
@@ -459,7 +431,7 @@ export const ContentPagePlatform: React.FC<PlatformProps> = ({
                         sx={{ cursor: 'pointer' }}
                         onClick={() => {
                             platform.products = platform.products.filter(
-                                (n: any) => n !== item
+                                (n: ProductsState) => n !== item
                             );
                             setPlatform({ ...platform });
                         }}

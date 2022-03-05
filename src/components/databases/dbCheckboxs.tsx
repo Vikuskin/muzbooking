@@ -1,10 +1,6 @@
-export interface CheckedPlace {
-    value: string;
-    id: number;
-    checked: boolean;
-}
+import { CheckedPlaceDB } from 'types/Databases';
 
-export const dbServicesPlace: CheckedPlace[] = [
+export const dbServicesPlace: CheckedPlaceDB[] = [
     {
         value: 'Чай/кофе',
         id: 0,
@@ -32,7 +28,7 @@ export const dbServicesPlace: CheckedPlace[] = [
     },
 ];
 
-export const dbComfortPlace: CheckedPlace[] = [
+export const dbComfortPlace: CheckedPlaceDB[] = [
     {
         value: 'Зона для курения',
         id: 0,

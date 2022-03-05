@@ -1,7 +1,7 @@
 export interface BookingDataState {
     bookingData: any;
     loading: boolean;
-    error: any;
+    error: string | null;
 }
 
 export enum BookingDataActionTypes {

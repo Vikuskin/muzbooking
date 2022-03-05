@@ -1,14 +1,11 @@
-/* eslint-disable object-shorthand */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable consistent-return */
-/* eslint-disable arrow-body-style */
+
 import axios from 'axios';
 import { Dispatch } from 'redux';
+import { ContentCompanyImages, ProductsState } from 'types/Cabinet';
+import { CheckedPlaceDB } from 'types/Databases';
 import { DataAction, DataActionTypes } from '../reducers/dataReducer';
 
-export const fetchLogin = (email: string, password: string) => {
-    return async (dispatch: Dispatch<DataAction>) => {
+export const fetchLogin = (email: string, password: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.get('http://localhost:5000/login', {
@@ -22,6 +19,7 @@ export const fetchLogin = (email: string, password: string) => {
             window.setTimeout(() => {
                 window.location.replace('http://localhost:3000/account');
             }, 2000);
+            return response.data.message;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
@@ -30,7 +28,6 @@ export const fetchLogin = (email: string, password: string) => {
             return e.response.data.message;
         }
     };
-};
 
 export const fetchRegistration = (
     city: string,
@@ -41,8 +38,7 @@ export const fetchRegistration = (
     sphera: string,
     address: string,
     subway: string
-) => {
-    return async (dispatch: Dispatch<DataAction>) => {
+) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
@@ -65,6 +61,7 @@ export const fetchRegistration = (
             window.setTimeout(() => {
                 window.location.replace('http://localhost:3000/login');
             }, 2000);
+            return response.data.message;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
@@ -73,10 +70,8 @@ export const fetchRegistration = (
             return e.response.data.message;
         }
     };
-};
 
-export const fetchAccountContent = (token: string) => {
-    return async (dispatch: Dispatch<DataAction>) => {
+export const fetchAccountContent = (token: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.get('http://localhost:5000/account', {
@@ -86,6 +81,7 @@ export const fetchAccountContent = (token: string) => {
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
             });
+            return response.data;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
@@ -94,7 +90,6 @@ export const fetchAccountContent = (token: string) => {
             return e.response.data.message;
         }
     };
-};
 
 export const fetchAccountContentUpdate = (
     token: string,
@@ -107,22 +102,21 @@ export const fetchAccountContentUpdate = (
     description: string,
     timetable: string,
     price: number
-) => {
-    return async (dispatch: Dispatch<DataAction>) => {
+) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.put(
                 'http://localhost:5000/account',
                 {
-                    city: city,
-                    nameCompany: nameCompany,
-                    phone: phone,
-                    sphera: sphera,
-                    address: address,
-                    subway: subway,
-                    description: description,
-                    timetable: timetable,
-                    price: price,
+                    city,
+                    nameCompany,
+                    phone,
+                    sphera,
+                    address,
+                    subway,
+                    description,
+                    timetable,
+                    price,
                 },
                 {
                     headers: { Authorization: `Bearer ${token}` },
@@ -141,20 +135,18 @@ export const fetchAccountContentUpdate = (
             return e.response.data.message;
         }
     };
-};
 
 export const fetchAccountPlatform = (
     token: string,
     name: string,
     square: string,
     rider: string,
-    products: any[],
-    services: any[],
-    comfort: any[],
+    products: Array<ProductsState>,
+    services: Array<CheckedPlaceDB>,
+    comfort: Array<CheckedPlaceDB>,
     idPlatform: string,
-    files: any
-) => {
-    return async (dispatch: Dispatch<DataAction>) => {
+    files: Array<ContentCompanyImages>
+) => async (dispatch: Dispatch<DataAction>) => {
         const data = new FormData();
         files.forEach((file: any) => {
             data.append('images', file);
@@ -166,7 +158,6 @@ export const fetchAccountPlatform = (
         data.append('services', JSON.stringify(services));
         data.append('comfort', JSON.stringify(comfort));
         data.append('idPlatform', idPlatform);
-        console.log(data);
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
@@ -183,6 +174,7 @@ export const fetchAccountPlatform = (
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
             });
+            return response.data;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
@@ -191,16 +183,14 @@ export const fetchAccountPlatform = (
             return e.response;
         }
     };
-};
 
-export const fetchAccountPlatformDelete = (token: string, id: string) => {
-    return async (dispatch: Dispatch<DataAction>) => {
+export const fetchAccountPlatformDelete = (token: string, id: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.delete(
                 'http://localhost:5000/account',
                 {
-                    data: { token: token, id: id },
+                    data: { token, id },
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );
@@ -217,4 +207,3 @@ export const fetchAccountPlatformDelete = (token: string, id: string) => {
             return e.response.data.message;
         }
     };
-};

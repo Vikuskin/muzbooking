@@ -9,8 +9,9 @@ import phoneRight from 'image/MainPage/mainPhone2.png';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
 import { TitleH1, FlexDiv } from 'style/otherStyles';
-import { Cards } from 'components/MainPage/Card';
-import { dbServices, Services } from 'components/databases/dbServices';
+import { Cards } from 'components/Main/Card';
+import { dbServices } from 'components/databases/dbServices';
+import { ServicesDB } from 'types/Databases';
 
 export const Main: React.FC = () => (
     <>
@@ -18,7 +19,7 @@ export const Main: React.FC = () => (
         <Container maxWidth="xl" sx={{ pt: '50px' }}>
             <TitleH1>Поиск и бронирование творческих площадок и услуг</TitleH1>
             <FlexDiv sx={{ mb: 5, flexWrap: 'wrap' }}>
-                {dbServices.map((service: Services) => (
+                {dbServices.map((service: ServicesDB) => (
                     <Cards
                         key={service.id}
                         title={service.title}

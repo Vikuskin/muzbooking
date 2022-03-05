@@ -16,10 +16,7 @@ import {
     ContentPageListItem,
     ContentPageButton,
 } from 'style/otherStyles';
-import {
-    ContentPagePlatform,
-    PlatformProps,
-} from 'components/Cabinet/ContentPage/ContentPagePlatform';
+import { ContentPagePlatform } from 'components/Cabinet/ContentPage/ContentPagePlatform';
 import { ContentPageMainInfo } from 'components/Cabinet/ContentPage/ContentPageMainInfo';
 import {
     dbServicesPlace,
@@ -27,6 +24,7 @@ import {
 } from 'components/databases/dbCheckboxs';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
+import { ContentPagePlatformProps } from 'types/Cabinet';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -49,10 +47,9 @@ const OrangeCircleIcon = styled(AddCircleIcon)({
     width: '100%',
 });
 
-export const ContentPage = () => {
+export const ContentPage: React.FC = () => {
     const [showPlatform, setShowPlatform] = React.useState<boolean>(false);
     const { data, loading } = useTypedSelector((state) => state.data);
-    console.log(data);
     const { fetchAccountContent, fetchAccountPlatformDelete } = useActions();
 
     useEffect(() => {
@@ -65,7 +62,7 @@ export const ContentPage = () => {
             }, 1000);
         }
     }, []);
-    const [modal, setModal] = React.useState<PlatformProps>({
+    const [modal, setModal] = React.useState<ContentPagePlatformProps>({
         namePlatform: '',
         square: '0',
         rider: '',
@@ -108,7 +105,7 @@ export const ContentPage = () => {
                     ) : (
                         data.platform &&
                         !showPlatform &&
-                        data.platform.map((item: any) => (
+                        data.platform.map((item: ContentPagePlatformProps) => (
                             <ContentPageListItem
                                 key={item._id}
                                 sx={{

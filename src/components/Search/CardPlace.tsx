@@ -5,15 +5,7 @@ import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
 import noImages from 'image/noImage.png';
 import { FlexDiv } from 'style/otherStyles';
-
-interface CardProps {
-    images: string[];
-    title: string;
-    address: string;
-    subway: string;
-    timetable: string;
-    price: number;
-}
+import { CardPlaceProps } from 'types/Search';
 
 const Card = styled('div')({
     width: '100%',
@@ -32,7 +24,7 @@ const DescCard = styled(FlexDiv)({
     marginBottom: '10px',
 });
 
-export const CardPlace: React.FC<CardProps> = ({
+export const CardPlace: React.FC<CardPlaceProps> = ({
     images,
     title,
     address,

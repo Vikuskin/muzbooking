@@ -55,7 +55,8 @@
             }
         ],
         "@typescript-eslint/default-param-last": ["off"],
-        "no-underscore-dangle": "off"
+        "no-underscore-dangle": "off",
+        "no-plusplus": "off"
     },
     "settings": {
         "import/resolver": {

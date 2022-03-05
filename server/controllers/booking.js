@@ -3,7 +3,6 @@ const Platform = require('../models/Platforms')
 const Booking = require('../models/Booking')
 
 module.exports.postBooking = async (req, res) => {
-    console.log(req.body)
     const booking = new Booking({
         placeId: req.body.idPlace,
         platformId: req.body.idPlatform,
@@ -25,11 +24,9 @@ module.exports.postBooking = async (req, res) => {
 };
 
 module.exports.getBooking = async (req, res) => {
-    console.log(req.query.idPlatform)
     const booking = await Booking.find({
         platformId: req.query.idPlatform,
         product: req.query.selectProduct
     })
-    console.log(booking)
     res.status(200).json(booking)
 };

@@ -51,13 +51,11 @@ module.exports.accountContentUpdate = async (req, res) => {
 module.exports.accountPlatform = async (req, res) => {
     try {
         if (req.body.idPlatform) {
-            console.log(req.files);
             const platform = await Platform.findOne({
                 _id: req.body.idPlatform,
             });
             if (platform.images[0]) {
                 platform.images.map((file) => {
-                    console.log(file.path);
                     fs.unlinkSync(file.path);
                 });
             }
@@ -93,13 +91,11 @@ module.exports.accountPlatform = async (req, res) => {
                 const updatePlatform = await Platform.findOne({
                     _id: req.body.idPlatform,
                 });
-                console.log('success update');
                 res.status(200).json(updatePlatform);
             } else {
                 res.status(400).json(updatePlatform);
             }
         } else {
-            console.log(req.files);
             const place = await Place.findOne({
                 email: req.user.email,
             });
@@ -139,10 +135,8 @@ module.exports.accountPlatformDelete = async (req, res) => {
         const platform = await Platform.findOne({
             _id: req.body.id,
         });
-        console.log(platform.images);
         if (platform.images[0]) {
             platform.images.map((file) => {
-                console.log(file.path);
                 fs.unlinkSync(file.path);
             });
         }

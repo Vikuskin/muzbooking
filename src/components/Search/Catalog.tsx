@@ -8,12 +8,13 @@ import { FlexDiv, TitleH1 } from 'style/otherStyles';
 import Fancybox from 'components/Fancybox/Fancybox';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
-import { CatalogPlatformCard } from 'components/SearchPage/CatalogPlatformCard';
+import { CatalogPlatformCard } from 'components/Search/CatalogPlatformCard';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import addressIcon from 'image/SearchPage/address.svg';
 import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
 import noImage from 'image/noImage.png';
+import { ContentCompanyImages, ContentPagePlatformProps } from 'types/Cabinet';
 
 const Title = styled(TitleH1)({
     textAlign: 'left',
@@ -23,8 +24,7 @@ const Title = styled(TitleH1)({
 
 export const Catalog: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);
-    console.log(data);
-    
+
     return (
         <>
             <Header />
@@ -75,9 +75,9 @@ export const Catalog: React.FC = () => {
                             itemsToShow={1}
                             isRTL={false}
                         >
-                            {data.platforms.map((item: any) =>
+                            {data.platforms.map((item: ContentPagePlatformProps) =>
                                 item.images[0] ? (
-                                    item.images.map((img: any) => (
+                                    item.images.map((img: ContentCompanyImages) => (
                                         <Fancybox options={{ infinite: false }}>
                                             <Button
                                                 data-fancybox="gallery"
@@ -102,7 +102,7 @@ export const Catalog: React.FC = () => {
 
                     <Container maxWidth="xl" sx={{ textAlign: 'left' }}>
                         <Title>Площадки объекта</Title>
-                        {data.platforms.map((platform: any) => (
+                        {data.platforms.map((platform: ContentPagePlatformProps) => (
                             <CatalogPlatformCard
                                 key={platform._id}
                                 idPlace={data.place._id}

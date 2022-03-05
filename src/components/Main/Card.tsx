@@ -2,14 +2,7 @@ import * as React from 'react';
 import { styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useActions } from 'hooks/useActions';
-
-interface CardProps {
-    title: string;
-    img: string;
-    icon: string;
-    description: string;
-    id: string;
-}
+import { CardProps } from 'types/Main';
 
 const Card = styled('div')({
     margin: 'auto',

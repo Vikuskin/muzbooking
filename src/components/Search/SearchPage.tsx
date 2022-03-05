@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect } from 'react';
 import {
     Box,
@@ -15,8 +16,10 @@ import { Link } from 'react-router-dom';
 import { InputSearch, InputTitle, FlexDiv } from 'style/otherStyles';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
-import { CardPlace } from 'components/SearchPage/CardPlace';
+import { usePosition } from 'use-position';
+import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
+import { CardPlaceProps } from 'types/Search';
 
 const Map = styled('div')({
     minWidth: '45%',
@@ -37,10 +40,8 @@ export const SearchPage: React.FC = () => {
     const services: string = useTypedSelector(
         (state) => state.services.services
     );
-    console.log(services);
     const { data, loading } = useTypedSelector((state) => state.data);
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
-    console.log(data);
     const autoComplete: any = [];
     autoComplete.push(data);
 
@@ -51,6 +52,10 @@ export const SearchPage: React.FC = () => {
     useEffect(() => {
         fetchPlaces(services);
     }, [services]);
+    const watch = true;
+    const { latitude, longitude } = usePosition(watch);
+    console.log(latitude)
+    console.log(longitude)
     return (
         <>
             <Header />
@@ -120,8 +125,7 @@ export const SearchPage: React.FC = () => {
                                     options={autoComplete}
                                     sx={{ minWidth: 200, p: 0 }}
                                     renderInput={(params) => (
-                                        <TextField
-                                            // eslint-disable-next-line react/jsx-props-no-spreading
+                                        <TextField                                        
                                             {...params}
                                             label="Площадка"
                                         />
@@ -168,7 +172,7 @@ export const SearchPage: React.FC = () => {
                                 <>Загрузка...</>
                             ) : (
                                 data[0] &&
-                                data.map((item: any) => (
+                                data.map((item: CardPlaceProps) => (
                                     <Link to="/catalog">
                                         <Button
                                             sx={{
@@ -177,12 +181,12 @@ export const SearchPage: React.FC = () => {
                                                 width: '100%',
                                             }}
                                             onClick={() =>
-                                                fetchCatalogPlace(item._id)
+                                                fetchCatalogPlace(item._id!)
                                             }
                                         >
                                             <CardPlace
                                                 key={item._id}
-                                                title={item.nameCompany}
+                                                title={item.nameCompany!}
                                                 address={item.address}
                                                 subway={item.subway}
                                                 timetable={item.timetable}

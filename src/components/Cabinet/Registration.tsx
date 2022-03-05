@@ -17,6 +17,7 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import logo from 'image/logoRegistration.svg';
 import { FlexDiv, input } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
+import { RegistrationState } from 'types/Cabinet';
 
 const Background = styled('div')({
     width: '100%',
@@ -62,19 +63,8 @@ const Button = styled('button')({
     },
 });
 
-export interface State {
-    email: string;
-    password: string;
-    phone: string[][];
-    nameCompany: string;
-    city: string;
-    sphera: string;
-    address: string;
-    subway: string;
-}
-
 export const Registration: React.FC = () => {
-    const [value, setValue] = React.useState<State>({
+    const [registration, setRegistration] = React.useState<RegistrationState>({
         email: '',
         password: '',
         phone: [],
@@ -86,22 +76,23 @@ export const Registration: React.FC = () => {
     });
     const [phone, setPhone] = React.useState<Array<string>>(['']);
     const handleChange =
-        (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-            setValue({ ...value, [prop]: event.target.value });
+        (prop: keyof RegistrationState) =>
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            setRegistration({ ...registration, [prop]: event.target.value });
         };
 
     const { fetchRegistration } = useActions();
 
     const sendRegistration = async () => {
         const res = await fetchRegistration(
-            value.city,
-            value.email,
-            value.nameCompany,
-            value.password,
-            value.phone,
-            value.sphera,
-            value.address,
-            value.subway
+            registration.city,
+            registration.email,
+            registration.nameCompany,
+            registration.password,
+            registration.phone,
+            registration.sphera,
+            registration.address,
+            registration.subway
         );
         if (res) {
             alert(res);
@@ -145,13 +136,16 @@ export const Registration: React.FC = () => {
                         </Typography>
 
                         <Typography>Название компании</Typography>
-                        {input(value.nameCompany, handleChange('nameCompany'))}
+                        {input(
+                            registration.nameCompany,
+                            handleChange('nameCompany')
+                        )}
                         <Typography sx={{ mt: '20px' }}>Город</Typography>
-                        {input(value.city, handleChange('city'))}
+                        {input(registration.city, handleChange('city'))}
                         <Typography sx={{ mt: '20px' }}>Адрес</Typography>
-                        {input(value.address, handleChange('address'))}
+                        {input(registration.address, handleChange('address'))}
                         <Typography sx={{ mt: '20px' }}>Пароль</Typography>
-                        {input(value.password, handleChange('password'))}
+                        {input(registration.password, handleChange('password'))}
                         <Typography sx={{ mt: '20px' }}>Телефоны</Typography>
                         <TextField
                             id="standard-multiline-flexible"
@@ -165,11 +159,11 @@ export const Registration: React.FC = () => {
                                     <InputAdornment
                                         position="end"
                                         onClick={() => {
-                                            setValue({
-                                                ...value,
-                                                phone: value.phone.concat([
-                                                    phone,
-                                                ]),
+                                            setRegistration({
+                                                ...registration,
+                                                phone: registration.phone.concat(
+                                                    [phone]
+                                                ),
                                             });
                                             setPhone([]);
                                         }}
@@ -184,7 +178,7 @@ export const Registration: React.FC = () => {
                                 ),
                             }}
                         />
-                        {value.phone && (
+                        {registration.phone && (
                             <List
                                 sx={{
                                     width: '100%',
@@ -193,10 +187,9 @@ export const Registration: React.FC = () => {
                                 }}
                                 aria-label="contacts"
                             >
-                                {value.phone.map(
+                                {registration.phone.map(
                                     (item: string[], i: number) => (
-                                        // eslint-disable-next-line react/no-array-index-key
-                                        <ListItem disablePadding key={i}>
+                                        <ListItem disablePadding key={item[i]}>
                                             <ListItemIcon>
                                                 <PhoneIcon />
                                             </ListItemIcon>
@@ -205,12 +198,14 @@ export const Registration: React.FC = () => {
                                                 <RemoveCircleIcon
                                                     sx={{ cursor: 'pointer' }}
                                                     onClick={() => {
-                                                        value.phone =
-                                                            value.phone.filter(
-                                                                (n: any) =>
+                                                        registration.phone =
+                                                            registration.phone.filter(
+                                                                (n: string[]) =>
                                                                     n !== item
                                                             );
-                                                        setValue({ ...value });
+                                                        setRegistration({
+                                                            ...registration,
+                                                        });
                                                     }}
                                                 />
                                             </ListItemIcon>
@@ -229,7 +224,7 @@ export const Registration: React.FC = () => {
                             id="standard-multiline-flexible"
                             multiline
                             select
-                            value={value.sphera}
+                            value={registration.sphera}
                             onChange={handleChange('sphera')}
                             variant="standard"
                             sx={{ width: '100%' }}
@@ -244,9 +239,9 @@ export const Registration: React.FC = () => {
                             <MenuItem value="DANCE">Танцевальные залы</MenuItem>
                         </TextField>
                         <Typography sx={{ mt: '20px' }}>Метро</Typography>
-                        {input(value.subway, handleChange('subway'))}
+                        {input(registration.subway, handleChange('subway'))}
                         <Typography sx={{ mt: '20px' }}>Email</Typography>
-                        {input(value.email, handleChange('email'))}
+                        {input(registration.email, handleChange('email'))}
                     </FormColumn>
                 </Box>
                 <Button onClick={() => sendRegistration()}>

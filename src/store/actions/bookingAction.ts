@@ -1,4 +1,4 @@
-/* eslint-disable consistent-return */
+
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { DataAction, DataActionTypes } from 'store/reducers/dataReducer';
@@ -36,6 +36,7 @@ export const postBooking =
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
             });
+            return response.data;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,
@@ -60,6 +61,7 @@ export const getBooking =
                 type: BookingDataActionTypes.FETCH_BOOKING_DATA_SUCCESS,
                 payload: response.data,
             });
+            return response.data;
         } catch (e) {
             dispatch({
                 type: BookingDataActionTypes.FETCH_BOOKING_DATA_ERROR,

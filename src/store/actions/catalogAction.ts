@@ -1,4 +1,4 @@
-/* eslint-disable consistent-return */
+
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { DataAction, DataActionTypes } from '../reducers/dataReducer';
@@ -14,6 +14,7 @@ export const fetchCatalogPlace =
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
             });
+            return response.data;
         } catch (e) {
             dispatch({
                 type: DataActionTypes.FETCH_DATA_ERROR,

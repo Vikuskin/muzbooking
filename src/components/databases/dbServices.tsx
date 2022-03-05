@@ -1,12 +1,6 @@
-export interface Services {
-    img: string;
-    title: string;
-    icon: string;
-    description: string;
-    id: string;
-}
+import { ServicesDB } from 'types/Databases';
 
-export const dbServices: Services[] = [
+export const dbServices: ServicesDB[] = [
     {
         img: 'image/record.png',
         title: 'студии звукозаписи',

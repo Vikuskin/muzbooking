@@ -1,7 +1,7 @@
 export interface DataState {
     data: any;
     loading: boolean;
-    error: any;
+    error: string | null;
 }
 
 export enum DataActionTypes {

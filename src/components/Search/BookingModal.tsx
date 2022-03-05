@@ -1,12 +1,5 @@
-/* eslint-disable no-else-return */
 /* eslint-disable no-restricted-syntax */
-/* eslint-disable no-console */
 /* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
-/* eslint-disable no-plusplus */
-
 import React, { useState, useEffect } from 'react';
 import {
     Box,
@@ -27,36 +20,16 @@ import {
     Paper,
     Typography,
 } from '@mui/material';
-import { StateProducts } from 'components/Cabinet/ContentPage/ContentPagePlatform';
+import { ProductsState } from 'types/Cabinet';
 import {
-    ContentPageButton,
     FlexDiv,
     InputTitle,
-    TitleH1,
-    input,
+    TitleH1
 } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
+import { BookingModalProps, BookingState, ClientState } from 'types/Search';
 
-interface Props {
-    idPlace: string;
-    idPlatform: string;
-    nameCompany: string;
-    namePlatform: string;
-    products: Array<StateProducts>;
-}
-
-interface Booking {
-    date: string;
-    time: string;
-    chooseProduct: string;
-    price: string;
-}
-interface StateClient {
-    name: string;
-    comment: string;
-    phone: string;
-}
 
 const ButtonBooking = styled(Button)({
     backgroundColor: '#f79521',
@@ -79,16 +52,13 @@ const ClientForm = styled('div')({
     marginBottom: '30px',
 });
 
-export const BookingModal: React.FC<Props> = ({
+export const BookingModal: React.FC<BookingModalProps> = ({
     idPlace,
     idPlatform,
     nameCompany,
     namePlatform,
     products,
 }) => {
-    console.log(idPlatform)
-    console.log(namePlatform)
-
     // NEXT WEEK ARRAY
     const days = [
         'Воскресенье',
@@ -102,16 +72,16 @@ export const BookingModal: React.FC<Props> = ({
     let now = new Date();
     const time = now.getTime();
     now = new Date(time - (time % 86400000));
-    const nextWeek: any[] = [];
+    const nextWeek: Date[] = [];
     for (let i = 0; i < 7; i++, now.setDate(now.getDate() + 1)) {
         nextWeek.push(new Date(now.getTime()));
     }
-    const getReadDate = (date: any) =>
+    const getReadDate = (date: Date) =>
         `${`0${date.getDate()}`.slice(-2)}/${`0${date.getMonth() + 1}`.slice(
             -2
         )}/${date.getFullYear()}`;
 
-    const [selectProduct, setSelectProduct] = React.useState<StateProducts>({
+    const [selectProduct, setSelectProduct] = React.useState<ProductsState>({
         id: products[0].id,
         name: products[0].name,
         price: products[0].price,
@@ -129,7 +99,7 @@ export const BookingModal: React.FC<Props> = ({
         return { hour, price };
     }
 
-    const checkTime = (possibleTime: any) => {
+    const checkTime = (possibleTime: number) => {
         for (const key in selectProduct) {
             if (key !== 'id' && key !== 'name' && key !== 'price') {
                 if (
@@ -155,10 +125,11 @@ export const BookingModal: React.FC<Props> = ({
         }
     }
     tableRows()
+    console.log(rows)
     
 
     // BOOk
-    const [booking, setBooking] = useState<Booking>({
+    const [booking, setBooking] = useState<BookingState>({
         date: '',
         time: '',
         chooseProduct: selectProduct.name,
@@ -167,13 +138,13 @@ export const BookingModal: React.FC<Props> = ({
 
     // client data
     const [clientWindow, setClientWindow] = useState<boolean>(false);
-    const [client, setClient] = useState<StateClient>({
+    const [client, setClient] = useState<ClientState>({
         name: '',
         comment: '',
         phone: '',
     });
     const handleChange =
-        (prop: keyof StateClient) =>
+        (prop: keyof ClientState) =>
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setClient({ ...client, [prop]: event.target.value });
         };
@@ -183,7 +154,6 @@ export const BookingModal: React.FC<Props> = ({
         getBooking(idPlatform, selectProduct.name);
     }, [idPlatform]);
     const { bookingData } = useTypedSelector((state) => state.bookingData);
-    console.log(bookingData);
     return (
         <>
             <FlexDiv sx={{ justifyContent: 'space-between' }}>
@@ -208,12 +178,12 @@ export const BookingModal: React.FC<Props> = ({
                             id="product"
                             defaultValue={products[0].name}
                             onChange={(event: SelectChangeEvent) => {
-                                // eslint-disable-next-line consistent-return
                                 const selectInInput = products.filter(
-                                    (item: any) => {
+                                    (item: ProductsState) => {
                                         if (item.name === event.target.value) {
                                             return item;
                                         }
+                                        return false
                                     }
                                 )[0];
                                 setSelectProduct(selectInInput);
@@ -227,8 +197,8 @@ export const BookingModal: React.FC<Props> = ({
                             }}
                             input={<InputTitle style={{ padding: 0 }} />}
                         >
-                            {products.map((item: any) => (
-                                <MenuItem value={item.name} key={item._id}>
+                            {products.map((item: ProductsState) => (
+                                <MenuItem value={item.name} key={item.id}>
                                     {item.name}
                                 </MenuItem>
                             ))}
@@ -327,7 +297,7 @@ export const BookingModal: React.FC<Props> = ({
                             <TableHead>
                                 <TableRow>
                                     <TableCell>Время</TableCell>
-                                    {nextWeek.map((dayWeek: any) => (
+                                    {nextWeek.map((dayWeek: Date) => (
                                         <TableCell align="center">
                                             {days[dayWeek.getDay()]}
                                             <br />
@@ -337,7 +307,7 @@ export const BookingModal: React.FC<Props> = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.filter((e: any) => e).map((row: any) => (
+                                {rows.filter((e: any) => e).map((row: {hour: string, price: string}) => (
                                     <TableRow
                                         key={row.hour}
                                         sx={{
@@ -350,10 +320,10 @@ export const BookingModal: React.FC<Props> = ({
                                         <TableCell component="th" scope="row">
                                             {row.hour}
                                         </TableCell>
-                                        {nextWeek.map((day: any) => (
+                                        {nextWeek.map((day: Date) => (
                                             <TableCell align="center">
                                                 {bookingData.some(
-                                                    (item: any) =>
+                                                    (item: BookingState) =>
                                                         +item.date.split(
                                                             '/'
                                                         )[0] ===

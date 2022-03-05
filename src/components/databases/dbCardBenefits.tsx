@@ -1,10 +1,6 @@
-export interface CardBeneftsInterface {
-    img: string;
-    description: string;
-    id: number;
-}
+import { CardBeneftsDB } from 'types/Databases';
 
-export const dbCardBenefits: CardBeneftsInterface[] = [
+export const dbCardBenefits: CardBeneftsDB[] = [
     {
         id: 1,
         img: 'image/cardBenefits/benefitsCard1.svg',

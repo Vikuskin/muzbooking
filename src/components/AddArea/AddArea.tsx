@@ -9,15 +9,13 @@ import benefitsMid1 from 'image/AddAreaPage/benefitsMid1.png.webp';
 import benefitsMid2 from 'image/AddAreaPage/benefitsMid2.png.webp';
 import benefitsMid3 from 'image/AddAreaPage/benefitsMid3.png';
 import partners from 'image/AddAreaPage/partners.png';
-import {
-    dbCardBenefits,
-    CardBeneftsInterface,
-} from 'components/databases/dbCardBenefits';
-import { Slider } from 'components/AddAreaPage/Slider';
+import { dbCardBenefits } from 'components/databases/dbCardBenefits';
+import { Slider } from 'components/AddArea/Slider';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
-import { CardBenefits } from 'components/AddAreaPage/CardBenefits';
+import { CardBenefits } from 'components/AddArea/CardBenefits';
 import { TitleH1, TitleH2, CustomButton, FlexDiv } from 'style/otherStyles';
+import { CardBeneftsDB } from 'types/Databases';
 
 const List = styled('ul')({
     color: 'black',
@@ -328,7 +326,7 @@ export const AddAreaPage: React.FC = () => (
                 mr: { xs: 2, sm: 5, md: 8, lg: 20 },
             }}
         >
-            {dbCardBenefits.map((card: CardBeneftsInterface) => (
+            {dbCardBenefits.map((card: CardBeneftsDB) => (
                 <CardBenefits
                     key={card.id}
                     img={card.img}

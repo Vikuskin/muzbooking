@@ -10,12 +10,7 @@ import { VisibilityOff, Visibility } from '@mui/icons-material';
 import logo from 'image/logoRegistration.svg';
 import { CustomButton, FlexDiv, input } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
-
-interface State {
-    email: string;
-    password: string;
-    showPassword: boolean;
-}
+import { LoginState } from 'types/Cabinet';
 
 const Background = styled('div')({
     width: '100%',
@@ -52,14 +47,15 @@ const Button = styled(CustomButton)({
 });
 
 export const Login: React.FC = () => {
-    const [login, setLogin] = React.useState<State>({
+    const [login, setLogin] = React.useState<LoginState>({
         email: '',
         password: '',
         showPassword: false,
     });
 
     const handleChange =
-        (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
+        (prop: keyof LoginState) =>
+        (event: React.ChangeEvent<HTMLInputElement>) => {
             setLogin({ ...login, [prop]: event.target.value });
         };
 

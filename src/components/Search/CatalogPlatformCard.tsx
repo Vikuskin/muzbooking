@@ -1,15 +1,14 @@
-/* eslint-disable consistent-return */
-/* eslint-disable array-callback-return */
 /* eslint-disable react/no-children-prop */
 import React from 'react';
 import { Typography, Button, styled, Box, Modal } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import { FlexDiv, TitleH2 } from 'style/otherStyles';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
-import { CheckedPlace } from 'components/databases/dbCheckboxs';
 import Fancybox from 'components/Fancybox/Fancybox';
-import { StateProducts } from 'components/Cabinet/ContentPage/ContentPagePlatform';
-import { BookingModal } from 'components/SearchPage/BookingModal';
+import { BookingModal } from 'components/Search/BookingModal';
+import { CatalogPlatformCardProps } from 'types/Search';
+import { CheckedPlaceDB } from 'types/Databases';
+import { ContentCompanyImages } from 'types/Cabinet';
 
 const Subtitle = styled(TitleH2)({
     padding: 0,
@@ -38,19 +37,6 @@ const style = {
     overflow: 'scroll',
 };
 
-interface CatalogPlatformCardProps {
-    idPlace: string;
-    idPlatform: string;
-    namePlatform: string;
-    nameCompany: string;
-    square: string;
-    rider: string;
-    comfort: Array<CheckedPlace>;
-    services: Array<CheckedPlace>;
-    images: Array<string>;
-    products: Array<StateProducts>;
-}
-
 export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
     idPlace,
     idPlatform,
@@ -68,11 +54,13 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
         if (item.checked) {
             return item;
         }
+        return false;
     });
     const servicesChecked = services.filter((item) => {
         if (item.checked) {
             return item;
         }
+        return false;
     });
 
     const [open, setOpen] = React.useState<boolean>(false);
@@ -116,7 +104,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                         {comfortChecked[0] && (
                             <>
                                 <Subtitle>Комфорт</Subtitle>
-                                {comfortChecked.map((item: any) => (
+                                {comfortChecked.map((item: CheckedPlaceDB) => (
                                     <Typography>{item.value}</Typography>
                                 ))}
                             </>
@@ -125,7 +113,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                         {servicesChecked[0] && (
                             <>
                                 <Subtitle>Удобства</Subtitle>
-                                {servicesChecked.map((item: any) => (
+                                {servicesChecked.map((item: CheckedPlaceDB) => (
                                     <Typography>{item.value}</Typography>
                                 ))}
                             </>
@@ -134,7 +122,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                 )}
             </Box>
             <Box>
-                {images.map((img: any) => (
+                {images.map((img: ContentCompanyImages) => (
                     <Fancybox options={{ infinite: false }}>
                         <Button
                             data-fancybox="gallery"
