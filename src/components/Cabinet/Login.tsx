@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {
     Typography,
@@ -7,8 +9,9 @@ import {
     styled,
 } from '@mui/material';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
+import { ValidatorForm } from 'react-material-ui-form-validator';
 import logo from 'image/logoRegistration.svg';
-import { CustomButton, FlexDiv, input } from 'style/otherStyles';
+import { CustomButton, FlexDiv, DefaultTextValidator } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { LoginState } from 'types/Cabinet';
 
@@ -74,6 +77,12 @@ export const Login: React.FC = () => {
 
     const { fetchLogin } = useActions();
 
+    const handleSubmit = async () => {
+        const res = await fetchLogin(login.email, login.password);
+        if (res) {
+            alert(res);
+        }
+    };
     return (
         <Background>
             <LoginWindow>
@@ -90,45 +99,45 @@ export const Login: React.FC = () => {
                     <Typography sx={{ fontWeight: 'bold' }}>Вход</Typography>
                 </FlexDiv>
 
-                <Typography>Логин</Typography>
-                {input(login.email, handleChange('email'))}
-
-                <Typography sx={{ mt: '30px' }}>Пароль</Typography>
-                <Input
-                    id="standard-adornment-password"
-                    type={login.showPassword ? 'text' : 'password'}
-                    value={login.password}
-                    onChange={handleChange('password')}
-                    sx={{ width: '100%', mb: '30px' }}
-                    endAdornment={
-                        <InputAdornment position="end">
-                            <IconButton
-                                aria-label="toggle password visibility"
-                                onClick={handleClickShowPassword}
-                                onMouseDown={handleMouseDownPassword}
-                            >
-                                {login.showPassword ? (
-                                    <VisibilityOff />
-                                ) : (
-                                    <Visibility />
-                                )}
-                            </IconButton>
-                        </InputAdornment>
-                    }
-                />
-                <Button
-                    onClick={async () => {
-                        const res = await fetchLogin(
-                            login.email,
-                            login.password
-                        );
-                        if (res) {
-                            alert(res);
-                        }
-                    }}
+                <ValidatorForm
+                    onSubmit={handleSubmit}
+                    onError={(errors: any) => console.log(errors)}
                 >
-                    войти
-                </Button>
+                    <Typography>Логин</Typography>
+                    {DefaultTextValidator(
+                                login.email,
+                                handleChange('email'),
+                                ['required', 'isEmail'],
+                                ['Это поле обязательно', 'Email не верен',]
+                            )}
+
+                    <Typography sx={{ mt: '30px' }}>Пароль</Typography>
+
+                    <Input
+                        name="password"
+                        id="standard-adornment-password"
+                        type={login.showPassword ? 'text' : 'password'}
+                        value={login.password}
+                        onChange={handleChange('password')}
+                        sx={{ width: '100%', mb: '30px' }}
+                        endAdornment={
+                            <InputAdornment position="end">
+                                <IconButton
+                                    aria-label="toggle password visibility"
+                                    onClick={handleClickShowPassword}
+                                    onMouseDown={handleMouseDownPassword}
+                                >
+                                    {login.showPassword ? (
+                                        <VisibilityOff />
+                                    ) : (
+                                        <Visibility />
+                                    )}
+                                </IconButton>
+                            </InputAdornment>
+                        }
+                    />
+                    <Button type="submit">войти</Button>
+                </ValidatorForm>
             </LoginWindow>
         </Background>
     );

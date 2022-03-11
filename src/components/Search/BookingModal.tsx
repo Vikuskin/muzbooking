@@ -21,15 +21,10 @@ import {
     Typography,
 } from '@mui/material';
 import { ProductsState } from 'types/Cabinet';
-import {
-    FlexDiv,
-    InputTitle,
-    TitleH1
-} from 'style/otherStyles';
+import { FlexDiv, InputTitle, TitleH1 } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingModalProps, BookingState, ClientState } from 'types/Search';
-
 
 const ButtonBooking = styled(Button)({
     backgroundColor: '#f79521',
@@ -118,15 +113,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
             }
         }
     };
-    const rows: any = [ ];
+    const rows: any = [];
     const tableRows = () => {
         for (let i = 0; i < 24; i++) {
-            rows.push(checkTime(i))
+            rows.push(checkTime(i));
         }
-    }
-    tableRows()
-    console.log(rows)
-    
+    };
+    tableRows();
 
     // BOOk
     const [booking, setBooking] = useState<BookingState>({
@@ -183,7 +176,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                         if (item.name === event.target.value) {
                                             return item;
                                         }
-                                        return false
+                                        return false;
                                     }
                                 )[0];
                                 setSelectProduct(selectInInput);
@@ -265,7 +258,15 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                             multiline
                             variant="filled"
                             value={client.phone}
-                            onChange={handleChange('phone')}
+                            onChange={(event) => {
+                                setClient({
+                                    ...client,
+                                    phone: event.target.value
+                                        .replace(/\D/g, '')
+                                        .replace(/^[0-9]/, '+7')
+                                        .replace(/^(\S{13,})?$/, ''),
+                                });
+                            }}
                         />
                     </ClientForm>
                     <ButtonBooking
@@ -307,54 +308,67 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                 </TableRow>
                             </TableHead>
                             <TableBody>
-                                {rows.filter((e: any) => e).map((row: {hour: string, price: string}) => (
-                                    <TableRow
-                                        key={row.hour}
-                                        sx={{
-                                            '&:last-child td, &:last-child th':
-                                                {
-                                                    border: 0,
-                                                },
-                                        }}
-                                    >
-                                        <TableCell component="th" scope="row">
-                                            {row.hour}
-                                        </TableCell>
-                                        {nextWeek.map((day: Date) => (
-                                            <TableCell align="center">
-                                                {bookingData.some(
-                                                    (item: BookingState) =>
-                                                        +item.date.split(
-                                                            '/'
-                                                        )[0] ===
-                                                            day.getDate() &&
-                                                        item.time === row.hour
-                                                ) ? (
-                                                    <Button disabled>
-                                                        Бронь
-                                                    </Button>
-                                                ) : (
-                                                    <Button
-                                                        onClick={() => {
-                                                            setBooking({
-                                                                ...booking,
-                                                                date: getReadDate(
-                                                                    day
-                                                                ),
-                                                                time: row.hour,
-                                                                chooseProduct:
-                                                                    selectProduct.name,
-                                                                price: selectProduct.price,
-                                                            });
-                                                        }}
-                                                    >
-                                                        {row.price}
-                                                    </Button>
-                                                )}
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
+                                {rows
+                                    .filter((e: any) => e)
+                                    .map(
+                                        (row: {
+                                            hour: string;
+                                            price: string;
+                                        }) => (
+                                            <TableRow
+                                                key={row.hour}
+                                                sx={{
+                                                    '&:last-child td, &:last-child th':
+                                                        {
+                                                            border: 0,
+                                                        },
+                                                }}
+                                            >
+                                                <TableCell
+                                                    component="th"
+                                                    scope="row"
+                                                >
+                                                    {row.hour}
+                                                </TableCell>
+                                                {nextWeek.map((day: Date) => (
+                                                    <TableCell align="center">
+                                                        {bookingData.some(
+                                                            (
+                                                                item: BookingState
+                                                            ) =>
+                                                                +item.date.split(
+                                                                    '/'
+                                                                )[0] ===
+                                                                    day.getDate() &&
+                                                                item.time ===
+                                                                    row.hour
+                                                        ) ? (
+                                                            <Button disabled>
+                                                                Бронь
+                                                            </Button>
+                                                        ) : (
+                                                            <Button
+                                                                onClick={() => {
+                                                                    setBooking({
+                                                                        ...booking,
+                                                                        date: getReadDate(
+                                                                            day
+                                                                        ),
+                                                                        time: row.hour,
+                                                                        chooseProduct:
+                                                                            selectProduct.name,
+                                                                        price: selectProduct.price,
+                                                                    });
+                                                                }}
+                                                            >
+                                                                {row.price}
+                                                            </Button>
+                                                        )}
+                                                    </TableCell>
+                                                ))}
+                                            </TableRow>
+                                        )
+                                    )}
                             </TableBody>
                         </Table>
                     </TableContainer>

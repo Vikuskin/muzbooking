@@ -24,5 +24,10 @@ router.delete(
     passport.authenticate('jwt', { session: false }),
     controller.accountPlatformDelete
 );
+router.get(
+    '/orders',
+    passport.authenticate('jwt', { session: false }),
+    controller.accountOrders
+);
 
 module.exports = router;

@@ -37,6 +37,9 @@ const bookingSchema = new Schema({
         type: String,
         required: true,
     },
+    namePlatform: {
+        type: String,
+    },
 });
 
 module.exports = mongoose.model('booking', bookingSchema);

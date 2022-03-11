@@ -82,14 +82,14 @@ export const AccountHeader: React.FC = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            <Link to="/login">
+                            <Link to="/account/calendar">
                                 <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         Календарь
                                     </Typography>
                                 </MenuItem>
                             </Link>
-                            <Link to="/login">
+                            <Link to="/account/orders">
                                 <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         Заявки
@@ -103,7 +103,7 @@ export const AccountHeader: React.FC = () => {
                                     </Typography>
                                 </MenuItem>
                             </Link>
-                            <Link to="/login">
+                            <Link to="/account/orders">
                                 <MenuItem onClick={handleCloseNavMenu}>
                                     <Typography textAlign="center">
                                         Заказы
@@ -138,8 +138,8 @@ export const AccountHeader: React.FC = () => {
                             justifyContent: 'right',
                         }}
                     >
-                        <Tooltip title="Выйти">
-                            <Link to="/login">
+                        <Tooltip title="Календарь">
+                            <Link to="/account/calendar">
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{
@@ -152,8 +152,8 @@ export const AccountHeader: React.FC = () => {
                                 </Button>
                             </Link>
                         </Tooltip>
-                        <Tooltip title="Выйти">
-                            <Link to="/login">
+                        <Tooltip title="Заявки">
+                            <Link to="/account/orders">
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{
@@ -166,7 +166,7 @@ export const AccountHeader: React.FC = () => {
                                 </Button>
                             </Link>
                         </Tooltip>
-                        <Tooltip title="Выйти">
+                        <Tooltip title="Контент">
                             <Link to="/account">
                                 <Button
                                     onClick={handleCloseNavMenu}
@@ -180,8 +180,8 @@ export const AccountHeader: React.FC = () => {
                                 </Button>
                             </Link>
                         </Tooltip>
-                        <Tooltip title="Выйти">
-                            <Link to="/login">
+                        <Tooltip title="Заказы">
+                            <Link to="/account/orders">
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{

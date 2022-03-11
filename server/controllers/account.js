@@ -1,6 +1,7 @@
 const User = require('../models/Users');
 const Place = require('../models/Places');
 const Platform = require('../models/Platforms');
+const Booking = require('../models/Booking');
 const fs = require('fs');
 
 module.exports.accountContent = async (req, res) => {
@@ -14,6 +15,7 @@ module.exports.accountContent = async (req, res) => {
         res.status(200).json({ place: place, platform: platform });
     } catch (e) {
         console.log(e);
+        res.status(400).json({ message: 'Контент не найден' });
     }
 };
 
@@ -41,10 +43,11 @@ module.exports.accountContentUpdate = async (req, res) => {
             const placeUpdate = await Place.findOne({ email: req.user.email });
             res.status(200).json(placeUpdate);
         } else {
-            res.status(400).json(place);
+            res.status(400).json({ message: 'Ошибка при обновлении' });
         }
     } catch (e) {
         console.log(e);
+        res.status(400).json({ message: e });
     }
 };
 
@@ -60,7 +63,7 @@ module.exports.accountPlatform = async (req, res) => {
                 });
             }
             if (req.files[0]) {
-                const updatePlace = await Place.updateOne(
+                await Place.updateOne(
                     {
                         email: req.user.email,
                     },
@@ -93,40 +96,46 @@ module.exports.accountPlatform = async (req, res) => {
                 });
                 res.status(200).json(updatePlatform);
             } else {
-                res.status(400).json(updatePlatform);
+                res.status(400).json({ message: 'Ошибка при обновлении' });
             }
         } else {
-            const place = await Place.findOne({
-                email: req.user.email,
-            });
-            if (req.files[0]) {
-                const updatePlace = await Place.updateOne(
-                    {
-                        email: req.user.email,
-                    },
-                    {
-                        $set: {
-                            images: req.files,
+            try {
+                const place = await Place.findOne({
+                    email: req.user.email,
+                });
+                if (req.files[0]) {
+                    await Place.updateOne(
+                        {
+                            email: req.user.email,
                         },
-                    }
-                );
-            }
+                        {
+                            $set: {
+                                images: req.files,
+                            },
+                        }
+                    );
+                }
 
-            const newPlatform = new Platform({
-                namePlatform: req.body.name,
-                square: req.body.square,
-                rider: req.body.rider,
-                products: JSON.parse(req.body.products),
-                services: JSON.parse(req.body.services),
-                comfort: JSON.parse(req.body.comfort),
-                placeId: place._id,
-                images: req.files[0] ? req.files : '',
-            });
-            await newPlatform.save();
-            res.status(200).json(newPlatform);
+                const newPlatform = new Platform({
+                    namePlatform: req.body.name,
+                    square: req.body.square,
+                    rider: req.body.rider,
+                    products: JSON.parse(req.body.products),
+                    services: JSON.parse(req.body.services),
+                    comfort: JSON.parse(req.body.comfort),
+                    placeId: place._id,
+                    images: req.files[0] ? req.files : '',
+                });
+                await newPlatform.save();
+                res.status(200).json(newPlatform);
+            } catch (e) {
+                console.group(e);
+                res.status(400).json({ message: e });
+            }
         }
     } catch (e) {
         console.log(e);
+        res.status(400).json({ message: e });
     }
 };
 
@@ -148,5 +157,22 @@ module.exports.accountPlatformDelete = async (req, res) => {
         }
     } catch (e) {
         console.log(e);
+        res.status(400).json({ message: e });
+    }
+};
+
+module.exports.accountOrders = async (req, res) => {
+    console.log('111')
+    try {
+        const place = await Place.findOne({
+            email: req.user.email,
+        });
+        const booking = await Booking.find({
+            placeId: place._id
+        })
+        res.status(200).json({booking: booking, place: place});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ message: e });
     }
 };

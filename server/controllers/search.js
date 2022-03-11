@@ -1,7 +1,12 @@
-const Place = require('../models/Places')
-const Platform = require('../models/Platforms')
+const Place = require('../models/Places');
+const Platform = require('../models/Platforms');
 
 module.exports.searchPlaces = async (req, res) => {
-    const places = await Place.find({ sphera: req.query.sphera }).limit(5)
-    res.status(200).json(places)
+    try {
+        const places = await Place.find({ sphera: req.query.sphera }).limit(5);
+        res.status(200).json(places);
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ message: 'Площадки не найдены' });
+    }
 };

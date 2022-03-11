@@ -7,15 +7,14 @@ import {
     Modal,
     styled,
 } from '@mui/material';
-import AddCircleIcon from '@mui/icons-material/AddCircle';
-import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import EditIcon from '@mui/icons-material/Edit';
+import {AddCircle, RemoveCircle, Edit} from '@mui/icons-material';
 import {
     FlexDiv,
     AccountTitleH1,
     ContentPageListItem,
     ContentPageButton,
 } from 'style/otherStyles';
+import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { ContentPagePlatform } from 'components/Cabinet/ContentPage/ContentPagePlatform';
 import { ContentPageMainInfo } from 'components/Cabinet/ContentPage/ContentPageMainInfo';
 import {
@@ -40,7 +39,7 @@ const style = {
     overflow: 'scroll',
 };
 
-const OrangeCircleIcon = styled(AddCircleIcon)({
+const OrangeCircleIcon = styled(AddCircle)({
     color: '#f89623',
     fontSize: '60px',
     textAlign: 'center',
@@ -75,7 +74,9 @@ export const ContentPage: React.FC = () => {
     const [open, setOpen] = React.useState<boolean>(false);
 
     return (
-        <Container maxWidth="xl" sx={{ p: '30px', textAlign: 'left' }}>
+        <>
+        <AccountHeader />
+        <Container maxWidth="xl" sx={{ p: '30px', textAlign: 'left', pt: '100px' }}>
             <FlexDiv sx={{ alignItems: 'flex-start' }}>
                 <Box sx={{ width: '40%' }}>
                     <AccountTitleH1>Основная информация</AccountTitleH1>
@@ -125,7 +126,7 @@ export const ContentPage: React.FC = () => {
                                     {item.namePlatform}
                                 </ListItemText>
                                 <ListItemIcon>
-                                    <EditIcon
+                                    <Edit
                                         sx={{
                                             mr: '10px',
                                             cursor: 'pointer',
@@ -137,7 +138,7 @@ export const ContentPage: React.FC = () => {
                                         }}
                                     />
 
-                                    <RemoveCircleIcon
+                                    <RemoveCircle
                                         sx={{
                                             cursor: 'pointer',
                                             color: 'white',
@@ -205,5 +206,6 @@ export const ContentPage: React.FC = () => {
                 </Modal>
             )}
         </Container>
+        </>
     );
 };

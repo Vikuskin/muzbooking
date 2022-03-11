@@ -1,11 +1,12 @@
-
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { ContentCompanyImages, ProductsState } from 'types/Cabinet';
 import { CheckedPlaceDB } from 'types/Databases';
-import { DataAction, DataActionTypes } from '../reducers/dataReducer';
+import { DataAction, DataActionTypes } from 'store/reducers/dataReducer';
 
-export const fetchLogin = (email: string, password: string) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchLogin =
+    (email: string, password: string) =>
+    async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.get('http://localhost:5000/login', {
@@ -29,16 +30,18 @@ export const fetchLogin = (email: string, password: string) => async (dispatch: 
         }
     };
 
-export const fetchRegistration = (
-    city: string,
-    email: string,
-    nameCompany: string,
-    password: string,
-    phone: string[][],
-    sphera: string,
-    address: string,
-    subway: string
-) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchRegistration =
+    (
+        city: string,
+        email: string,
+        nameCompany: string,
+        password: string,
+        phone: string[][],
+        sphera: string,
+        address: string,
+        subway: string
+    ) =>
+    async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
@@ -71,7 +74,8 @@ export const fetchRegistration = (
         }
     };
 
-export const fetchAccountContent = (token: string) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchAccountContent =
+    (token: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.get('http://localhost:5000/account', {
@@ -91,18 +95,20 @@ export const fetchAccountContent = (token: string) => async (dispatch: Dispatch<
         }
     };
 
-export const fetchAccountContentUpdate = (
-    token: string,
-    city: string,
-    nameCompany: string,
-    phone: string[][],
-    sphera: string,
-    address: string,
-    subway: string,
-    description: string,
-    timetable: string,
-    price: number
-) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchAccountContentUpdate =
+    (
+        token: string,
+        city: string,
+        nameCompany: string,
+        phone: string[][],
+        sphera: string,
+        address: string,
+        subway: string,
+        description: string,
+        timetable: string,
+        price: number
+    ) =>
+    async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.put(
@@ -136,17 +142,19 @@ export const fetchAccountContentUpdate = (
         }
     };
 
-export const fetchAccountPlatform = (
-    token: string,
-    name: string,
-    square: string,
-    rider: string,
-    products: Array<ProductsState>,
-    services: Array<CheckedPlaceDB>,
-    comfort: Array<CheckedPlaceDB>,
-    idPlatform: string,
-    files: Array<ContentCompanyImages>
-) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchAccountPlatform =
+    (
+        token: string,
+        name: string,
+        square: string,
+        rider: string,
+        products: Array<ProductsState>,
+        services: Array<CheckedPlaceDB>,
+        comfort: Array<CheckedPlaceDB>,
+        idPlatform: string,
+        files: Array<ContentCompanyImages>
+    ) =>
+    async (dispatch: Dispatch<DataAction>) => {
         const data = new FormData();
         files.forEach((file: any) => {
             data.append('images', file);
@@ -184,13 +192,38 @@ export const fetchAccountPlatform = (
         }
     };
 
-export const fetchAccountPlatformDelete = (token: string, id: string) => async (dispatch: Dispatch<DataAction>) => {
+export const fetchAccountPlatformDelete =
+    (token: string, id: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.delete(
                 'http://localhost:5000/account',
                 {
                     data: { token, id },
+                    headers: { Authorization: `Bearer ${token}` },
+                }
+            );
+            dispatch({
+                type: DataActionTypes.FETCH_DATA_SUCCESS,
+                payload: response.data,
+            });
+            return response.data;
+        } catch (e) {
+            dispatch({
+                type: DataActionTypes.FETCH_DATA_ERROR,
+                payload: e.response.data.message,
+            });
+            return e.response.data.message;
+        }
+    };
+
+export const fetchOrders =
+    (token: string) => async (dispatch: Dispatch<DataAction>) => {
+        try {
+            dispatch({ type: DataActionTypes.FETCH_DATA });
+            const response = await axios.get(
+                'http://localhost:5000/account/orders',
+                {
                     headers: { Authorization: `Bearer ${token}` },
                 }
             );

@@ -16,7 +16,7 @@ import { Link } from 'react-router-dom';
 import { InputSearch, InputTitle, FlexDiv } from 'style/otherStyles';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
-import { usePosition } from 'use-position';
+// import { usePosition } from 'use-position';
 import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
 import { CardPlaceProps } from 'types/Search';
@@ -52,10 +52,10 @@ export const SearchPage: React.FC = () => {
     useEffect(() => {
         fetchPlaces(services);
     }, [services]);
-    const watch = true;
-    const { latitude, longitude } = usePosition(watch);
-    console.log(latitude)
-    console.log(longitude)
+    // const watch = true;
+    // const { latitude, longitude } = usePosition(watch);
+    // console.log(latitude)
+    // console.log(longitude)
     return (
         <>
             <Header />

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ListItem, InputBase, styled, TextField } from '@mui/material';
+import { TextValidator } from 'react-material-ui-form-validator';
 
 export const InputTitle = styled(InputBase)({
     '& .MuiInputBase-input': {
@@ -143,6 +144,26 @@ export const input = (
         variant="standard"
         value={value}
         onChange={onChange}
+        sx={{ width: '100%' }}
+    />
+);
+
+export const DefaultTextValidator = (
+    value: string,
+    onChange:
+        | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
+        | undefined,
+    validators: Array<string>,
+    error: Array<string>
+) => (
+    <TextValidator
+        name={value}
+        value={value}
+        onChange={onChange}
+        validators={validators}
+        errorMessages={error}
+        multiline
+        variant="standard"
         sx={{ width: '100%' }}
     />
 );

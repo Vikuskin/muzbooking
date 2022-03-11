@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { DataAction, DataActionTypes } from '../reducers/dataReducer';
+import { DataAction, DataActionTypes } from 'store/reducers/dataReducer';
 
 export const fetchCatalogPlace =
     (id: string) => async (dispatch: Dispatch<DataAction>) => {
