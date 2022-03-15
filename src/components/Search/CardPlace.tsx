@@ -1,5 +1,6 @@
 import React from 'react';
-import { Typography, Box, styled } from '@mui/material';
+import { Typography, Box, styled, Button } from '@mui/material';
+import Fancybox from 'components/Fancybox/Fancybox';
 import addressIcon from 'image/SearchPage/address.svg';
 import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
@@ -39,16 +40,19 @@ export const CardPlace: React.FC<CardPlaceProps> = ({
             </Typography>
             <DescCard sx={{ justifyContent: 'space-evenly' }}>
                 {images[0] ? (
-                    images.map((item: any) => (
-                        <img
-                            style={{
-                                maxWidth: '200px',
-                                maxHeight: '130px',
-                                marginRight: '5px',
-                            }}
-                            src={`http://localhost:5000/${item.destination}/${item.filename}`}
-                            alt="Images of platform"
-                        />
+                    images.map((img: any) => (
+                        <Fancybox options={{ infinite: false }} style={{ display: 'flex', flexDirection: 'column' }}>
+                            <Button
+                                data-fancybox="gallery"
+                                data-src={`http://localhost:5000/${img.destination}/${img.filename}`}
+                            >
+                                <img
+                                    src={`http://localhost:5000/${img.destination}/${img.filename}`}
+                                    alt="Images of platform"
+                                    style={{ height: '140px', minWidth: '80px' }}
+                                />
+                            </Button>
+                        </Fancybox>
                     ))
                 ) : (
                     <img

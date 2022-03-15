@@ -3,7 +3,7 @@ const Platform = require('../models/Platforms');
 
 module.exports.searchPlaces = async (req, res) => {
     try {
-        const places = await Place.find({ sphera: req.query.sphera }).limit(5);
+        const places = await Place.find({ sphera: req.query.sphera });
         res.status(200).json(places);
     } catch (e) {
         console.log(e);

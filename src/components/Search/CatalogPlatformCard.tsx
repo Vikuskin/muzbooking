@@ -22,6 +22,25 @@ const Card = styled(FlexDiv)({
     borderRadius: '4px',
     backgroundColor: '#ebeff2',
     marginBottom: '30px',
+    display: 'flex',
+    justifyContent: 'space-between',
+    textAlign: 'left',
+    '@media (max-width: 900px)': {
+        flexWrap: 'wrap',
+        textAlign: 'center',
+    },
+    '@media (max-width: 600px)': {
+        padding: '10px',
+    },
+});
+
+const CardWrapper = styled(Box)({
+    maxWidth: '400px',
+    fontSize: '1rem',
+    lineHeight: 1.5,
+    '@media (max-width: 600px)': {
+        maxWidth: '100%',
+    },
 });
 
 export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
@@ -54,9 +73,11 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
 
     return (
         <Card>
-            <Box sx={{ flexBasis: '30%', fontSize: '1rem', lineHeight: 1.5 }}>
+            <CardWrapper>
                 <Subtitle sx={{ fontWeight: 'bold' }}>{namePlatform}</Subtitle>
-                <FlexDiv sx={{ justifyContent: 'flex-start' }}>
+                <FlexDiv
+                    sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
+                >
                     <CropSquareIcon fontSize="small" />
                     <Typography>
                         {square} м<sup>2</sup>
@@ -107,8 +128,8 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                         )}
                     </>
                 )}
-            </Box>
-            <Box>
+            </CardWrapper>
+            <Box sx={{ m: 'auto' }}>
                 {images.map((img: ContentCompanyImages) => (
                     <Fancybox options={{ infinite: false }}>
                         <Button
@@ -128,7 +149,12 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                     </Fancybox>
                 ))}
             </Box>
-            <Button onClick={() => setOpen(true)}>Забронировать</Button>
+            <Button
+                onClick={() => setOpen(true)}
+                sx={{ m: { xs: 'auto', md: '0 10px 0 0' } }}
+            >
+                Забронировать
+            </Button>
             {open && (
                 <Modal
                     open={open}

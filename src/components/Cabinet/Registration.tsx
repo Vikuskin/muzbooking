@@ -1,6 +1,3 @@
-/* eslint-disable no-useless-escape */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {
     Typography,
@@ -108,7 +105,6 @@ export const Registration: React.FC = () => {
             <RegistrationWindow>
                 <ValidatorForm
                     onSubmit={handleSubmit}
-                    onError={(errors: any) => console.log(errors)}
                 >
                     <FlexDiv sx={{ justifyContent: 'flex-start' }}>
                         <img
@@ -314,9 +310,8 @@ export const Registration: React.FC = () => {
                                 registration.email,
                                 handleChange('email'),
                                 ['required', 'isEmail'],
-                                ['Это поле обязательно', 'Email не верен',]
+                                ['Это поле обязательно', 'Email не верен']
                             )}
-
                         </FormColumn>
                     </Box>
                     <Button type="submit">зарегестрироваться</Button>

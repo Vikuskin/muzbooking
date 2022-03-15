@@ -13,7 +13,12 @@ import {
 } from '@mui/material';
 import { Phone, RemoveCircle } from '@mui/icons-material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { input, DefaultTextValidator, ButtonBooking, TypographyMarginTop } from 'style/otherStyles';
+import {
+    input,
+    DefaultTextValidator,
+    ButtonPrimary,
+    TypographyMarginTop,
+} from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { ContentPageMainInfoProps } from 'types/Cabinet';
 
@@ -71,7 +76,6 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
         <Box>
             <ValidatorForm
                 onSubmit={handleSubmit}
-                onError={(errors: any) => console.log(errors)}
             >
                 <Typography>Сфера</Typography>
                 <TextValidator
@@ -203,9 +207,12 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                 {input(info.timetable, handleChange('timetable'))}
                 <TypographyMarginTop>Средняя цена за час</TypographyMarginTop>
                 {input(info.price, handleChange('price'))}
-                <ButtonBooking type="submit" sx={{ mt: '20px', p: '10px 25px !important' }}>
+                <ButtonPrimary
+                    type="submit"
+                    sx={{ mt: '20px', p: '10px 25px !important' }}
+                >
                     Сохранить
-                </ButtonBooking>
+                </ButtonPrimary>
             </ValidatorForm>
         </Box>
     );

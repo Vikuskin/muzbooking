@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import {
     Typography,
@@ -101,15 +99,14 @@ export const Login: React.FC = () => {
 
                 <ValidatorForm
                     onSubmit={handleSubmit}
-                    onError={(errors: any) => console.log(errors)}
                 >
                     <Typography>Логин</Typography>
                     {DefaultTextValidator(
-                                login.email,
-                                handleChange('email'),
-                                ['required', 'isEmail'],
-                                ['Это поле обязательно', 'Email не верен',]
-                            )}
+                        login.email,
+                        handleChange('email'),
+                        ['required', 'isEmail'],
+                        ['Это поле обязательно', 'Email не верен']
+                    )}
 
                     <Typography sx={{ mt: '30px' }}>Пароль</Typography>
 

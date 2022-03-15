@@ -7,12 +7,12 @@ import {
     Modal,
     styled,
 } from '@mui/material';
-import {AddCircle, RemoveCircle, Edit} from '@mui/icons-material';
+import { AddCircle, RemoveCircle, Edit } from '@mui/icons-material';
 import {
     AccountTitleH1,
     ContentPageListItem,
-    ContentPageButton,
-    styleModal
+    styleModal,
+    ButtonPrimary,
 } from 'style/otherStyles';
 import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { ContentPagePlatform } from 'components/Cabinet/ContentPage/ContentPagePlatform';
@@ -30,6 +30,41 @@ const OrangeCircleIcon = styled(AddCircle)({
     fontSize: '60px',
     textAlign: 'center',
     width: '100%',
+});
+
+const Wrapper = styled(Box)({
+    display: 'flex',
+    alignItems: 'flex-start',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+});
+
+const MainInfo = styled(Box)({
+    width: '45%',
+    minWidth: '300px',
+    marginRight: '15px',
+    marginBottom: '30px',
+    padding: '30px',
+    '@media (max-width: 900px)': {
+        width: '100%',
+        marginRight: 0,
+    },
+    '@media (max-width: 600px)': {
+        padding: 0,
+    },
+});
+
+const Platforms = styled(Box)({
+    width: '45%',
+    minWidth: '300px',
+    padding: '30px',
+    '@media (max-width: 900px)': {
+        width: '100%',
+        marginRight: 0,
+    },
+    '@media (max-width: 600px)': {
+        padding: 0,
+    },
 });
 
 export const ContentPage: React.FC = () => {
@@ -61,137 +96,148 @@ export const ContentPage: React.FC = () => {
 
     return (
         <>
-        <AccountHeader />
-        <Container maxWidth="xl" sx={{ p: '30px', textAlign: 'left', pt: '100px' }}>
-            <Box sx={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center'}}>
-                <Box sx={{ width: '45%', minWidth: '300px', mr: {sm: 0, xl: '15px'}, mb: '30px' }}>
-                    <AccountTitleH1>Основная информация</AccountTitleH1>
-                    {loading ? (
-                        <>Загрузка...</>
-                    ) : (
-                        data.place && (
-                            <ContentPageMainInfo
-                                sphera={data.place.sphera}
-                                nameCompany={data.place.nameCompany}
-                                city={data.place.city}
-                                address={data.place.address}
-                                phone={data.place.phone}
-                                subway={data.place.subway}
-                                email={data.place.email}
-                                description={data.place.description}
-                                timetable={data.place.timetable}
-                                price={data.place.price}
-                            />
-                        )
-                    )}
-                </Box>
-                <Box sx={{ width: '45%', minWidth: '300px' }}>
-                    <AccountTitleH1>Площадки</AccountTitleH1>
-                    {loading ? (
-                        <>Загрузка...</>
-                    ) : (
-                        data.platform &&
-                        !showPlatform &&
-                        data.platform.map((item: ContentPagePlatformProps) => (
-                            <ContentPageListItem
-                                key={item._id}
-                                sx={{
-                                    backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(http://localhost:5000/${item.images[0].path})`,
-                                    minHeight: '200px',
-                                    backgroundPosition: 'center',
-                                    backgroundSize: 'cover',
-                                    alignItems: 'flex-end',
-                                }}
-                            >
-                                <ListItemText
+            <AccountHeader />
+            <Container
+                maxWidth="xl"
+                sx={{ p: '30px', textAlign: 'left', pt: '100px' }}
+            >
+                <Wrapper>
+                    <MainInfo>
+                        <AccountTitleH1>Основная информация</AccountTitleH1>
+                        {loading ? (
+                            <>Загрузка...</>
+                        ) : (
+                            data.place && (
+                                <ContentPageMainInfo
+                                    sphera={data.place.sphera}
+                                    nameCompany={data.place.nameCompany}
+                                    city={data.place.city}
+                                    address={data.place.address}
+                                    phone={data.place.phone}
+                                    subway={data.place.subway}
+                                    email={data.place.email}
+                                    description={data.place.description}
+                                    timetable={data.place.timetable}
+                                    price={data.place.price}
+                                />
+                            )
+                        )}
+                    </MainInfo>
+                    <Platforms>
+                        <AccountTitleH1>Площадки</AccountTitleH1>
+                        {loading ? (
+                            <>Загрузка...</>
+                        ) : (
+                            data.platform &&
+                            !showPlatform &&
+                            data.platform.map(
+                                (item: ContentPagePlatformProps) => (
+                                    <ContentPageListItem
+                                        key={item._id}
+                                        sx={{
+                                            backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(http://localhost:5000/${item.images[0].path})`,
+                                            minHeight: '200px',
+                                            backgroundPosition: 'center',
+                                            backgroundSize: 'cover',
+                                            alignItems: 'flex-end',
+                                        }}
+                                    >
+                                        <ListItemText
+                                            sx={{
+                                                color: 'white',
+                                                textTransform: 'uppercase',
+                                            }}
+                                        >
+                                            {item.namePlatform}
+                                        </ListItemText>
+                                        <ListItemIcon>
+                                            <Edit
+                                                sx={{
+                                                    mr: '10px',
+                                                    cursor: 'pointer',
+                                                    color: 'white',
+                                                }}
+                                                onClick={() => {
+                                                    setOpen(true);
+                                                    setModal(item);
+                                                }}
+                                            />
+
+                                            <RemoveCircle
+                                                sx={{
+                                                    cursor: 'pointer',
+                                                    color: 'white',
+                                                }}
+                                                onClick={() => {
+                                                    fetchAccountPlatformDelete(
+                                                        localStorage.token,
+                                                        item._id
+                                                    );
+                                                    alert(
+                                                        'Площадка успешно удалена'
+                                                    );
+                                                    fetchAccountContent(
+                                                        localStorage.token
+                                                    );
+                                                }}
+                                            />
+                                        </ListItemIcon>
+                                    </ContentPageListItem>
+                                )
+                            )
+                        )}
+                        {showPlatform ? (
+                            <>
+                                <ContentPagePlatform
+                                    namePlatform=""
+                                    square="0"
+                                    rider=""
+                                    products={[]}
+                                    services={dbServicesPlace}
+                                    comfort={dbComfortPlace}
+                                    _id=""
+                                    images={[]}
+                                />
+                                <ButtonPrimary
+                                    onClick={() => setShowPlatform(false)}
                                     sx={{
-                                        color: 'white',
-                                        textTransform: 'uppercase',
+                                        minWidth: '138px',
+                                        p: '10px 25px !important',
                                     }}
                                 >
-                                    {item.namePlatform}
-                                </ListItemText>
-                                <ListItemIcon>
-                                    <Edit
-                                        sx={{
-                                            mr: '10px',
-                                            cursor: 'pointer',
-                                            color: 'white',
-                                        }}
-                                        onClick={() => {
-                                            setOpen(true);
-                                            setModal(item);
-                                        }}
-                                    />
-
-                                    <RemoveCircle
-                                        sx={{
-                                            cursor: 'pointer',
-                                            color: 'white',
-                                        }}
-                                        onClick={() => {
-                                            fetchAccountPlatformDelete(
-                                                localStorage.token,
-                                                item._id
-                                            );
-                                            alert('Площадка успешно удалена');
-                                            fetchAccountContent(
-                                                localStorage.token
-                                            );
-                                        }}
-                                    />
-                                </ListItemIcon>
-                            </ContentPageListItem>
-                        ))
-                    )}
-                    {showPlatform ? (
-                        <>
-                            <ContentPagePlatform
-                                namePlatform=""
-                                square="0"
-                                rider=""
-                                products={[]}
-                                services={dbServicesPlace}
-                                comfort={dbComfortPlace}
-                                _id=""
-                                images={[]}
+                                    Назад
+                                </ButtonPrimary>
+                            </>
+                        ) : (
+                            <OrangeCircleIcon
+                                onClick={() => setShowPlatform(true)}
                             />
-                            <ContentPageButton
-                                onClick={() => setShowPlatform(false)}
-                            >
-                                Назад
-                            </ContentPageButton>
-                        </>
-                    ) : (
-                        <OrangeCircleIcon
-                            onClick={() => setShowPlatform(true)}
-                        />
-                    )}
-                </Box>
-            </Box>
-            {modal && (
-                <Modal
-                    open={open}
-                    onClose={() => setOpen(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                    sx={{ overflow: 'scroll' }}
-                >
-                    <Box sx={styleModal}>
-                        <ContentPagePlatform
-                            namePlatform={modal.namePlatform}
-                            square={modal.square}
-                            rider={modal.rider}
-                            products={modal.products}
-                            services={modal.services}
-                            comfort={modal.comfort}
-                            _id={modal._id}
-                            images={modal.images}
-                        />
-                    </Box>
-                </Modal>
-            )}
-        </Container>
+                        )}
+                    </Platforms>
+                </Wrapper>
+                {modal && (
+                    <Modal
+                        open={open}
+                        onClose={() => setOpen(false)}
+                        aria-labelledby="modal-modal-title"
+                        aria-describedby="modal-modal-description"
+                        sx={{ overflow: 'scroll' }}
+                    >
+                        <Box sx={styleModal}>
+                            <ContentPagePlatform
+                                namePlatform={modal.namePlatform}
+                                square={modal.square}
+                                rider={modal.rider}
+                                products={modal.products}
+                                services={modal.services}
+                                comfort={modal.comfort}
+                                _id={modal._id}
+                                images={modal.images}
+                            />
+                        </Box>
+                    </Modal>
+                )}
+            </Container>
         </>
     );
 };

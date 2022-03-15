@@ -1,13 +1,8 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
-/* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect } from 'react';
 import {
-    Button,
     Table,
     TableBody,
     TableContainer,
@@ -25,7 +20,7 @@ import { getReadDate } from 'functions/functions';
 import {
     TableCellCalendar,
     styleModal,
-    ButtonBooking,
+    ButtonPrimary,
 } from 'style/otherStyles';
 import { CalendarModal } from 'components/Cabinet/Calendar/CalendarModal';
 import { AccountHeader } from 'components/Cabinet/AccountHeader';
@@ -114,7 +109,7 @@ export const Calendar: React.FC = () => {
                         </TableHead>
                         <TableBody>
                             {rows
-                                .filter((e: any) => e)
+                                .filter((e: { hour: string; id: number }) => e)
                                 .map((row: { hour: string; id: number }) => (
                                     <TableRow
                                         key={row.id}
@@ -131,7 +126,7 @@ export const Calendar: React.FC = () => {
                                         >
                                             {row.hour}
                                         </TableCellCalendar>
-                                        {data.platforms ? (
+                                        {data.platforms &&
                                             data.platforms.map(
                                                 (platform: {
                                                     namePlatform: string;
@@ -148,7 +143,7 @@ export const Calendar: React.FC = () => {
                                                                         booking.time
                                                                 ) {
                                                                     return (
-                                                                        <ButtonBooking
+                                                                        <ButtonPrimary
                                                                             onClick={() => {
                                                                                 setOpen(
                                                                                     true
@@ -165,17 +160,14 @@ export const Calendar: React.FC = () => {
                                                                             {
                                                                                 booking.product
                                                                             }
-                                                                        </ButtonBooking>
+                                                                        </ButtonPrimary>
                                                                     );
                                                                 }
                                                             }
                                                         )}
                                                     </TableCellCalendar>
                                                 )
-                                            )
-                                        ) : (
-                                            <></>
-                                        )}
+                                            )}
                                     </TableRow>
                                 ))}
                         </TableBody>

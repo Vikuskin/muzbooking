@@ -15,13 +15,13 @@ import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { useDropzone } from 'react-dropzone';
 import {
-    ContentPageButton,
     FlexDiv,
     TitleH2,
     ContentPageListItem,
     input,
     DefaultTextValidator,
-    TypographyMarginTop
+    TypographyMarginTop,
+    ButtonPrimary,
 } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import {
@@ -68,8 +68,8 @@ const Comfort = styled('div')({
     marginBottom: '30px',
 });
 const TypographyTimetable = styled(Typography)({
-    minWidth: '110px'
-})
+    minWidth: '110px',
+});
 
 export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
     namePlatform,
@@ -217,7 +217,6 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
         <Box sx={{ textAlign: 'left' }}>
             <ValidatorForm
                 onSubmit={handleSubmit}
-                onError={(errors: any) => console.log(errors)}
             >
                 <Typography>Название</Typography>
                 {DefaultTextValidator(
@@ -248,42 +247,57 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
 
                 {/* COMFORT SERVICES */}
                 <Comfort sx={{ fontSize: '10px' }}>
-                    <Grid flexWrap='wrap'>
-                    <Grid item xs='auto' md='auto' >
-                        <TitleH2>Удобства</TitleH2>
-                        <List sx={{ p: 0, fontSize: '10px' }}>
-                            {comfortChecked.map(({ value, id, checked }) => (
-                                <ListItem sx={{ p: 0, fontSize: '10px' }} key={id}>
-                                    <FormControlLabel
-                                        sx={{ fontSize: '10px' }}
-                                        value={value}
-                                        control={<Checkbox sx={{ fontSize: '10px' }}/>}
-                                        label={value}
-                                        checked={checked}
-                                        onChange={() => handleChangeComfort(id)}
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Grid>
-                    <Grid item xs='auto' md='auto'>
-                        <TitleH2>Сервис</TitleH2>
-                        <List sx={{ p: 0 }}>
-                            {servicesChecked.map(({ value, id, checked }) => (
-                                <ListItem key={id} sx={{ p: 0 }}>
-                                    <FormControlLabel
-                                        value={value}
-                                        control={<Checkbox />}
-                                        label={value}
-                                        checked={checked}
-                                        onChange={() =>
-                                            handleChangeServices(id)
-                                        }
-                                    />
-                                </ListItem>
-                            ))}
-                        </List>
-                    </Grid>
+                    <Grid flexWrap="wrap">
+                        <Grid item xs="auto" md="auto">
+                            <Typography>Удобства</Typography>
+                            <List sx={{ p: 0, fontSize: '10px' }}>
+                                {comfortChecked.map(
+                                    ({ value, id, checked }) => (
+                                        <ListItem
+                                            sx={{ p: 0, fontSize: '10px' }}
+                                            key={id}
+                                        >
+                                            <FormControlLabel
+                                                sx={{ fontSize: '10px' }}
+                                                value={value}
+                                                control={
+                                                    <Checkbox
+                                                        sx={{
+                                                            fontSize: '10px',
+                                                        }}
+                                                    />
+                                                }
+                                                label={value}
+                                                checked={checked}
+                                                onChange={() =>
+                                                    handleChangeComfort(id)
+                                                }
+                                            />
+                                        </ListItem>
+                                    )
+                                )}
+                            </List>
+                        </Grid>
+                        <Grid item xs="auto" md="auto">
+                            <Typography>Сервис</Typography>
+                            <List sx={{ p: 0 }}>
+                                {servicesChecked.map(
+                                    ({ value, id, checked }) => (
+                                        <ListItem key={id} sx={{ p: 0 }}>
+                                            <FormControlLabel
+                                                value={value}
+                                                control={<Checkbox />}
+                                                label={value}
+                                                checked={checked}
+                                                onChange={() =>
+                                                    handleChangeServices(id)
+                                                }
+                                            />
+                                        </ListItem>
+                                    )
+                                )}
+                            </List>
+                        </Grid>
                     </Grid>
                 </Comfort>
 
@@ -292,9 +306,19 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                 <ContentPageListItem sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ width: '80%' }}>
                         <FlexDiv>
-                            <Box sx={{ width: '50%' }}>
+                            <Box
+                                sx={{
+                                    width: { sm: '100%', md: '50%' },
+                                    mr: '10px',
+                                }}
+                            >
                                 <Typography>Наименование</Typography>
-                                <Box sx={{ width: '50%', mb: '30px' }}>
+                                <Box
+                                    sx={{
+                                        width: { sm: '100%', md: '50%' },
+                                        mb: '30px',
+                                    }}
+                                >
                                     {DefaultTextValidator(
                                         product.name,
                                         handleChangeProducts('name'),
@@ -304,17 +328,19 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </Box>
 
-                            <Box sx={{ width: '50%' }}>
+                            <Box sx={{ width: { sm: '100%', md: '50%' } }}>
                                 <Typography>Цена</Typography>
-                                <Box sx={{ width: '50%', mb: '30px' }}>
+                                <Box
+                                    sx={{
+                                        width: { sm: '100%', md: '50%' },
+                                        mb: '30px',
+                                    }}
+                                >
                                     {DefaultTextValidator(
                                         product.price,
                                         handleChangeProducts('price'),
                                         ['isNumber'],
-                                        [
-                                           
-                                            'Здесь должно быть число',
-                                        ]
+                                        ['Здесь должно быть число']
                                     )}
                                 </Box>
                             </Box>
@@ -322,17 +348,15 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
 
                         <Typography>Время работы</Typography>
                         <FlexDiv>
-                            <TypographyTimetable>Понедельник</TypographyTimetable>
+                            <TypographyTimetable>
+                                Понедельник
+                            </TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.mon,
                                     handleChangeProducts('mon'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                                        
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                      
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
@@ -344,12 +368,8 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 {DefaultTextValidator(
                                     product.tue,
                                     handleChangeProducts('tue'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                                       
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                        
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
@@ -361,12 +381,8 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 {DefaultTextValidator(
                                     product.wed,
                                     handleChangeProducts('wed'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                                      
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                      
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
@@ -378,12 +394,8 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 {DefaultTextValidator(
                                     product.thu,
                                     handleChangeProducts('thu'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                                   
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                      
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
@@ -395,12 +407,8 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 {DefaultTextValidator(
                                     product.fri,
                                     handleChangeProducts('fri'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                                
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                       
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
@@ -412,29 +420,23 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 {DefaultTextValidator(
                                     product.sat,
                                     handleChangeProducts('sat'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                                  
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                   
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <TypographyTimetable>Воскресенье</TypographyTimetable>
+                            <TypographyTimetable>
+                                Воскресенье
+                            </TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.sun,
                                     handleChangeProducts('sun'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
                                     [
-                               
-                                        'matchRegexp:^[0-2][0-9]-[0-2][0-9]$',
-                                    ],
-                                    [
-                                
                                         'Пожалуйста, введите часы в таком формате: "HH - HH"',
                                     ]
                                 )}
@@ -442,8 +444,10 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                         </FlexDiv>
                     </Box>
                     <Icon
-                        
-                        sx={{ cursor: 'pointer', fontSize: { xs: 'large', sm: '30px', md: '40px' } }}
+                        sx={{
+                            cursor: 'pointer',
+                            fontSize: { xs: 'large', md: '30px', xl: '40px' },
+                        }}
                         onClick={() => {
                             setPlatform({
                                 ...platform,
@@ -472,10 +476,20 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                         key={item.id}
                     >
                         <Box sx={{ width: '80%' }}>
-                            <FlexDiv>
-                                <Box sx={{ width: '50%' }}>
+                            <FlexDiv sx={{ alignItems: 'flex-start' }}>
+                                <Box
+                                    sx={{
+                                        width: { sm: '100%', md: '50%' },
+                                        mr: '10px',
+                                    }}
+                                >
                                     <Typography>Наименование</Typography>
-                                    <Box sx={{ width: '50%', mb: '30px' }}>
+                                    <Box
+                                        sx={{
+                                            width: { sm: '100%', md: '50%' },
+                                            mb: '30px',
+                                        }}
+                                    >
                                         <Typography
                                             sx={{
                                                 borderBottom: '1px solid black',
@@ -487,9 +501,14 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                     </Box>
                                 </Box>
 
-                                <Box sx={{ width: '50%' }}>
+                                <Box sx={{ width: { sm: '100%', md: '50%' } }}>
                                     <Typography>Цена</Typography>
-                                    <Box sx={{ width: '50%', mb: '30px' }}>
+                                    <Box
+                                        sx={{
+                                            width: { sm: '100%', md: '50%' },
+                                            mb: '30px',
+                                        }}
+                                    >
                                         <Typography
                                             sx={{
                                                 borderBottom: '1px solid black',
@@ -504,12 +523,13 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
 
                             <Typography>Время работы</Typography>
                             <FlexDiv>
-                                <Typography>Понедельник</Typography>
+                                <TypographyTimetable>
+                                    Понедельник
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.mon}
@@ -517,12 +537,13 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <Typography>Вторник</Typography>
+                                <TypographyTimetable>
+                                    Вторник
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.tue}
@@ -530,12 +551,11 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <Typography>Среда</Typography>
+                                <TypographyTimetable>Среда</TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.wed}
@@ -543,12 +563,13 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <Typography>Четверг</Typography>
+                                <TypographyTimetable>
+                                    Четверг
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.thu}
@@ -556,12 +577,13 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <Typography>Пятница</Typography>
+                                <TypographyTimetable>
+                                    Пятница
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.fri}
@@ -569,12 +591,13 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <Typography>Суббота</Typography>
+                                <TypographyTimetable>
+                                    Суббота
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.sat}
@@ -582,12 +605,13 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <Typography>Воскресенье</Typography>
+                                <TypographyTimetable>
+                                    Воскресенье
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
                                             borderBottom: '1px solid black',
-                                            width: '100%',
                                         }}
                                     >
                                         {item.sun}
@@ -596,8 +620,14 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </FlexDiv>
                         </Box>
                         <RemoveCircleIcon
-                            fontSize="large"
-                            sx={{ cursor: 'pointer' }}
+                            sx={{
+                                cursor: 'pointer',
+                                fontSize: {
+                                    xs: 'large',
+                                    md: '30px',
+                                    xl: '40px',
+                                },
+                            }}
                             onClick={() => {
                                 platform.products = platform.products.filter(
                                     (n: ProductsState) => n !== item
@@ -608,7 +638,12 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                     </ContentPageListItem>
                 ))}
 
-                <ContentPageButton type="submit">Сохранить</ContentPageButton>
+                <ButtonPrimary
+                    type="submit"
+                    sx={{ p: '10px 25px !important', mb: '20px' }}
+                >
+                    Сохранить
+                </ButtonPrimary>
             </ValidatorForm>
         </Box>
     );

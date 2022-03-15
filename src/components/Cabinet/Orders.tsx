@@ -1,10 +1,7 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState, useMemo } from 'react';
 import {
     Box,
     Container,
-    styled,
     useTheme,
     Table,
     TableBody,
@@ -28,7 +25,7 @@ import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { TableCellCenter } from 'style/otherStyles';
-import { TablePaginationActionsProps } from 'types/Cabinet';
+import { TablePaginationActionsProps, BookingState } from 'types/Cabinet';
 
 const TablePaginationActions = (props: TablePaginationActionsProps) => {
     const theme = useTheme();
@@ -123,7 +120,7 @@ export const Orders: React.FC = () => {
         product: string,
         comment: string,
         time: string,
-        id: string,
+        _id: string,
         phone: string
     ) {
         return {
@@ -134,14 +131,14 @@ export const Orders: React.FC = () => {
             product,
             comment,
             time,
-            id,
+            _id,
             phone,
         };
     }
 
     const rows = data[0]
         ? data
-              .map((item: any) =>
+              .map((item: BookingState) =>
                   createData(
                       item.nameClient,
                       item.date,
@@ -154,7 +151,7 @@ export const Orders: React.FC = () => {
                       item.phone
                   )
               )
-              .sort((a: any, b: any) => {
+              .sort((a: BookingState, b: BookingState) => {
                   const date1 = new Date(
                       +a.date.split('/')[2],
                       +a.date.split('/')[1] - 1,
@@ -175,7 +172,7 @@ export const Orders: React.FC = () => {
 
     const [rowsSortDesc, setRowsSortDesc] = useState<boolean>(false);
 
-    const sorted = useMemo(() => {
+    useMemo(() => {
         if (!rowsSortDesc) return rows;
         return rows.reverse();
     }, [rowsSortDesc, rows]);
@@ -242,8 +239,8 @@ export const Orders: React.FC = () => {
                                       page * rowsPerPage + rowsPerPage
                                   )
                                 : rows
-                            ).map((row: any) => (
-                                <TableRow key={row.id}>
+                            ).map((row: BookingState) => (
+                                <TableRow key={row._id}>
                                     <TableCellCenter component="th" scope="row">
                                         {row.nameClient}
                                         <br />

@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
     Box,
     MenuItem,
@@ -21,6 +21,36 @@ import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
 import { CardPlaceProps } from 'types/Search';
 
+const Main = styled(FlexDiv)({
+    alignItems: 'flex-start',
+    minHeight: '800px',
+    padding: '5px 20px',
+    '@media (max-width: 600px)': {
+        flexWrap: 'wrap',
+    },
+});
+
+const Filters = styled(Box)({
+    flexBasis: '40%',
+    textAlign: 'left',
+    paddingRight: '20px',
+    '@media (max-width: 600px)': {
+        paddingRight: 0,
+        flexBasis: '100%',
+    },
+});
+
+const Places = styled(Box)({
+    width: '100%',
+    minWidth: '280px',
+    paddingRight: '20px',
+    height: '800px',
+    overflowY: 'scroll',
+    '@media (max-width: 900px)': {
+        paddingRight: 0,
+    },
+});
+
 const Map = styled('div')({
     minWidth: '45%',
     borderRadius: '10px',
@@ -36,18 +66,43 @@ const Map = styled('div')({
 });
 
 export const SearchPage: React.FC = () => {
-    const [sort, setSort] = React.useState('');
+    const [sort, setSort] = useState<string>('');
     const services: string = useTypedSelector(
         (state) => state.services.services
     );
     const { data, loading } = useTypedSelector((state) => state.data);
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
-    const autoComplete: any = [];
-    autoComplete.push(data);
-
+    const autoComplete: Array<string> = data.map(
+        (item: CardPlaceProps) => item.nameCompany
+    );
+    const [valueAutoComplete, setValueAutoComplete] = useState<string | null>(
+        ''
+    );
     const handleChangeSort = (event: SelectChangeEvent) => {
         setSort(event.target.value as string);
     };
+    let findPlace: CardPlaceProps[] = [];
+    useMemo(() => {
+        if (valueAutoComplete) {
+            findPlace = data.filter(
+                (item: CardPlaceProps) => item.nameCompany === valueAutoComplete
+            );
+        } else {
+            findPlace = [];
+        }
+    }, [valueAutoComplete]);
+
+    useMemo(() => {
+        if (sort === 'increase price') {
+            data.sort(
+                (a: CardPlaceProps, b: CardPlaceProps) => a.price - b.price
+            );
+        } else {
+            data.sort(
+                (a: CardPlaceProps, b: CardPlaceProps) => b.price - a.price
+            );
+        }
+    }, [sort, data]);
 
     useEffect(() => {
         fetchPlaces(services);
@@ -56,6 +111,7 @@ export const SearchPage: React.FC = () => {
     // const { latitude, longitude } = usePosition(watch);
     // console.log(latitude)
     // console.log(longitude)
+
     return (
         <>
             <Header />
@@ -83,17 +139,7 @@ export const SearchPage: React.FC = () => {
                     </FormControl>
                 </Box>
 
-                <FlexDiv
-                    sx={{
-                        alignItems: 'flex-start',
-                        minHeight: '800px',
-                        p: '5px 20px',
-                        flexWrap: {
-                            xs: 'wrap',
-                            md: 'nowrap',
-                        },
-                    }}
-                >
+                <Main>
                     <Box
                         sx={{
                             display: 'flex',
@@ -105,16 +151,7 @@ export const SearchPage: React.FC = () => {
                         }}
                     >
                         {/* FILTERS */}
-                        <Box
-                            sx={{
-                                flexBasis: {
-                                    xs: '100%',
-                                    sm: '40%',
-                                },
-                                textAlign: 'left',
-                                pr: { xs: 0, sm: '20px' },
-                            }}
-                        >
+                        <Filters>
                             <Box sx={{ mb: '15px' }}>
                                 <Typography sx={{ fontWeight: 'bold' }}>
                                     Поиск по названию
@@ -124,11 +161,14 @@ export const SearchPage: React.FC = () => {
                                     id="searchName"
                                     options={autoComplete}
                                     sx={{ minWidth: 200, p: 0 }}
+                                    onChange={(
+                                        event: any,
+                                        newValue: string | null
+                                    ) => {
+                                        setValueAutoComplete(newValue);
+                                    }}
                                     renderInput={(params) => (
-                                        <TextField                                        
-                                            {...params}
-                                            label="Площадка"
-                                        />
+                                        <TextField {...params} />
                                     )}
                                 />
                             </Box>
@@ -158,59 +198,86 @@ export const SearchPage: React.FC = () => {
                                     </Select>
                                 </FormControl>
                             </Box>
-                        </Box>
+                        </Filters>
 
                         {/* PLACES */}
-                        <Box
+                        <Places
                             sx={{
                                 width: '100%',
                                 minWidth: '280px',
                                 pr: { xs: 0, sm: 0, md: '20px' },
+                                height: '800px',
+                                overflowY: 'scroll',
                             }}
                         >
                             {loading ? (
                                 <>Загрузка...</>
                             ) : (
-                                data[0] &&
-                                data.map((item: CardPlaceProps) => (
-                                    <Link to="/catalog">
-                                        <Button
-                                            sx={{
-                                                color: ' black',
-                                                textTransform: 'inherit',
-                                                width: '100%',
-                                            }}
-                                            onClick={() =>
-                                                fetchCatalogPlace(item._id!)
-                                            }
-                                        >
-                                            <CardPlace
-                                                key={item._id}
-                                                title={item.nameCompany!}
-                                                address={item.address}
-                                                subway={item.subway}
-                                                timetable={item.timetable}
-                                                price={item.price}
-                                                images={item.images}
-                                            />
-                                        </Button>
-                                    </Link>
-                                ))
+                                (findPlace[0] &&
+                                    findPlace.map((item: CardPlaceProps) => (
+                                        <Link to="/catalog">
+                                            <Button
+                                                sx={{
+                                                    color: ' black',
+                                                    textTransform: 'inherit',
+                                                    width: '100%',
+                                                }}
+                                                onClick={() =>
+                                                    fetchCatalogPlace(item._id!)
+                                                }
+                                            >
+                                                <CardPlace
+                                                    key={item._id}
+                                                    title={item.nameCompany!}
+                                                    address={item.address}
+                                                    subway={item.subway}
+                                                    timetable={item.timetable}
+                                                    price={item.price}
+                                                    images={item.images}
+                                                />
+                                            </Button>
+                                        </Link>
+                                    ))) ||
+                                (data[0] &&
+                                    data.map((item: CardPlaceProps) => (
+                                        <Link to="/catalog">
+                                            <Button
+                                                sx={{
+                                                    color: ' black',
+                                                    textTransform: 'inherit',
+                                                    width: '100%',
+                                                }}
+                                                onClick={() =>
+                                                    fetchCatalogPlace(item._id!)
+                                                }
+                                            >
+                                                <CardPlace
+                                                    key={item._id}
+                                                    title={item.nameCompany!}
+                                                    address={item.address}
+                                                    subway={item.subway}
+                                                    timetable={item.timetable}
+                                                    price={item.price}
+                                                    images={item.images}
+                                                />
+                                            </Button>
+                                        </Link>
+                                    )))
                             )}
-                        </Box>
+                        </Places>
                     </Box>
 
                     {/* MAP */}
                     <Map>
-                        <iframe
+                        {/* <iframe
                             title="Yandex map"
                             src="https://yandex.ru/map-widget/v1/?um=constructor%3A4cf72c2061ddf2ea4555a3b49919308b440e44d331185ac4c861c1f173393260&amp;source=constructor"
                             width="100%"
                             height="100%"
                             style={{ border: 'none', borderRadius: '15px' }}
-                        />
+                        /> */}
                     </Map>
-                </FlexDiv>
+                </Main>
             </Box>
         </>
     );

@@ -141,13 +141,6 @@ export const ContentPageListItem = styled(ListItem)({
     marginBottom: '30px',
 });
 
-export const ContentPageButton = styled(CustomButton)({
-    fontWeight: 'normal',
-    textTransform: 'lowercase',
-    padding: '10px 20px',
-    fontSize: '20px',
-});
-
 export const input = (
     value: unknown,
     onChange:
@@ -203,10 +196,14 @@ export const styleModal = {
     bgcolor: 'background.paper',
     border: '2px solid #000',
     boxShadow: 24,
-    p: 4,
     overflow: 'scroll',
+    padding: '15px',
     '@media (max-width: 700px)': {
         width: '80%',
+    },
+    '@media (max-width: 500px)': {
+        width: '90%',
+        padding: '5px'
     },
 };
 
@@ -236,7 +233,7 @@ export const TextFieldModal = (value: string, label: string) => (
     />
 );
 
-export const ButtonBooking = styled(Button)({
+export const ButtonPrimary = styled(Button)({
     backgroundColor: '#f79521',
     color: 'white',
     textTransform: 'uppercase',

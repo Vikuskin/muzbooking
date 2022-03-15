@@ -1,5 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable consistent-return */
+
 import React, { useState, useEffect } from 'react';
 import {
     Box,
@@ -18,13 +19,22 @@ import {
     TableRow,
     Paper,
     Typography,
+    styled
 } from '@mui/material';
 import { ProductsState } from 'types/Cabinet';
-import { FlexDiv, InputTitle, TitleH1, FormModal, ButtonBooking } from 'style/otherStyles';
+import { FlexDiv, InputTitle, TitleH1, FormModal, ButtonPrimary } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingModalProps, BookingState, ClientState } from 'types/Search';
 import { getReadDate } from 'functions/functions';
+
+const Title = styled(TitleH1)({
+    textAlign: 'left',
+    margin: '0 5px',
+    '@media (max-width: 600px)': {
+        textAlign: 'center'
+    },
+})
 
 export const BookingModal: React.FC<BookingModalProps> = ({
     idPlace,
@@ -125,9 +135,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const { bookingData } = useTypedSelector((state) => state.bookingData);
     return (
         <>
-            <FlexDiv sx={{ justifyContent: 'space-between' }}>
+            <FlexDiv sx={{ justifyContent: 'space-between', flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
                 <Box sx={{ textAlign: 'left' }}>
-                    <TitleH1 sx={{ m: 0 }}>{nameCompany}</TitleH1>
+                    <Title sx={{ m: 0 }}>{nameCompany}</Title>
                     <Typography>{namePlatform}</Typography>
                 </Box>
                 <Box sx={{ minWidth: 120, maxWidth: 300 }}>
@@ -186,11 +196,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 </Box>
                 <Box>
                     {clientWindow ? (
-                        <ButtonBooking onClick={() => setClientWindow(false)}>
+                        <ButtonPrimary onClick={() => setClientWindow(false)}>
                             Назад
-                        </ButtonBooking>
+                        </ButtonPrimary>
                     ) : (
-                        <ButtonBooking
+                        <ButtonPrimary
                             onClick={() => {
                                 if (!booking.date) {
                                     alert('Выберите время и дату!');
@@ -200,7 +210,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                             }}
                         >
                             Далее
-                        </ButtonBooking>
+                        </ButtonPrimary>
                     )}
                 </Box>
             </FlexDiv>
@@ -245,7 +255,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                             }}
                         />
                     </FormModal>
-                    <ButtonBooking
+                    <ButtonPrimary
                         onClick={() => {
                             postBooking(
                                 idPlace,
@@ -264,7 +274,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         }}
                     >
                         Оставить заявку
-                    </ButtonBooking>
+                    </ButtonPrimary>
                 </Box>
             ) : (
                 // TABLE
@@ -285,7 +295,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                             </TableHead>
                             <TableBody>
                                 {rows
-                                    .filter((e: any) => e)
+                                    .filter((e: {
+                                        hour: string;
+                                        price: string;
+                                        id: number
+                                    }) => e)
                                     .map(
                                         (row: {
                                             hour: string;
