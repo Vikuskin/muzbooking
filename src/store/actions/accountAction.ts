@@ -240,3 +240,32 @@ export const fetchOrders =
             return e.response.data.message;
         }
     };
+
+export const fetchCalendar =
+    (token: string, date: string) =>
+    async (dispatch: Dispatch<DataAction>) => {
+        console.log(date);
+        try {
+            console.log('action');
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+                params: { date },
+            };
+            dispatch({ type: DataActionTypes.FETCH_DATA });
+            const response = await axios.get(
+                'http://localhost:5000/account/calendar',
+                config
+            );
+            dispatch({
+                type: DataActionTypes.FETCH_DATA_SUCCESS,
+                payload: response.data,
+            });
+            return response.data;
+        } catch (e) {
+            dispatch({
+                type: DataActionTypes.FETCH_DATA_ERROR,
+                payload: e.response.data.message,
+            });
+            return e.response.data.message;
+        }
+    };

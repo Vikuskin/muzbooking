@@ -21,6 +21,7 @@ import {
     ContentPageListItem,
     input,
     DefaultTextValidator,
+    TypographyMarginTop
 } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import {
@@ -66,6 +67,9 @@ const Comfort = styled('div')({
     backgroundColor: '#ebeff2',
     marginBottom: '30px',
 });
+const TypographyTimetable = styled(Typography)({
+    minWidth: '110px'
+})
 
 export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
     namePlatform,
@@ -223,7 +227,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                     ['Это поле обязательно']
                 )}
 
-                <Typography sx={{ mt: '20px' }}>Площадь</Typography>
+                <TypographyMarginTop>Площадь</TypographyMarginTop>
                 {DefaultTextValidator(
                     platform.square,
                     handleChange('square'),
@@ -231,11 +235,11 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                     ['Это поле обязательно', 'Здесь должно быть число']
                 )}
 
-                <Typography sx={{ mt: '20px' }}>Райдер</Typography>
+                <TypographyMarginTop>Райдер</TypographyMarginTop>
                 {input(platform.rider, handleChange('rider'))}
 
                 {/* IMAGES */}
-                <Typography sx={{ mt: '20px' }}>Изображения</Typography>
+                <TypographyMarginTop>Изображения</TypographyMarginTop>
                 <Box {...getRootProps({ style })}>
                     <input {...getInputProps()} />
                     <Box>Перетащите изображения сюда</Box>
@@ -243,15 +247,17 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                 <Box>{files[0] && thumbs}</Box>
 
                 {/* COMFORT SERVICES */}
-                <Comfort>
-                    <Grid item xs={12} md={6}>
+                <Comfort sx={{ fontSize: '10px' }}>
+                    <Grid flexWrap='wrap'>
+                    <Grid item xs='auto' md='auto' >
                         <TitleH2>Удобства</TitleH2>
-                        <List sx={{ p: 0 }}>
+                        <List sx={{ p: 0, fontSize: '10px' }}>
                             {comfortChecked.map(({ value, id, checked }) => (
-                                <ListItem sx={{ p: 0 }} key={id}>
+                                <ListItem sx={{ p: 0, fontSize: '10px' }} key={id}>
                                     <FormControlLabel
+                                        sx={{ fontSize: '10px' }}
                                         value={value}
-                                        control={<Checkbox />}
+                                        control={<Checkbox sx={{ fontSize: '10px' }}/>}
                                         label={value}
                                         checked={checked}
                                         onChange={() => handleChangeComfort(id)}
@@ -260,7 +266,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             ))}
                         </List>
                     </Grid>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs='auto' md='auto'>
                         <TitleH2>Сервис</TitleH2>
                         <List sx={{ p: 0 }}>
                             {servicesChecked.map(({ value, id, checked }) => (
@@ -277,6 +283,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </ListItem>
                             ))}
                         </List>
+                    </Grid>
                     </Grid>
                 </Comfort>
 
@@ -315,7 +322,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
 
                         <Typography>Время работы</Typography>
                         <FlexDiv>
-                            <Typography>Понедельник</Typography>
+                            <TypographyTimetable>Понедельник</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.mon,
@@ -332,7 +339,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <Typography>Вторник</Typography>
+                            <TypographyTimetable>Вторник</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.tue,
@@ -349,7 +356,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <Typography>Среда</Typography>
+                            <TypographyTimetable>Среда</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.wed,
@@ -366,7 +373,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <Typography>Четверг</Typography>
+                            <TypographyTimetable>Четверг</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.thu,
@@ -383,7 +390,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <Typography>Пятница</Typography>
+                            <TypographyTimetable>Пятница</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.fri,
@@ -400,7 +407,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <Typography>Суббота</Typography>
+                            <TypographyTimetable>Суббота</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.sat,
@@ -417,7 +424,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
-                            <Typography>Воскресенье</Typography>
+                            <TypographyTimetable>Воскресенье</TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.sun,
@@ -435,8 +442,8 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                         </FlexDiv>
                     </Box>
                     <Icon
-                        fontSize="large"
-                        sx={{ cursor: 'pointer' }}
+                        
+                        sx={{ cursor: 'pointer', fontSize: { xs: 'large', sm: '30px', md: '40px' } }}
                         onClick={() => {
                             setPlatform({
                                 ...platform,

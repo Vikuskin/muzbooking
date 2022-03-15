@@ -29,5 +29,10 @@ router.get(
     passport.authenticate('jwt', { session: false }),
     controller.accountOrders
 );
+router.get(
+    '/calendar',
+    passport.authenticate('jwt', { session: false }),
+    controller.accountCalendar
+);
 
 module.exports = router;

@@ -9,10 +9,10 @@ import {
 } from '@mui/material';
 import {AddCircle, RemoveCircle, Edit} from '@mui/icons-material';
 import {
-    FlexDiv,
     AccountTitleH1,
     ContentPageListItem,
     ContentPageButton,
+    styleModal
 } from 'style/otherStyles';
 import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { ContentPagePlatform } from 'components/Cabinet/ContentPage/ContentPagePlatform';
@@ -24,20 +24,6 @@ import {
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
 import { ContentPagePlatformProps } from 'types/Cabinet';
-
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '10%',
-    bottom: '10%',
-    left: '50%',
-    transform: 'translate(-50%, 0)',
-    width: '70%',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    overflow: 'scroll',
-};
 
 const OrangeCircleIcon = styled(AddCircle)({
     color: '#f89623',
@@ -77,8 +63,8 @@ export const ContentPage: React.FC = () => {
         <>
         <AccountHeader />
         <Container maxWidth="xl" sx={{ p: '30px', textAlign: 'left', pt: '100px' }}>
-            <FlexDiv sx={{ alignItems: 'flex-start' }}>
-                <Box sx={{ width: '40%' }}>
+            <Box sx={{ display: 'flex', alignItems: 'flex-start', flexWrap: 'wrap', justifyContent: 'center'}}>
+                <Box sx={{ width: '45%', minWidth: '300px', mr: {sm: 0, xl: '15px'}, mb: '30px' }}>
                     <AccountTitleH1>Основная информация</AccountTitleH1>
                     {loading ? (
                         <>Загрузка...</>
@@ -99,7 +85,7 @@ export const ContentPage: React.FC = () => {
                         )
                     )}
                 </Box>
-                <Box sx={{ width: '50%' }}>
+                <Box sx={{ width: '45%', minWidth: '300px' }}>
                     <AccountTitleH1>Площадки</AccountTitleH1>
                     {loading ? (
                         <>Загрузка...</>
@@ -182,7 +168,7 @@ export const ContentPage: React.FC = () => {
                         />
                     )}
                 </Box>
-            </FlexDiv>
+            </Box>
             {modal && (
                 <Modal
                     open={open}
@@ -191,7 +177,7 @@ export const ContentPage: React.FC = () => {
                     aria-describedby="modal-modal-description"
                     sx={{ overflow: 'scroll' }}
                 >
-                    <Box sx={style}>
+                    <Box sx={styleModal}>
                         <ContentPagePlatform
                             namePlatform={modal.namePlatform}
                             square={modal.square}

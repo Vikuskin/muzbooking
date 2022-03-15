@@ -1,5 +1,13 @@
 import React from 'react';
-import { ListItem, InputBase, styled, TextField } from '@mui/material';
+import {
+    ListItem,
+    InputBase,
+    styled,
+    TextField,
+    TableCell,
+    Button,
+    Typography,
+} from '@mui/material';
 import { TextValidator } from 'react-material-ui-form-validator';
 
 export const InputTitle = styled(InputBase)({
@@ -108,13 +116,21 @@ export const TitleH2 = styled('h2')({
     },
 });
 
-export const AccountTitleH1 = styled(TitleH1)({
+export const AccountTitleH1 = styled('h1')({
     textAlign: 'left',
     margin: 0,
-    marginBottom: '25px',
+    marginBottom: '23px',
     backgroundColor: '#f89623',
     color: 'white',
     padding: '20px',
+    fontSize: '25px',
+    '@media (max-width: 1200px)': {
+        fontSize: '20px',
+        minHeight: '80px'
+    },
+    '@media (max-width: 600px)': {
+        fontSize: '18px',
+    },
 });
 
 export const ContentPageListItem = styled(ListItem)({
@@ -167,3 +183,71 @@ export const DefaultTextValidator = (
         sx={{ width: '100%' }}
     />
 );
+
+export const TableCellCenter = styled(TableCell)({
+    textAlign: 'center',
+});
+
+export const TableCellCalendar = styled(TableCellCenter)({
+    fontSize: '15px',
+    padding: '10px',
+});
+
+export const styleModal = {
+    position: 'absolute' as 'absolute',
+    top: '10%',
+    bottom: '10%',
+    left: '50%',
+    transform: 'translate(-50%, 0)',
+    width: '70%',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    overflow: 'scroll',
+    '@media (max-width: 700px)': {
+        width: '80%',
+    },
+};
+
+export const FormModal = styled('div')({
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'center',
+    flexDirection: 'column',
+    maxWidth: '100%',
+    padding: '20px',
+    border: '2px solid #e2e2e2',
+    borderRadius: '4px',
+    backgroundColor: '#ebeff2',
+    '@media (max-width: 700px)': {
+        lineHeight: '1.1',
+        padding: '5px'
+    },
+});
+
+export const TextFieldModal = (value: string, label: string) => (
+    <TextField
+        id="filled-textarea"
+        label={label}
+        multiline
+        variant="filled"
+        value={value}
+    />
+);
+
+export const ButtonBooking = styled(Button)({
+    backgroundColor: '#f79521',
+    color: 'white',
+    textTransform: 'uppercase',
+    borderRadius: '5px',
+    padding: '5px 25px',
+    '@media (max-width: 700px)': {
+        lineHeight: '1.1',
+        padding: '5px 10px'
+    },
+});
+
+export const TypographyMarginTop = styled(Typography)({
+    marginTop: '20px'
+})

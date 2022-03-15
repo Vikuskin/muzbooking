@@ -27,20 +27,8 @@ import {
 import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
-
-interface TablePaginationActionsProps {
-    count: number;
-    page: number;
-    rowsPerPage: number;
-    onPageChange: (
-        event: React.MouseEvent<HTMLButtonElement>,
-        newPage: number
-    ) => void;
-}
-
-const TableCellCenter = styled(TableCell)({
-    textAlign: 'center',
-});
+import { TableCellCenter } from 'style/otherStyles';
+import { TablePaginationActionsProps } from 'types/Cabinet';
 
 const TablePaginationActions = (props: TablePaginationActionsProps) => {
     const theme = useTheme();
@@ -151,8 +139,8 @@ export const Orders: React.FC = () => {
         };
     }
 
-    const rows = data.booking
-        ? data.booking
+    const rows = data[0]
+        ? data
               .map((item: any) =>
                   createData(
                       item.nameClient,
@@ -188,9 +176,9 @@ export const Orders: React.FC = () => {
     const [rowsSortDesc, setRowsSortDesc] = useState<boolean>(false);
 
     const sorted = useMemo(() => {
-        if(!rowsSortDesc) return rows;
+        if (!rowsSortDesc) return rows;
         return rows.reverse();
-    }, [ rowsSortDesc, rows ]);
+    }, [rowsSortDesc, rows]);
 
     const [page, setPage] = React.useState<number>(0);
     const [rowsPerPage, setRowsPerPage] = React.useState<number>(5);
@@ -212,7 +200,6 @@ export const Orders: React.FC = () => {
         setPage(0);
     };
 
-
     return (
         <Box>
             <AccountHeader />
@@ -222,7 +209,7 @@ export const Orders: React.FC = () => {
             >
                 <TableContainer component={Paper}>
                     <Table
-                        sx={{ minWidth: 500 }}
+                        sx={{ minWidth: 290 }}
                         aria-label="custom pagination table"
                     >
                         <TableHead>
@@ -233,7 +220,9 @@ export const Orders: React.FC = () => {
                                         direction={
                                             rowsSortDesc ? 'desc' : 'asc'
                                         }
-                                        onClick={() => setRowsSortDesc(!rowsSortDesc)}
+                                        onClick={() =>
+                                            setRowsSortDesc(!rowsSortDesc)
+                                        }
                                     >
                                         Дата
                                     </TableSortLabel>

@@ -1,3 +1,4 @@
+import React from 'react';
 import { CheckedPlaceDB } from './Databases';
 
 export interface RegistrationState {
@@ -71,4 +72,26 @@ export interface ContentCompanyImages {
     path: string;
     size: number;
     preview?: string | undefined;
+}
+
+export interface TablePaginationActionsProps {
+    count: number;
+    page: number;
+    rowsPerPage: number;
+    onPageChange: (
+        event: React.MouseEvent<HTMLButtonElement>,
+        newPage: number
+    ) => void;
+}
+
+export interface BookingState {
+    namePlatform: string;
+    nameClient: string;
+    phone: string;
+    price: string;
+    product: string;
+    time: string;
+    _id: string;
+    date: string;
+    comment: string;
 }

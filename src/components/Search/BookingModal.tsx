@@ -9,7 +9,6 @@ import {
     SelectChangeEvent,
     Button,
     InputLabel,
-    styled,
     TextField,
     Table,
     TableBody,
@@ -21,31 +20,11 @@ import {
     Typography,
 } from '@mui/material';
 import { ProductsState } from 'types/Cabinet';
-import { FlexDiv, InputTitle, TitleH1 } from 'style/otherStyles';
+import { FlexDiv, InputTitle, TitleH1, FormModal, ButtonBooking } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingModalProps, BookingState, ClientState } from 'types/Search';
-
-const ButtonBooking = styled(Button)({
-    backgroundColor: '#f79521',
-    color: 'white',
-    textTransform: 'uppercase',
-    borderRadius: '5px',
-    padding: '5px 25px',
-});
-
-const ClientForm = styled('div')({
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'center',
-    flexDirection: 'column',
-    maxWidth: '100%',
-    padding: '20px',
-    border: '2px solid #e2e2e2',
-    borderRadius: '4px',
-    backgroundColor: '#ebeff2',
-    marginBottom: '30px',
-});
+import { getReadDate } from 'functions/functions';
 
 export const BookingModal: React.FC<BookingModalProps> = ({
     idPlace,
@@ -71,10 +50,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     for (let i = 0; i < 7; i++, now.setDate(now.getDate() + 1)) {
         nextWeek.push(new Date(now.getTime()));
     }
-    const getReadDate = (date: Date) =>
-        `${`0${date.getDate()}`.slice(-2)}/${`0${date.getMonth() + 1}`.slice(
-            -2
-        )}/${date.getFullYear()}`;
+
 
     const [selectProduct, setSelectProduct] = React.useState<ProductsState>({
         id: products[0].id,
@@ -90,8 +66,8 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     });
 
     // TABLE
-    function createData(hour: string, price: string) {
-        return { hour, price };
+    function createData(hour: string, price: string, id: number) {
+        return { hour, price, id };
     }
 
     const checkTime = (possibleTime: number) => {
@@ -109,7 +85,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 ) {
                     return;
                 }
-                return createData(`${possibleTime}:00`, selectProduct.price);
+                return createData(`${possibleTime}:00`, selectProduct.price, possibleTime);
             }
         }
     };
@@ -231,7 +207,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
             {clientWindow ? (
                 <Box>
-                    <ClientForm>
+                    <FormModal>
                         <TextField
                             id="filled-textarea"
                             label="*На чьё имя будет заказ"
@@ -268,7 +244,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                 });
                             }}
                         />
-                    </ClientForm>
+                    </FormModal>
                     <ButtonBooking
                         onClick={() => {
                             postBooking(
@@ -314,9 +290,10 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                         (row: {
                                             hour: string;
                                             price: string;
+                                            id: number
                                         }) => (
                                             <TableRow
-                                                key={row.hour}
+                                                key={row.id}
                                                 sx={{
                                                     '&:last-child td, &:last-child th':
                                                         {

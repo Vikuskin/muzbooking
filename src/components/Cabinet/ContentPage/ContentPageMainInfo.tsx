@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { Phone, RemoveCircle } from '@mui/icons-material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
-import { ContentPageButton, input, DefaultTextValidator } from 'style/otherStyles';
+import { input, DefaultTextValidator, ButtonBooking, TypographyMarginTop } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { ContentPageMainInfoProps } from 'types/Cabinet';
 
@@ -84,7 +84,7 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                     value={info.sphera}
                     onChange={handleChange('sphera')}
                     variant="standard"
-                    sx={{ width: '100%', mb: '30px' }}
+                    sx={{ width: '100%', mb: '20px' }}
                 >
                     <MenuItem value="RECORD">Студии звукозаписи</MenuItem>
                     <MenuItem value="PHOTO">Фотостудии</MenuItem>
@@ -98,21 +98,21 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                     ['required'],
                     ['Это поле обязательно']
                 )}
-                <Typography sx={{ mt: '20px' }}>Город</Typography>
+                <TypographyMarginTop>Город</TypographyMarginTop>
                 {DefaultTextValidator(
                     info.city,
                     handleChange('city'),
                     ['required'],
                     ['Это поле обязательно']
                 )}
-                <Typography sx={{ mt: '20px' }}>Адрес</Typography>
+                <TypographyMarginTop>Адрес</TypographyMarginTop>
                 {DefaultTextValidator(
                     info.address,
                     handleChange('address'),
                     ['required'],
                     ['Это поле обязательно']
                 )}
-                <Typography sx={{ mt: '20px' }}>Телефоны</Typography>
+                <TypographyMarginTop>Телефоны</TypographyMarginTop>
                 <TextField
                     id="standard-multiline-flexible"
                     multiline
@@ -187,7 +187,7 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                     ['required'],
                     ['Это поле обязательно']
                 )}
-                <Typography sx={{ mt: '20px' }}>Email</Typography>
+                <TypographyMarginTop>Email</TypographyMarginTop>
                 <TextField
                     id="standard-multiline-flexible"
                     multiline
@@ -197,15 +197,15 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                     variant="standard"
                     sx={{ width: '100%' }}
                 />
-                <Typography sx={{ mt: '20px' }}>Описание</Typography>
+                <TypographyMarginTop>Описание</TypographyMarginTop>
                 {input(info.description, handleChange('description'))}
-                <Typography sx={{ mt: '20px' }}>Время работы</Typography>
+                <TypographyMarginTop>Время работы</TypographyMarginTop>
                 {input(info.timetable, handleChange('timetable'))}
-                <Typography sx={{ mt: '20px' }}>Средняя цена за час</Typography>
+                <TypographyMarginTop>Средняя цена за час</TypographyMarginTop>
                 {input(info.price, handleChange('price'))}
-                <ContentPageButton type="submit" sx={{ mt: '20px' }}>
+                <ButtonBooking type="submit" sx={{ mt: '20px', p: '10px 25px !important' }}>
                     Сохранить
-                </ContentPageButton>
+                </ButtonBooking>
             </ValidatorForm>
         </Box>
     );

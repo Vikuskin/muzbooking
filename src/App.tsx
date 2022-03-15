@@ -8,7 +8,7 @@ import { Login } from 'components/Cabinet/Login';
 import { Catalog } from 'components/Search/Catalog';
 import { Orders } from 'components/Cabinet/Orders';
 import { ContentPage } from 'components/Cabinet/ContentPage/ContentPage';
-import { Calendar } from 'components/Cabinet/Calendar';
+import { Calendar } from 'components/Cabinet/Calendar/Calendar';
 
 export const App = () => (
     <BrowserRouter>

@@ -162,7 +162,6 @@ module.exports.accountPlatformDelete = async (req, res) => {
 };
 
 module.exports.accountOrders = async (req, res) => {
-    console.log('111')
     try {
         const place = await Place.findOne({
             email: req.user.email,
@@ -170,7 +169,28 @@ module.exports.accountOrders = async (req, res) => {
         const booking = await Booking.find({
             placeId: place._id
         })
-        res.status(200).json({booking: booking, place: place});
+        res.status(200).json(booking);
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ message: e });
+    }
+};
+
+module.exports.accountCalendar = async (req, res) => {
+    try {
+        console.log(req.query)
+        console.log(req.user)
+        const place = await Place.findOne({
+            email: req.user.email,
+        });
+        const platforms = await Platform.find({
+            placeId: place._id
+        })
+        const booking = await Booking.find({
+            placeId: place._id,
+            date: req.query.date
+        })
+        res.status(200).json({booking, platforms});
     } catch (e) {
         console.log(e);
         res.status(400).json({ message: e });

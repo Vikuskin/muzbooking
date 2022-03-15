@@ -2,10 +2,10 @@
 import React from 'react';
 import { Typography, Button, styled, Box, Modal } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
-import { FlexDiv, TitleH2 } from 'style/otherStyles';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import Fancybox from 'components/Fancybox/Fancybox';
 import { BookingModal } from 'components/Search/BookingModal';
+import { FlexDiv, TitleH2, styleModal } from 'style/otherStyles';
 import { CatalogPlatformCardProps } from 'types/Search';
 import { CheckedPlaceDB } from 'types/Databases';
 import { ContentCompanyImages } from 'types/Cabinet';
@@ -23,19 +23,6 @@ const Card = styled(FlexDiv)({
     backgroundColor: '#ebeff2',
     marginBottom: '30px',
 });
-const style = {
-    position: 'absolute' as 'absolute',
-    top: '10%',
-    bottom: '10%',
-    left: '50%',
-    transform: 'translate(-50%, 0)',
-    width: '70%',
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-    overflow: 'scroll',
-};
 
 export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
     idPlace,
@@ -150,7 +137,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                     aria-describedby="modal-modal-description"
                     sx={{ overflow: 'scroll' }}
                 >
-                    <Box sx={style}>
+                    <Box sx={styleModal}>
                         <BookingModal
                             idPlace={idPlace}
                             idPlatform={idPlatform}
