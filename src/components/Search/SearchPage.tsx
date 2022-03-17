@@ -127,11 +127,12 @@ export const SearchPage: React.FC = () => {
     useEffect(() => {
         fetchPlaces(services || 'RECORD');
     }, [services]);
-    // const watch = true;
 
+    // const watch = true;
     // const { latitude, longitude } = usePosition(watch);
     // console.log(latitude);
     // console.log(longitude);
+    
     const coords: any = [];
     console.log(coords)
     const getCoordinate = async (city: string, address: string) => {
