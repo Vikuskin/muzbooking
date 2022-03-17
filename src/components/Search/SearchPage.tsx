@@ -133,7 +133,7 @@ export const SearchPage: React.FC = () => {
     // console.log(latitude);
     // console.log(longitude);
     const coords: any = [];
-
+    console.log(coords)
     const getCoordinate = async (city: string, address: string) => {
         try {
             const response = await axios.get(
@@ -153,7 +153,7 @@ export const SearchPage: React.FC = () => {
             ]);
         });
     }
-    console.log(coords[1]);
+
     return (
         <>
             <Header />
@@ -301,7 +301,7 @@ export const SearchPage: React.FC = () => {
                                 width="100%"
                                 height="100%"
                             >
-                                {coords.map((item: any) => (
+                                {coords[0] && coords.map((item: any) => (
                                     <Placemark defaultGeometry={[item]} />
                                 ))}
                             </Map>
