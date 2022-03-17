@@ -91,10 +91,9 @@ export const Calendar: React.FC = () => {
                                     data.platforms.map(
                                         (platform: {
                                             namePlatform: string;
-                                            _id: string;
                                         }) => (
                                             <TableCellCalendar
-                                                key={platform._id}
+                                                key={platform.namePlatform}
                                             >
                                                 {platform.namePlatform}
                                             </TableCellCalendar>
@@ -112,7 +111,7 @@ export const Calendar: React.FC = () => {
                                 .filter((e: { hour: string; id: number }) => e)
                                 .map((row: { hour: string; id: number }) => (
                                     <TableRow
-                                        key={row.id}
+                                        key={row.hour}
                                         sx={{
                                             '&:last-child td, &:last-child th':
                                                 {
@@ -131,7 +130,7 @@ export const Calendar: React.FC = () => {
                                                 (platform: {
                                                     namePlatform: string;
                                                 }) => (
-                                                    <TableCellCalendar>
+                                                    <TableCellCalendar key={row.hour + platform.namePlatform}>
                                                         {data.booking.map(
                                                             (
                                                                 booking: BookingState
@@ -144,6 +143,7 @@ export const Calendar: React.FC = () => {
                                                                 ) {
                                                                     return (
                                                                         <ButtonPrimary
+                                                                        key={booking._id}
                                                                             onClick={() => {
                                                                                 setOpen(
                                                                                     true

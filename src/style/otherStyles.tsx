@@ -158,7 +158,7 @@ export const input = (
 );
 
 export const DefaultTextValidator = (
-    value: string,
+    value: string | number,
     onChange:
         | React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>
         | undefined,
@@ -166,7 +166,7 @@ export const DefaultTextValidator = (
     error: Array<string>
 ) => (
     <TextValidator
-        name={value}
+        name={`${value}`}
         value={value}
         onChange={onChange}
         validators={validators}

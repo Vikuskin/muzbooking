@@ -1,3 +1,12 @@
+/* eslint-disable react/jsx-no-useless-fragment */
+/* eslint-disable react/self-closing-comp */
+/* eslint-disable no-undef */
+/* eslint-disable array-callback-return */
+/* eslint-disable consistent-return */
+/* eslint-disable prefer-template */
+/* eslint-disable no-var */
+/* eslint-disable no-unused-vars */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useMemo, useState } from 'react';
 import {
@@ -11,20 +20,30 @@ import {
     Typography,
     styled,
     Button,
+    Slider,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { InputSearch, InputTitle, FlexDiv } from 'style/otherStyles';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
-// import { usePosition } from 'use-position';
 import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
 import { CardPlaceProps } from 'types/Search';
+import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import axios from 'axios';
 
 const Main = styled(FlexDiv)({
     alignItems: 'flex-start',
     minHeight: '800px',
     padding: '5px 20px',
+    '@media (max-width: 600px)': {
+        flexWrap: 'wrap',
+    },
+});
+
+const MainWrapper = styled(Box)({
+    display: 'flex',
+    width: '100%',
     '@media (max-width: 600px)': {
         flexWrap: 'wrap',
     },
@@ -51,7 +70,7 @@ const Places = styled(Box)({
     },
 });
 
-const Map = styled('div')({
+const MapWrapper = styled('div')({
     minWidth: '45%',
     borderRadius: '10px',
     height: '800px',
@@ -71,10 +90,11 @@ export const SearchPage: React.FC = () => {
         (state) => state.services.services
     );
     const { data, loading } = useTypedSelector((state) => state.data);
+    console.log(data);
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
-    const autoComplete: Array<string> = data.map(
-        (item: CardPlaceProps) => item.nameCompany
-    );
+    const autoComplete: Array<string> = data[0]
+        ? data.map((item: CardPlaceProps) => item.nameCompany)
+        : [];
     const [valueAutoComplete, setValueAutoComplete] = useState<string | null>(
         ''
     );
@@ -105,13 +125,35 @@ export const SearchPage: React.FC = () => {
     }, [sort, data]);
 
     useEffect(() => {
-        fetchPlaces(services);
+        fetchPlaces(services || 'RECORD');
     }, [services]);
     // const watch = true;
-    // const { latitude, longitude } = usePosition(watch);
-    // console.log(latitude)
-    // console.log(longitude)
 
+    // const { latitude, longitude } = usePosition(watch);
+    // console.log(latitude);
+    // console.log(longitude);
+    const coords: any = [];
+
+    const getCoordinate = async (city: string, address: string) => {
+        try {
+            const response = await axios.get(
+                `https://catalog.api.2gis.com/3.0/items/geocode?q=${city}, ${address}, 3&fields=items.point,items.geometry.centroid&key=ruxutq4755`
+            );
+            return response.data;
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    if (data[0]) {
+        data.forEach(async (item: { city: string; address: string }) => {
+            const result = await getCoordinate(item.city, item.address);
+            coords.push([
+                result.result.items[0].point.lat,
+                result.result.items[0].point.lon,
+            ]);
+        });
+    }
+    console.log(coords[1]);
     return (
         <>
             <Header />
@@ -140,16 +182,7 @@ export const SearchPage: React.FC = () => {
                 </Box>
 
                 <Main>
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            flexWrap: {
-                                xs: 'wrap',
-                                sm: 'nowrap',
-                            },
-                            width: '100%',
-                        }}
-                    >
+                    <MainWrapper>
                         {/* FILTERS */}
                         <Filters>
                             <Box sx={{ mb: '15px' }}>
@@ -201,21 +234,13 @@ export const SearchPage: React.FC = () => {
                         </Filters>
 
                         {/* PLACES */}
-                        <Places
-                            sx={{
-                                width: '100%',
-                                minWidth: '280px',
-                                pr: { xs: 0, sm: 0, md: '20px' },
-                                height: '800px',
-                                overflowY: 'scroll',
-                            }}
-                        >
+                        <Places>
                             {loading ? (
                                 <>Загрузка...</>
                             ) : (
                                 (findPlace[0] &&
                                     findPlace.map((item: CardPlaceProps) => (
-                                        <Link to="/catalog">
+                                        <Link to="/catalog" key={item._id}>
                                             <Button
                                                 sx={{
                                                     color: ' black',
@@ -227,7 +252,6 @@ export const SearchPage: React.FC = () => {
                                                 }
                                             >
                                                 <CardPlace
-                                                    key={item._id}
                                                     title={item.nameCompany!}
                                                     address={item.address}
                                                     subway={item.subway}
@@ -240,7 +264,7 @@ export const SearchPage: React.FC = () => {
                                     ))) ||
                                 (data[0] &&
                                     data.map((item: CardPlaceProps) => (
-                                        <Link to="/catalog">
+                                        <Link to="/catalog" key={item._id}>
                                             <Button
                                                 sx={{
                                                     color: ' black',
@@ -252,7 +276,6 @@ export const SearchPage: React.FC = () => {
                                                 }
                                             >
                                                 <CardPlace
-                                                    key={item._id}
                                                     title={item.nameCompany!}
                                                     address={item.address}
                                                     subway={item.subway}
@@ -265,18 +288,25 @@ export const SearchPage: React.FC = () => {
                                     )))
                             )}
                         </Places>
-                    </Box>
+                    </MainWrapper>
 
                     {/* MAP */}
-                    <Map>
-                        {/* <iframe
-                            title="Yandex map"
-                            src="https://yandex.ru/map-widget/v1/?um=constructor%3A4cf72c2061ddf2ea4555a3b49919308b440e44d331185ac4c861c1f173393260&amp;source=constructor"
-                            width="100%"
-                            height="100%"
-                            style={{ border: 'none', borderRadius: '15px' }}
-                        /> */}
-                    </Map>
+                    <MapWrapper>
+                        <YMaps>
+                            <Map
+                                defaultState={{
+                                    center: [59.935413, 30.331365],
+                                    zoom: 9,
+                                }}
+                                width="100%"
+                                height="100%"
+                            >
+                                {coords.map((item: any) => (
+                                    <Placemark defaultGeometry={[item]} />
+                                ))}
+                            </Map>
+                        </YMaps>
+                    </MapWrapper>
                 </Main>
             </Box>
         </>

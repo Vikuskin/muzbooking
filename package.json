@@ -3,6 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "dependencies": {
+        "@2gis/mapgl": "^1.24.1",
         "@emotion/react": "^11.7.1",
         "@emotion/styled": "^11.6.0",
         "@fancyapps/ui": "^4.0.26",
@@ -23,6 +24,7 @@
         "@types/react": "^17.0.38",
         "@types/react-dom": "^17.0.11",
         "@types/react-redux": "^7.1.22",
+        "2gis-maps": "^3.7.0",
         "axios": "^0.25.0",
         "date-fns": "^2.28.0",
         "eslint-plugin-import": "^2.25.4",
@@ -35,6 +37,7 @@
         "react-redux": "^7.2.6",
         "react-router-dom": "^6.2.1",
         "react-scripts": "^5.0.0",
+        "react-yandex-maps": "^4.6.0",
         "redux": "^4.1.2",
         "redux-devtools-extension": "^2.13.9",
         "redux-thunk": "^2.4.1",

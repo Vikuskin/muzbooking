@@ -110,7 +110,7 @@ export const Orders: React.FC = () => {
         }
     }, []);
     const { data } = useTypedSelector((state) => state.data);
-    console.log(data);
+
     // TABLE
     function createData(
         nameClient: string,
