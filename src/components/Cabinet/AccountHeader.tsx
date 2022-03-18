@@ -38,6 +38,7 @@ export const AccountHeader: React.FC = () => {
                             noWrap
                             component="div"
                             sx={{ mr: 2, display: { xs: 'none', md: 'flex' } }}
+                            onClick={() => localStorage.clear()}
                         >
                             <img
                                 style={{ width: '100px' }}
@@ -116,11 +117,11 @@ export const AccountHeader: React.FC = () => {
                                 </MenuItem>
                             </Link>
                         </Menu>
-                        <Link to="/">
+                        <Link to="/" onClick={() => localStorage.clear()}>
                             <img
                                 style={{ width: '105px', height: '35px' }}
                                 src={logo}
-                                alt="Logo"
+                                alt="Logo"                               
                             />
                         </Link>
                     </Box>

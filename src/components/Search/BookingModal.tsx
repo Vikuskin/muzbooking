@@ -13,7 +13,6 @@ import {
     TextField,
     Table,
     TableBody,
-    TableCell,
     TableContainer,
     TableHead,
     TableRow,
@@ -22,7 +21,7 @@ import {
     styled
 } from '@mui/material';
 import { ProductsState } from 'types/Cabinet';
-import { FlexDiv, InputTitle, TitleH1, FormModal, ButtonPrimary } from 'style/otherStyles';
+import { FlexDiv, InputTitle, TitleH1, FormModal, ButtonPrimary, TableCellCalendar } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingModalProps, BookingState, ClientState } from 'types/Search';
@@ -36,6 +35,15 @@ const Title = styled(TitleH1)({
     },
 })
 
+const TitleInfo = styled(FlexDiv)({
+    justifyContent: 'space-between',
+    '@media (max-width: 600px)': {
+        flexDirection: 'column',
+        textAlign: 'center',
+        marginBottom: '15px'
+    },
+})
+
 export const BookingModal: React.FC<BookingModalProps> = ({
     idPlace,
     idPlatform,
@@ -45,13 +53,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 }) => {
     // NEXT WEEK ARRAY
     const days = [
-        'Воскресенье',
-        'Понедельник',
-        'Вторник',
-        'Среда',
-        'Четверг',
-        'Пятница',
-        'Суббота',
+        'Вск',
+        'Пн',
+        'Вт',
+        'Ср',
+        'Чт',
+        'Пт',
+        'Сб',
     ];
     let now = new Date();
     const time = now.getTime();
@@ -135,9 +143,9 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     const { bookingData } = useTypedSelector((state) => state.bookingData);
     return (
         <>
-            <FlexDiv sx={{ justifyContent: 'space-between', flexWrap: { xs: 'wrap', sm: 'nowrap' } }}>
+            <TitleInfo>
                 <Box sx={{ textAlign: 'left' }}>
-                    <Title sx={{ m: 0 }}>{nameCompany}</Title>
+                    <Title sx={{ margin: '0 !important' }}>{nameCompany}</Title>
                     <Typography>{namePlatform}</Typography>
                 </Box>
                 <Box sx={{ minWidth: 120, maxWidth: 300 }}>
@@ -213,7 +221,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         </ButtonPrimary>
                     )}
                 </Box>
-            </FlexDiv>
+            </TitleInfo>
 
             {clientWindow ? (
                 <Box>
@@ -283,13 +291,13 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                         <Table sx={{ minWidth: 650 }} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
-                                    <TableCell>Время</TableCell>
+                                    <TableCellCalendar>Время</TableCellCalendar>
                                     {nextWeek.map((dayWeek: Date) => (
-                                        <TableCell align="center">
+                                        <TableCellCalendar align="center">
                                             {days[dayWeek.getDay()]}
                                             <br />
                                             {dayWeek.getDate()}
-                                        </TableCell>
+                                        </TableCellCalendar>
                                     ))}
                                 </TableRow>
                             </TableHead>
@@ -315,14 +323,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                                         },
                                                 }}
                                             >
-                                                <TableCell
+                                                <TableCellCalendar
                                                     component="th"
                                                     scope="row"
                                                 >
                                                     {row.hour}
-                                                </TableCell>
+                                                </TableCellCalendar>
                                                 {nextWeek.map((day: Date) => (
-                                                    <TableCell align="center">
+                                                    <TableCellCalendar align="center">
                                                         {bookingData.some(
                                                             (
                                                                 item: BookingState
@@ -355,7 +363,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                                                 {row.price}
                                                             </Button>
                                                         )}
-                                                    </TableCell>
+                                                    </TableCellCalendar>
                                                 ))}
                                             </TableRow>
                                         )

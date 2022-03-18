@@ -1,3 +1,4 @@
+/* eslint-disable react/no-array-index-key */
 /* eslint-disable react/jsx-no-useless-fragment */
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable no-undef */
@@ -29,7 +30,7 @@ import { useActions } from 'hooks/useActions';
 import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
 import { CardPlaceProps } from 'types/Search';
-import { YMaps, Map, Placemark } from 'react-yandex-maps';
+import { YMaps, Map, Placemark, GeoObject } from 'react-yandex-maps';
 import axios from 'axios';
 
 const Main = styled(FlexDiv)({
@@ -90,7 +91,7 @@ export const SearchPage: React.FC = () => {
         (state) => state.services.services
     );
     const { data, loading } = useTypedSelector((state) => state.data);
-    console.log(data);
+
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
 
     useEffect(() => {
@@ -119,43 +120,18 @@ export const SearchPage: React.FC = () => {
     }, [valueAutoComplete]);
 
     useMemo(() => {
-        if (sort === 'increase price') {
-            data.sort(
-                (a: CardPlaceProps, b: CardPlaceProps) => a.price - b.price
-            );
-        } else {
-            data.sort(
-                (a: CardPlaceProps, b: CardPlaceProps) => b.price - a.price
-            );
+        if (data[0]) {
+            if (sort === 'increase price') {
+                data.sort(
+                    (a: CardPlaceProps, b: CardPlaceProps) => a.price - b.price
+                );
+            } else {
+                data.sort(
+                    (a: CardPlaceProps, b: CardPlaceProps) => b.price - a.price
+                );
+            }
         }
     }, [sort, data]);
-
-    // const watch = true;
-    // const { latitude, longitude } = usePosition(watch);
-    // console.log(latitude);
-    // console.log(longitude);
-
-    // const coords: any = [];
-    // console.log(coords)
-    // const getCoordinate = async (city: string, address: string) => {
-    //     try {
-    //         const response = await axios.get(
-    //             `https://catalog.api.2gis.com/3.0/items/geocode?q=${city}, ${address}, 3&fields=items.point,items.geometry.centroid&key=ruxutq4755`
-    //         );
-    //         return response.data;
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // };
-    // if (data[0]) {
-    //     data.forEach(async (item: { city: string; address: string }) => {
-    //         const result = await getCoordinate(item.city, item.address);
-    //         coords.push([
-    //             result.result.items[0].point.lat,
-    //             result.result.items[0].point.lon,
-    //         ]);
-    //     });
-    // }
     const maxPrice =
         data[0] &&
         data.reduce(
@@ -163,25 +139,52 @@ export const SearchPage: React.FC = () => {
                 item.price > current.price ? item : current,
             0
         ).price;
-    console.log(maxPrice);
-    
+
     const [rangePrice, setRangePrice] = useState<number[]>([0, maxPrice]);
-    console.log(rangePrice);
     const handleChangeRangePrice = (
         event: Event,
         newValue: number | number[]
     ) => {
         setRangePrice(newValue as number[]);
     };
-
     useMemo(() => {
-        findPlace = data.filter(
-            (item: any) =>
-                item.price >= rangePrice[0] && item.price <= rangePrice[1]
-        );
-        console.log(findPlace);
+        if (data[0]) {
+            findPlace = data.filter(
+                (item: any) =>
+                    item.price >= rangePrice[0] && item.price <= rangePrice[1]
+            );
+        }
     }, [rangePrice]);
+    // const watch = true;
+    // const { latitude, longitude } = usePosition(watch);
+    // console.log(latitude);
+    // console.log(longitude);
 
+    const coords: any = [];
+    const getCoordinate = async (city: string, address: string) => {
+        try {
+            const response = await axios.get(
+                `https://geocode-maps.yandex.ru/1.x/?apikey=80b066aa-5aff-4f52-9b3b-4cdc28cc4c7c&format=json&geocode=${city}+${address}&results=1`
+            );
+            return response.data.response.GeoObjectCollection.featureMember[0]
+                .GeoObject.Point.pos;
+        } catch (e) {
+            console.log(e);
+        }
+    };
+    if (data[0]) {
+        data.map(async (item: { city: string; address: string }) => {
+            const result = await getCoordinate(item.city, item.address);
+            coords.push(result)
+            console.log(coords)
+            return result;
+        });
+    }
+    const test = [
+        '30.351935 59.990723',
+        '30.339835 59.93305',
+        '30.356589 59.931887',
+    ];
     return (
         <>
             <Header />
@@ -281,16 +284,20 @@ export const SearchPage: React.FC = () => {
                             ) : (
                                 (findPlace[0] &&
                                     findPlace.map((item: CardPlaceProps) => (
-                                        <Link to="/catalog" key={item._id}>
-                                            <Button
-                                                sx={{
-                                                    color: ' black',
-                                                    textTransform: 'inherit',
-                                                    width: '100%',
-                                                }}
-                                                onClick={() =>
-                                                    fetchCatalogPlace(item._id!)
-                                                }
+                                        <Button
+                                            key={item._id}
+                                            sx={{
+                                                color: ' black',
+                                                textTransform: 'inherit',
+                                                width: '100%',
+                                            }}
+                                            onClick={() =>
+                                                fetchCatalogPlace(item._id!)
+                                            }
+                                        >
+                                            <Link
+                                                to="/catalog"
+                                                style={{ width: '100%' }}
                                             >
                                                 <CardPlace
                                                     title={item.nameCompany!}
@@ -300,21 +307,25 @@ export const SearchPage: React.FC = () => {
                                                     price={item.price}
                                                     images={item.images}
                                                 />
-                                            </Button>
-                                        </Link>
+                                            </Link>
+                                        </Button>
                                     ))) ||
                                 (data[0] &&
                                     data.map((item: CardPlaceProps) => (
-                                        <Link to="/catalog" key={item._id}>
-                                            <Button
-                                                sx={{
-                                                    color: ' black',
-                                                    textTransform: 'inherit',
-                                                    width: '100%',
-                                                }}
-                                                onClick={() =>
-                                                    fetchCatalogPlace(item._id!)
-                                                }
+                                        <Button
+                                            key={item._id}
+                                            sx={{
+                                                color: ' black',
+                                                textTransform: 'inherit',
+                                                width: '100%',
+                                            }}
+                                            onClick={() =>
+                                                fetchCatalogPlace(item._id!)
+                                            }
+                                        >
+                                            <Link
+                                                to="/catalog"
+                                                style={{ width: '100%' }}
                                             >
                                                 <CardPlace
                                                     title={item.nameCompany!}
@@ -324,8 +335,8 @@ export const SearchPage: React.FC = () => {
                                                     price={item.price}
                                                     images={item.images}
                                                 />
-                                            </Button>
-                                        </Link>
+                                            </Link>
+                                        </Button>
                                     )))
                             )}
                         </Places>
@@ -342,9 +353,23 @@ export const SearchPage: React.FC = () => {
                                 width="100%"
                                 height="100%"
                             >
-                                {/* {coords[0] && coords.map((item: any) => (
-                                    <Placemark defaultGeometry={[item]} />
-                                ))} */}
+                                
+                                
+                                <Placemark geometry={[30.351935, 59.990723]}/>
+                               
+                                {/* {test[0] &&
+                                    test.map((item: any) => {
+                                        console.log(item.split(' ')[0]);
+                                        return (
+                                            <Placemark
+                                                geometry={[
+                                                    item.split(' ')[0],
+                                                    item.split(' ')[1],
+                                                ]}
+                                            />
+                                        );
+                                    })}
+                                <Placemark defaultGeometry={[30.351935, 59.990723]}/> */}
                             </Map>
                         </YMaps>
                     </MapWrapper>

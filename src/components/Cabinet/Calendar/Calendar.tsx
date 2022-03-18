@@ -144,6 +144,7 @@ export const Calendar: React.FC = () => {
                                                                     return (
                                                                         <ButtonPrimary
                                                                         key={booking._id}
+                                                                        sx={{ textTransform: 'lowercase' }}
                                                                             onClick={() => {
                                                                                 setOpen(
                                                                                     true

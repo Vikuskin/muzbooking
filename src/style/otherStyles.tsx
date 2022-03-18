@@ -183,7 +183,10 @@ export const TableCellCenter = styled(TableCell)({
 
 export const TableCellCalendar = styled(TableCellCenter)({
     fontSize: '15px',
-    padding: '10px',
+    padding: '5px',
+    '@media (max-width: 900px)': {
+        width: '50px'
+    },
 });
 
 export const styleModal = {

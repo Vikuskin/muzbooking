@@ -9,7 +9,6 @@ import { FlexDiv } from 'style/otherStyles';
 import { CardPlaceProps } from 'types/Search';
 
 const Card = styled('div')({
-    width: '100%',
     fontSize: '20px',
     margin: 'auto',
     marginBottom: '10px',
@@ -36,7 +35,7 @@ export const CardPlace: React.FC<CardPlaceProps> = ({
     <Card>
         <Box>
             <Typography sx={{ fontWeight: 'bold' }}>
-                {title.toUpperCase()}
+                {title && title.toUpperCase()}
             </Typography>
             <DescCard sx={{ justifyContent: 'space-evenly' }}>
                 {images[0] ? (
