@@ -160,31 +160,29 @@ export const SearchPage: React.FC = () => {
     // console.log(latitude);
     // console.log(longitude);
 
-    const coords: any = [];
+    const coords: any = [
+        { lat: 59.932938, lon: 30.35713 },
+    ];
     const getCoordinate = async (city: string, address: string) => {
         try {
             const response = await axios.get(
-                `https://geocode-maps.yandex.ru/1.x/?apikey=80b066aa-5aff-4f52-9b3b-4cdc28cc4c7c&format=json&geocode=${city}+${address}&results=1`
+                `https://catalog.api.2gis.com/3.0/items/geocode?q=${city}, ${address}, 3&fields=items.point,items.geometry.centroid&key=ruxutq4755`
             );
-            return response.data.response.GeoObjectCollection.featureMember[0]
-                .GeoObject.Point.pos;
+            return response.data;
         } catch (e) {
             console.log(e);
         }
     };
     if (data[0]) {
-        data.map(async (item: { city: string; address: string }) => {
+        data.forEach(async (item: { city: string; address: string }) => {
             const result = await getCoordinate(item.city, item.address);
-            coords.push(result)
+            coords.push({
+                lat: result.result.items[0].point.lat,
+                lon: result.result.items[0].point.lon,
+            });
             console.log(coords)
-            return result;
         });
     }
-    const test = [
-        '30.351935 59.990723',
-        '30.339835 59.93305',
-        '30.356589 59.931887',
-    ];
     return (
         <>
             <Header />
@@ -353,23 +351,11 @@ export const SearchPage: React.FC = () => {
                                 width="100%"
                                 height="100%"
                             >
-                                
-                                
-                                <Placemark geometry={[30.351935, 59.990723]}/>
-                               
-                                {/* {test[0] &&
-                                    test.map((item: any) => {
-                                        console.log(item.split(' ')[0]);
-                                        return (
-                                            <Placemark
-                                                geometry={[
-                                                    item.split(' ')[0],
-                                                    item.split(' ')[1],
-                                                ]}
-                                            />
-                                        );
-                                    })}
-                                <Placemark defaultGeometry={[30.351935, 59.990723]}/> */}
+                                {coords.map((item: any) => (
+                                    <Placemark
+                                        defaultGeometry={[item.lat, item.lon]}
+                                    />
+                                ))}
                             </Map>
                         </YMaps>
                     </MapWrapper>
