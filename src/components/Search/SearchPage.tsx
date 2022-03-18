@@ -92,6 +92,11 @@ export const SearchPage: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);
     console.log(data);
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
+
+    useEffect(() => {
+        fetchPlaces(services || 'RECORD');
+    }, [services]);
+
     const autoComplete: Array<string> = data[0]
         ? data.map((item: CardPlaceProps) => item.nameCompany)
         : [];
@@ -101,6 +106,7 @@ export const SearchPage: React.FC = () => {
     const handleChangeSort = (event: SelectChangeEvent) => {
         setSort(event.target.value as string);
     };
+
     let findPlace: CardPlaceProps[] = [];
     useMemo(() => {
         if (valueAutoComplete) {
@@ -124,36 +130,57 @@ export const SearchPage: React.FC = () => {
         }
     }, [sort, data]);
 
-    useEffect(() => {
-        fetchPlaces(services || 'RECORD');
-    }, [services]);
-
     // const watch = true;
     // const { latitude, longitude } = usePosition(watch);
     // console.log(latitude);
     // console.log(longitude);
+
+    // const coords: any = [];
+    // console.log(coords)
+    // const getCoordinate = async (city: string, address: string) => {
+    //     try {
+    //         const response = await axios.get(
+    //             `https://catalog.api.2gis.com/3.0/items/geocode?q=${city}, ${address}, 3&fields=items.point,items.geometry.centroid&key=ruxutq4755`
+    //         );
+    //         return response.data;
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // };
+    // if (data[0]) {
+    //     data.forEach(async (item: { city: string; address: string }) => {
+    //         const result = await getCoordinate(item.city, item.address);
+    //         coords.push([
+    //             result.result.items[0].point.lat,
+    //             result.result.items[0].point.lon,
+    //         ]);
+    //     });
+    // }
+    const maxPrice =
+        data[0] &&
+        data.reduce(
+            (item: { price: any }, current: { price: any }) =>
+                item.price > current.price ? item : current,
+            0
+        ).price;
+    console.log(maxPrice);
     
-    const coords: any = [];
-    console.log(coords)
-    const getCoordinate = async (city: string, address: string) => {
-        try {
-            const response = await axios.get(
-                `https://catalog.api.2gis.com/3.0/items/geocode?q=${city}, ${address}, 3&fields=items.point,items.geometry.centroid&key=ruxutq4755`
-            );
-            return response.data;
-        } catch (e) {
-            console.log(e);
-        }
+    const [rangePrice, setRangePrice] = useState<number[]>([0, maxPrice]);
+    console.log(rangePrice);
+    const handleChangeRangePrice = (
+        event: Event,
+        newValue: number | number[]
+    ) => {
+        setRangePrice(newValue as number[]);
     };
-    if (data[0]) {
-        data.forEach(async (item: { city: string; address: string }) => {
-            const result = await getCoordinate(item.city, item.address);
-            coords.push([
-                result.result.items[0].point.lat,
-                result.result.items[0].point.lon,
-            ]);
-        });
-    }
+
+    useMemo(() => {
+        findPlace = data.filter(
+            (item: any) =>
+                item.price >= rangePrice[0] && item.price <= rangePrice[1]
+        );
+        console.log(findPlace);
+    }, [rangePrice]);
 
     return (
         <>
@@ -232,6 +259,19 @@ export const SearchPage: React.FC = () => {
                                     </Select>
                                 </FormControl>
                             </Box>
+                            <Box>
+                                <Typography sx={{ fontWeight: 'bold' }}>
+                                    Стоимость, ₽/ч
+                                </Typography>
+                                <Slider
+                                    value={rangePrice}
+                                    onChange={handleChangeRangePrice}
+                                    min={0}
+                                    max={maxPrice}
+                                    valueLabelDisplay="auto"
+                                    sx={{ color: '#f79521' }}
+                                />
+                            </Box>
                         </Filters>
 
                         {/* PLACES */}
@@ -302,9 +342,9 @@ export const SearchPage: React.FC = () => {
                                 width="100%"
                                 height="100%"
                             >
-                                {coords[0] && coords.map((item: any) => (
+                                {/* {coords[0] && coords.map((item: any) => (
                                     <Placemark defaultGeometry={[item]} />
-                                ))}
+                                ))} */}
                             </Map>
                         </YMaps>
                     </MapWrapper>
