@@ -126,7 +126,7 @@ export const AccountTitleH1 = styled('h1')({
     fontSize: '25px',
     '@media (max-width: 1200px)': {
         fontSize: '20px',
-        minHeight: '80px'
+        minHeight: '80px',
     },
     '@media (max-width: 600px)': {
         fontSize: '18px',
@@ -185,7 +185,7 @@ export const TableCellCalendar = styled(TableCellCenter)({
     fontSize: '15px',
     padding: '5px',
     '@media (max-width: 900px)': {
-        width: '50px'
+        width: '50px',
     },
 });
 
@@ -206,7 +206,7 @@ export const styleModal = {
     },
     '@media (max-width: 500px)': {
         width: '90%',
-        padding: '5px'
+        padding: '5px',
     },
 };
 
@@ -220,9 +220,10 @@ export const FormModal = styled('div')({
     border: '2px solid #e2e2e2',
     borderRadius: '4px',
     backgroundColor: '#ebeff2',
+    marginBottom: '5px',
     '@media (max-width: 700px)': {
         lineHeight: '1.1',
-        padding: '5px'
+        padding: '5px',
     },
 });
 
@@ -244,10 +245,10 @@ export const ButtonPrimary = styled(Button)({
     padding: '5px 25px',
     '@media (max-width: 700px)': {
         lineHeight: '1.1',
-        padding: '5px 10px'
+        padding: '5px 10px',
     },
 });
 
 export const TypographyMarginTop = styled(Typography)({
-    marginTop: '20px'
-})
+    marginTop: '20px',
+});

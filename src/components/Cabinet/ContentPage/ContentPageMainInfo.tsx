@@ -74,9 +74,7 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
 
     return (
         <Box>
-            <ValidatorForm
-                onSubmit={handleSubmit}
-            >
+            <ValidatorForm onSubmit={handleSubmit}>
                 <Typography>Сфера</Typography>
                 <TextValidator
                     id="standard-multiline-flexible"

@@ -121,7 +121,7 @@ export const AccountHeader: React.FC = () => {
                             <img
                                 style={{ width: '105px', height: '35px' }}
                                 src={logo}
-                                alt="Logo"                               
+                                alt="Logo"
                             />
                         </Link>
                     </Box>

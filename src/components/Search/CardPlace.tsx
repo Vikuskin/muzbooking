@@ -40,7 +40,7 @@ export const CardPlace: React.FC<CardPlaceProps> = ({
             <DescCard sx={{ justifyContent: 'space-evenly' }}>
                 {images[0] ? (
                     images.map((img: any) => (
-                        <Fancybox options={{ infinite: false }} style={{ display: 'flex', flexDirection: 'column' }}>
+                        <Fancybox key={img.filename} options={{ infinite: false }} style={{ display: 'flex', flexDirection: 'column' }}>
                             <Button
                                 data-fancybox="gallery"
                                 data-src={`http://localhost:5000/${img.destination}/${img.filename}`}

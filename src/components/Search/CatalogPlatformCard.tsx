@@ -113,7 +113,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                             <>
                                 <Subtitle>Комфорт</Subtitle>
                                 {comfortChecked.map((item: CheckedPlaceDB) => (
-                                    <Typography>{item.value}</Typography>
+                                    <Typography key={item.id}>{item.value}</Typography>
                                 ))}
                             </>
                         )}
@@ -122,7 +122,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                             <>
                                 <Subtitle>Удобства</Subtitle>
                                 {servicesChecked.map((item: CheckedPlaceDB) => (
-                                    <Typography>{item.value}</Typography>
+                                    <Typography key={item.id}>{item.value}</Typography>
                                 ))}
                             </>
                         )}
@@ -131,7 +131,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
             </CardWrapper>
             <Box sx={{ m: 'auto' }}>
                 {images.map((img: ContentCompanyImages) => (
-                    <Fancybox options={{ infinite: false }}>
+                    <Fancybox options={{ infinite: false }} key={img.filename}>
                         <Button
                             data-fancybox="gallery"
                             data-src={`http://localhost:5000/${img.destination}/${img.filename}`}

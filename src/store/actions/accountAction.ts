@@ -242,8 +242,7 @@ export const fetchOrders =
     };
 
 export const fetchCalendar =
-    (token: string, date: string) =>
-    async (dispatch: Dispatch<DataAction>) => {
+    (token: string, date: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             const config = {
                 headers: { Authorization: `Bearer ${token}` },

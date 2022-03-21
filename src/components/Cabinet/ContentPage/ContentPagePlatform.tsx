@@ -215,9 +215,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
 
     return (
         <Box sx={{ textAlign: 'left' }}>
-            <ValidatorForm
-                onSubmit={handleSubmit}
-            >
+            <ValidatorForm onSubmit={handleSubmit}>
                 <Typography>Название</Typography>
                 {DefaultTextValidator(
                     platform.namePlatform,

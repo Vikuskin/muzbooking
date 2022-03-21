@@ -22,14 +22,16 @@ export const CalendarModal: React.FC<BookingState> = ({
         {TextFieldModal(date, 'Дата')}
         {TextFieldModal(nameClient, 'Имя клиента')}
         {TextFieldModal(phone, 'Телефон')}
-        {comment ? <TextField
-            id="filled-multiline-static"
-            label="Комментарий к заказу"
-            multiline
-            rows={4}
-            variant="filled"
-            value={comment}
-            disabled
-        /> : null}
+        {comment ? (
+            <TextField
+                id="filled-multiline-static"
+                label="Комментарий к заказу"
+                multiline
+                rows={4}
+                variant="filled"
+                value={comment}
+                disabled
+            />
+        ) : null}
     </FormModal>
 );

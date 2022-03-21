@@ -1,13 +1,3 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable react/jsx-no-useless-fragment */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable no-undef */
-/* eslint-disable array-callback-return */
-/* eslint-disable consistent-return */
-/* eslint-disable prefer-template */
-/* eslint-disable no-var */
-/* eslint-disable no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useMemo, useState } from 'react';
 import {
@@ -20,7 +10,7 @@ import {
     Autocomplete,
     Typography,
     styled,
-    Button,
+    Card,
     Slider,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
@@ -30,7 +20,12 @@ import { useActions } from 'hooks/useActions';
 import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
 import { CardPlaceProps } from 'types/Search';
-import { YMaps, Map, Placemark, GeoObject } from 'react-yandex-maps';
+import {
+    YMaps,
+    Map,
+    ObjectManager,
+    ObjectManagerFeatures,
+} from 'react-yandex-maps';
 import axios from 'axios';
 
 const Main = styled(FlexDiv)({
@@ -85,19 +80,23 @@ const MapWrapper = styled('div')({
     },
 });
 
+const CardWrapper = styled(Card)({
+    overflow: 'visible',
+    boxShadow: 'none',
+    padding: '5px',
+});
+
 export const SearchPage: React.FC = () => {
     const [sort, setSort] = useState<string>('');
     const services: string = useTypedSelector(
         (state) => state.services.services
     );
     const { data, loading } = useTypedSelector((state) => state.data);
-
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
 
-    useEffect(() => {
-        fetchPlaces(services || 'RECORD');
-    }, [services]);
+   
 
+    // FILTERS
     const autoComplete: Array<string> = data[0]
         ? data.map((item: CardPlaceProps) => item.nameCompany)
         : [];
@@ -132,10 +131,11 @@ export const SearchPage: React.FC = () => {
             }
         }
     }, [sort, data]);
+
     const maxPrice =
         data[0] &&
         data.reduce(
-            (item: { price: any }, current: { price: any }) =>
+            (item: { price: string }, current: { price: string }) =>
                 item.price > current.price ? item : current,
             0
         ).price;
@@ -150,19 +150,15 @@ export const SearchPage: React.FC = () => {
     useMemo(() => {
         if (data[0]) {
             findPlace = data.filter(
-                (item: any) =>
+                (item: CardPlaceProps) =>
                     item.price >= rangePrice[0] && item.price <= rangePrice[1]
             );
         }
     }, [rangePrice]);
-    // const watch = true;
-    // const { latitude, longitude } = usePosition(watch);
-    // console.log(latitude);
-    // console.log(longitude);
 
-    const coords: any = [
-        { lat: 59.932938, lon: 30.35713 },
-    ];
+    // MAP
+    const [mapState, setMapState] = useState(true)
+    const coords: ObjectManagerFeatures = [];
     const getCoordinate = async (city: string, address: string) => {
         try {
             const response = await axios.get(
@@ -171,18 +167,37 @@ export const SearchPage: React.FC = () => {
             return response.data;
         } catch (e) {
             console.log(e);
+            return e.response;
         }
     };
+
     if (data[0]) {
-        data.forEach(async (item: { city: string; address: string }) => {
+        data.forEach(async (item: CardPlaceProps) => {
             const result = await getCoordinate(item.city, item.address);
             coords.push({
-                lat: result.result.items[0].point.lat,
-                lon: result.result.items[0].point.lon,
+                type: 'Feature',
+                id: item._id,
+                geometry: {
+                    type: 'Point',
+                    coordinates: [
+                        result.result.items[0].point.lat,
+                        result.result.items[0].point.lon,
+                    ],
+                },
+                properties: {
+                    balloonContentHeader: `<font size=3><b>${item.nameCompany}</b></font>`,
+                    balloonContentBody: `<p>${item.address}</p>${item.subway}<p></p><p></p>`,
+                    balloonContentFooter: `<font size=1>${item.price}</font>`,
+                    hintContent: `<strong>${item.nameCompany}</strong>`,
+                },
             });
-            console.log(coords)
         });
     }
+
+    useEffect(() => {
+        fetchPlaces(services || 'RECORD');
+        setMapState(true)
+    }, [services]);
     return (
         <>
             <Header />
@@ -195,6 +210,7 @@ export const SearchPage: React.FC = () => {
                             defaultValue={services || 'RECORD'}
                             onChange={(event: SelectChangeEvent) => {
                                 chooseServices(event.target.value);
+                                setMapState(false)
                             }}
                             input={<InputTitle />}
                         >
@@ -282,20 +298,20 @@ export const SearchPage: React.FC = () => {
                             ) : (
                                 (findPlace[0] &&
                                     findPlace.map((item: CardPlaceProps) => (
-                                        <Button
+                                        <Link
                                             key={item._id}
-                                            sx={{
-                                                color: ' black',
-                                                textTransform: 'inherit',
-                                                width: '100%',
-                                            }}
-                                            onClick={() =>
-                                                fetchCatalogPlace(item._id!)
-                                            }
+                                            to="/catalog"
+                                            style={{ width: '100%' }}
                                         >
-                                            <Link
-                                                to="/catalog"
-                                                style={{ width: '100%' }}
+                                            <CardWrapper
+                                                sx={{
+                                                    color: ' black',
+                                                    textTransform: 'inherit',
+                                                    width: '100%',
+                                                }}
+                                                onClick={() =>
+                                                    fetchCatalogPlace(item._id!)
+                                                }
                                             >
                                                 <CardPlace
                                                     title={item.nameCompany!}
@@ -304,26 +320,28 @@ export const SearchPage: React.FC = () => {
                                                     timetable={item.timetable}
                                                     price={item.price}
                                                     images={item.images}
+                                                    city={item.city}
+                                                    _id={item._id}
                                                 />
-                                            </Link>
-                                        </Button>
+                                            </CardWrapper>
+                                        </Link>
                                     ))) ||
-                                (data[0] &&
+                                (data[0] ? (
                                     data.map((item: CardPlaceProps) => (
-                                        <Button
+                                        <Link
                                             key={item._id}
-                                            sx={{
-                                                color: ' black',
-                                                textTransform: 'inherit',
-                                                width: '100%',
-                                            }}
-                                            onClick={() =>
-                                                fetchCatalogPlace(item._id!)
-                                            }
+                                            to="/catalog"
+                                            style={{ width: '100%' }}
                                         >
-                                            <Link
-                                                to="/catalog"
-                                                style={{ width: '100%' }}
+                                            <CardWrapper
+                                                sx={{
+                                                    color: ' black',
+                                                    textTransform: 'inherit',
+                                                    width: '100%',
+                                                }}
+                                                onClick={() =>
+                                                    fetchCatalogPlace(item._id!)
+                                                }
                                             >
                                                 <CardPlace
                                                     title={item.nameCompany!}
@@ -332,17 +350,23 @@ export const SearchPage: React.FC = () => {
                                                     timetable={item.timetable}
                                                     price={item.price}
                                                     images={item.images}
+                                                    city={item.city}
+                                                    _id={item._id}
                                                 />
-                                            </Link>
-                                        </Button>
-                                    )))
+                                            </CardWrapper>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <Box>Площадки не найдены</Box>
+                                ))
                             )}
                         </Places>
                     </MainWrapper>
 
                     {/* MAP */}
+
                     <MapWrapper>
-                        <YMaps>
+                        {mapState ? <YMaps>
                             <Map
                                 defaultState={{
                                     center: [59.935413, 30.331365],
@@ -351,13 +375,26 @@ export const SearchPage: React.FC = () => {
                                 width="100%"
                                 height="100%"
                             >
-                                {coords.map((item: any) => (
-                                    <Placemark
-                                        defaultGeometry={[item.lat, item.lon]}
-                                    />
-                                ))}
+                                <ObjectManager
+                                    options={{
+                                        clusterize: true,
+                                        gridSize: 32,
+                                        clusterDisableClickZoom: true,
+                                    }}
+                                    objects={{
+                                        preset: 'islands#greenDotIcon',
+                                    }}
+                                    clusters={{
+                                        preset: 'islands#greenClusterIcons',
+                                    }}
+                                    features={coords}
+                                    modules={[
+                                        'objectManager.addon.objectsBalloon',
+                                        'objectManager.addon.objectsHint',
+                                    ]}
+                                />
                             </Map>
-                        </YMaps>
+                        </YMaps> : <Box>Загрузка...</Box>}
                     </MapWrapper>
                 </Main>
             </Box>

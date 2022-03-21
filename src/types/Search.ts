@@ -1,5 +1,5 @@
-import { CheckedPlaceDB } from "./Databases";
-import { ProductsState, ContentCompanyImages } from "./Cabinet";
+import { CheckedPlaceDB } from './Databases';
+import { ProductsState, ContentCompanyImages } from './Cabinet';
 
 export interface CatalogPlatformCardProps {
     idPlace: string;
@@ -21,8 +21,9 @@ export interface CardPlaceProps {
     subway: string;
     timetable: string;
     price: number;
-    _id?: string | undefined;
+    _id: string;
     nameCompany?: string;
+    city: string;
 }
 
 export interface BookingModalProps {
@@ -32,12 +33,14 @@ export interface BookingModalProps {
     namePlatform: string;
     products: Array<ProductsState>;
 }
+
 export interface BookingState {
     date: string;
     time: string;
     chooseProduct: string;
     price: string;
 }
+
 export interface ClientState {
     name: string;
     comment: string;

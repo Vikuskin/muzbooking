@@ -293,7 +293,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                 <TableRow>
                                     <TableCellCalendar>Время</TableCellCalendar>
                                     {nextWeek.map((dayWeek: Date) => (
-                                        <TableCellCalendar align="center">
+                                        <TableCellCalendar align="center" key={days[dayWeek.getDay()]}>
                                             {days[dayWeek.getDay()]}
                                             <br />
                                             {dayWeek.getDate()}
@@ -330,7 +330,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                                     {row.hour}
                                                 </TableCellCalendar>
                                                 {nextWeek.map((day: Date) => (
-                                                    <TableCellCalendar align="center">
+                                                    <TableCellCalendar align="center" key={day.getDate()}>
                                                         {bookingData.some(
                                                             (
                                                                 item: BookingState

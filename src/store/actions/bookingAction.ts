@@ -1,8 +1,10 @@
-
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { DataAction, DataActionTypes } from 'store/reducers/dataReducer';
-import { BookingDataAction, BookingDataActionTypes } from 'store/reducers/bookingReducer';
+import {
+    BookingDataAction,
+    BookingDataActionTypes,
+} from 'store/reducers/bookingReducer';
 
 export const postBooking =
     (
@@ -47,10 +49,7 @@ export const postBooking =
     };
 
 export const getBooking =
-    (
-        idPlatform: string,
-        selectProduct: string
-    ) =>
+    (idPlatform: string, selectProduct: string) =>
     async (dispatch: Dispatch<BookingDataAction>) => {
         try {
             dispatch({ type: BookingDataActionTypes.FETCH_BOOKING_DATA });

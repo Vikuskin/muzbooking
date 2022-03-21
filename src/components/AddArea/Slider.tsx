@@ -18,7 +18,10 @@ const Slide = styled('div')({
 });
 
 export const Slider: React.FC = () => {
-    const myArrow = (type: string, onClick: React.MouseEventHandler | undefined) => {
+    const myArrow = (
+        type: string,
+        onClick: React.MouseEventHandler | undefined
+    ) => {
         const pointer =
             type === 'PREV' ? (
                 <img

@@ -59,7 +59,7 @@ export const Calendar: React.FC = () => {
     function createData(hour: string, id: number) {
         return { hour, id };
     }
-    const rows: any = [];
+    const rows: {hour: string; id: number}[] = [];
     const tableRows = () => {
         for (let i = 0; i < 24; i++) {
             rows.push(createData(`${i}:00`, i));
@@ -130,7 +130,12 @@ export const Calendar: React.FC = () => {
                                                 (platform: {
                                                     namePlatform: string;
                                                 }) => (
-                                                    <TableCellCalendar key={row.hour + platform.namePlatform}>
+                                                    <TableCellCalendar
+                                                        key={
+                                                            row.hour +
+                                                            platform.namePlatform
+                                                        }
+                                                    >
                                                         {data.booking.map(
                                                             (
                                                                 booking: BookingState
@@ -143,8 +148,13 @@ export const Calendar: React.FC = () => {
                                                                 ) {
                                                                     return (
                                                                         <ButtonPrimary
-                                                                        key={booking._id}
-                                                                        sx={{ textTransform: 'lowercase' }}
+                                                                            key={
+                                                                                booking._id
+                                                                            }
+                                                                            sx={{
+                                                                                textTransform:
+                                                                                    'lowercase',
+                                                                            }}
                                                                             onClick={() => {
                                                                                 setOpen(
                                                                                     true

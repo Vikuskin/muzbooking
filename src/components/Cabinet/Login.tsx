@@ -12,6 +12,7 @@ import logo from 'image/logoRegistration.svg';
 import { CustomButton, FlexDiv, DefaultTextValidator } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { LoginState } from 'types/Cabinet';
+import { Link } from 'react-router-dom';
 
 const Background = styled('div')({
     width: '100%',
@@ -85,21 +86,22 @@ export const Login: React.FC = () => {
         <Background>
             <LoginWindow>
                 <FlexDiv sx={{ justifyContent: 'center', mb: '30px' }}>
-                    <img
-                        style={{
-                            width: '35px',
-                            marginRight: '10px',
-                            marginBottom: '10px',
-                        }}
-                        src={logo}
-                        alt="Logo"
-                    />
+                    <Link to="/">
+                        <img
+                            style={{
+                                width: '35px',
+                                marginRight: '10px',
+                                marginBottom: '10px',
+                            }}
+                            src={logo}
+                            alt="Logo"
+                        />
+                    </Link>
+
                     <Typography sx={{ fontWeight: 'bold' }}>Вход</Typography>
                 </FlexDiv>
 
-                <ValidatorForm
-                    onSubmit={handleSubmit}
-                >
+                <ValidatorForm onSubmit={handleSubmit}>
                     <Typography>Логин</Typography>
                     {DefaultTextValidator(
                         login.email,

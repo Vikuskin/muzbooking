@@ -103,9 +103,7 @@ export const Registration: React.FC = () => {
     return (
         <Background>
             <RegistrationWindow>
-                <ValidatorForm
-                    onSubmit={handleSubmit}
-                >
+                <ValidatorForm onSubmit={handleSubmit}>
                     <FlexDiv sx={{ justifyContent: 'flex-start' }}>
                         <img
                             style={{
@@ -183,7 +181,6 @@ export const Registration: React.FC = () => {
                             </Typography>
                             <TextField
                                 type="number"
-                                required
                                 id="standard-multiline-flexible"
                                 multiline
                                 value={phone}
