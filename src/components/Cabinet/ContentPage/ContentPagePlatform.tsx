@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
@@ -133,6 +134,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
     const { fetchAccountPlatform } = useActions();
 
     // images
+
     const [files, setFiles] = useState(images);
     const onDrop = useCallback((acceptedFiles) => {
         setFiles(

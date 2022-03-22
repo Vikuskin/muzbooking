@@ -124,7 +124,6 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                             event.target.value
                                 .replace(/\D/g, '')
                                 .replace(/^[0-9]/, '+7')
-                                .replace(/^(\S{13,})?$/, ''),
                         ])
                     }
                     variant="standard"
@@ -134,6 +133,10 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                             <InputAdornment
                                 position="end"
                                 onClick={() => {
+                                    if (phone[0].length !== 12) {
+                                        alert('Номер не верен')
+                                        return
+                                    }
                                     setInfo({
                                         ...info,
                                         phone: info.phone.concat([phoneChange]),

@@ -189,7 +189,6 @@ export const Registration: React.FC = () => {
                                         event.target.value
                                             .replace(/\D/g, '')
                                             .replace(/^[0-9]/, '+7')
-                                            .replace(/^(\S{13,})?$/, ''),
                                     ])
                                 }
                                 variant="standard"
@@ -199,6 +198,10 @@ export const Registration: React.FC = () => {
                                         <InputAdornment
                                             position="end"
                                             onClick={() => {
+                                                if (phone[0].length !== 12) {
+                                                    alert('Номер не верен')
+                                                    return
+                                                }
                                                 setRegistration({
                                                     ...registration,
                                                     phone: registration.phone.concat(
