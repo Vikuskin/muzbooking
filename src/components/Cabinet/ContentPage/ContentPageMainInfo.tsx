@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     MenuItem,
@@ -71,71 +72,84 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
         );
         window.location.reload();
     };
+    const { t } = useTranslation();
 
     return (
         <Box>
             <ValidatorForm onSubmit={handleSubmit}>
-                <Typography>Сфера</Typography>
+                <Typography>{t('sphera.sphera')}</Typography>
                 <TextValidator
-                    id="standard-multiline-flexible"
+                    id='standard-multiline-flexible'
                     multiline
                     select
-                    name="sphera"
+                    name='sphera'
                     validators={['required']}
-                    errorMessages={['Это поле обязательно']}
+                    errorMessages={[t('validation.error.required')]}
                     value={info.sphera}
                     onChange={handleChange('sphera')}
-                    variant="standard"
+                    variant='standard'
                     sx={{ width: '100%', mb: '20px' }}
                 >
-                    <MenuItem value="RECORD">Студии звукозаписи</MenuItem>
-                    <MenuItem value="PHOTO">Фотостудии</MenuItem>
-                    <MenuItem value="TEACHING">Школы и педагоги</MenuItem>
-                    <MenuItem value="DANCE">Танцевальные залы</MenuItem>
+                    <MenuItem value='RECORD'>{t('sphera.record')}</MenuItem>
+                    <MenuItem value='PHOTO'>{t('sphera.photo')}</MenuItem>
+                    <MenuItem value='TEACHING'>{t('sphera.teaching')}</MenuItem>
+                    <MenuItem value='DANCE'>{t('sphera.dance')}</MenuItem>
                 </TextValidator>
-                <Typography>Название</Typography>
+                <Typography>
+                    {t('cabinet.contentPage.mainInfo.nameCompany')}
+                </Typography>
                 {DefaultTextValidator(
                     info.nameCompany,
                     handleChange('nameCompany'),
                     ['required'],
-                    ['Это поле обязательно']
+                    [t('validation.error.required')]
                 )}
-                <TypographyMarginTop>Город</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.city')}
+                </TypographyMarginTop>
                 {DefaultTextValidator(
                     info.city,
                     handleChange('city'),
                     ['required'],
-                    ['Это поле обязательно']
+                    [t('validation.error.required')]
                 )}
-                <TypographyMarginTop>Адрес</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.address')}
+                </TypographyMarginTop>
                 {DefaultTextValidator(
                     info.address,
                     handleChange('address'),
                     ['required'],
-                    ['Это поле обязательно']
+                    [t('validation.error.required')]
                 )}
-                <TypographyMarginTop>Телефоны</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.phone')}
+                </TypographyMarginTop>
                 <TextField
-                    id="standard-multiline-flexible"
+                    id='standard-multiline-flexible'
                     multiline
                     value={phoneChange}
                     onChange={(event) =>
                         setPhoneChange([
                             event.target.value
                                 .replace(/\D/g, '')
-                                .replace(/^[0-9]/, '+7')
+                                .replace(/^[0-9]/, '+7'),
                         ])
                     }
-                    variant="standard"
+                    variant='standard'
                     sx={{ width: '100%' }}
                     InputProps={{
                         endAdornment: (
                             <InputAdornment
-                                position="end"
+                                position='end'
                                 onClick={() => {
                                     if (phone[0].length !== 12) {
-                                        alert('Номер не верен')
-                                        return
+                                        alert(
+                                            t(
+                                                'cabinet.contentPage.mainInfo.alert.phone'
+                                            )
+                                        );
+                                        return;
                                     }
                                     setInfo({
                                         ...info,
@@ -145,7 +159,7 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                                 }}
                             >
                                 <Icon
-                                    fontSize="small"
+                                    fontSize='small'
                                     sx={{ cursor: 'pointer' }}
                                 >
                                     add_circle
@@ -161,7 +175,7 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                             maxWidth: 360,
                             bgcolor: 'background.paper',
                         }}
-                        aria-label="contacts"
+                        aria-label='contacts'
                     >
                         {info.phone.map((item: string[], i: number) => (
                             <ListItem disablePadding key={item[i]}>
@@ -185,34 +199,44 @@ export const ContentPageMainInfo: React.FC<ContentPageMainInfoProps> = ({
                     </List>
                 )}
 
-                <Typography>Метро</Typography>
+                <Typography>
+                    {t('cabinet.contentPage.mainInfo.subway')}
+                </Typography>
                 {DefaultTextValidator(
                     info.subway,
                     handleChange('subway'),
                     ['required'],
-                    ['Это поле обязательно']
+                    [t('validation.error.required')]
                 )}
-                <TypographyMarginTop>Email</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.email')}
+                </TypographyMarginTop>
                 <TextField
-                    id="standard-multiline-flexible"
+                    id='standard-multiline-flexible'
                     multiline
                     disabled
                     value={info.email}
                     onChange={handleChange('email')}
-                    variant="standard"
+                    variant='standard'
                     sx={{ width: '100%' }}
                 />
-                <TypographyMarginTop>Описание</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.desc')}
+                </TypographyMarginTop>
                 {input(info.description, handleChange('description'))}
-                <TypographyMarginTop>Время работы</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.timetable')}
+                </TypographyMarginTop>
                 {input(info.timetable, handleChange('timetable'))}
-                <TypographyMarginTop>Средняя цена за час</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.mainInfo.price')}
+                </TypographyMarginTop>
                 {input(info.price, handleChange('price'))}
                 <ButtonPrimary
-                    type="submit"
+                    type='submit'
                     sx={{ mt: '20px', p: '10px 25px !important' }}
                 >
-                    Сохранить
+                    {t('cabinet.contentPage.mainInfo.saveButton')}
                 </ButtonPrimary>
             </ValidatorForm>
         </Box>

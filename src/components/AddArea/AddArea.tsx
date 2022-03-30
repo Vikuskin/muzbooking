@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Typography, Box, styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 import bgMain from 'image/AddAreaPage/bgMain.png';
@@ -16,6 +17,7 @@ import { Footer } from 'components/Footer/Footer';
 import { CardBenefits } from 'components/AddArea/CardBenefits';
 import { TitleH1, TitleH2, CustomButton, FlexDiv } from 'style/otherStyles';
 import { CardBeneftsDB } from 'types/Databases';
+import { path } from 'enum';
 
 const List = styled('ul')({
     color: 'black',
@@ -136,212 +138,222 @@ const BenefitsMid1 = styled(Box)({
     marginBottom: '20px',
     marginTop: 0,
 });
-export const AddAreaPage: React.FC = () => (
-    <>
-        <Header />
-        <MainContent>
-            <TitleH1MainContent>
-                Станьте частью единственной экосистемы творческих площадок и
-                услуг в России
-            </TitleH1MainContent>
-            <List>
-                <li>
-                    Первые бронирования в день публикации
-                    <TitleH2 sx={{ padding: '0 0 10px 20px' }}>
-                        *наш рекорд — 4 минуты с момента публикации в сервисе
-                    </TitleH2>
-                </li>
-                <li>
-                    Комиссия только за оплаченные услуги
-                    <TitleH2 sx={{ padding: '0 0 10px 20px' }}>
-                        *все остальные продукты сервиса — бесплатно
-                    </TitleH2>
-                </li>
-            </List>
+export const AddAreaPage: React.FC = () => {
+    const { t } = useTranslation();
 
-            <ButtonDiv>
-                <Link to="/registration">
-                    <ButtonMainContent>Регистрация</ButtonMainContent>
-                </Link>
-                <Link to="/">
-                    <ButtonMainContent>Тарифы</ButtonMainContent>
-                </Link>
-                <Link to="/login">
-                    <ButtonMainContent>Вход в кабинет</ButtonMainContent>
-                </Link>
-            </ButtonDiv>
-        </MainContent>
+    return (
+        <>
+            <Header />
+            <MainContent>
+                <TitleH1MainContent>
+                    {t('addArea.main.title1')}
+                </TitleH1MainContent>
+                <List>
+                    <li>
+                        {t('addArea.main.desc1')}
+                        <TitleH2 sx={{ padding: '0 0 10px 20px' }}>
+                            {t('addArea.main.subtitle1')}
+                        </TitleH2>
+                    </li>
+                    <li>
+                        {t('addArea.main.desc2')}
+                        <TitleH2 sx={{ padding: '0 0 10px 20px' }}>
+                            {t('addArea.main.subtitle2')}
+                        </TitleH2>
+                    </li>
+                </List>
 
-        {/* //benefits */}
-        <Box sx={{ m: '0 30px 20px 30px' }}>
-            <TitleH1 sx={{ mb: '0!important' }}>
-                MUSbooking — это не очередная CRM система или система онлайн
-                бронирования.
-            </TitleH1>
-            <TitleH2>
-                Это сервис, который приведет нового клиента напрямую в ваше
-                расписание по самой низкой цене.
-            </TitleH2>
-        </Box>
-        <WrapDiv
-            sx={{
-                justifyContent: 'space-evenly',
-                m: 4,
-            }}
-        >
-            <Box>
-                <img
-                    src={benefitsItem1}
-                    alt="Benefits"
-                    style={{ maxHeight: '200px' }}
-                />
-                <TitleH2>Ваша целевая аудитория</TitleH2>
-            </Box>
-            <Box>
-                <img
-                    src={benefitsItem2}
-                    alt="Benefits"
-                    style={{ maxHeight: '200px' }}
-                />
-                <TitleH2>Экосистема продуктов MUSbooking</TitleH2>
-            </Box>
-            <Box>
-                <img
-                    src={benefitsItem3}
-                    alt="Benefits"
-                    style={{ maxHeight: '200px' }}
-                />
-                <TitleH2>Пустой слот в вашем расписании</TitleH2>
-            </Box>
-        </WrapDiv>
-        <BenefitsStrip>
-            <TitleH2>
-                <p style={{ fontWeight: 'bold' }}>2 200</p>
-                <p>пользователей ищут площадки каждый день</p>
-            </TitleH2>
-            <TitleH2>
-                <p style={{ fontWeight: 'bold' }}>15 000</p>
-                <p>уникальных пользователей ежемесячно</p>
-            </TitleH2>
-            <TitleH2>
-                <p style={{ fontWeight: 'bold' }}>75 000</p>
-                <p>бронирований совершается ежемесячно</p>
-            </TitleH2>
-            <TitleH2>
-                <p style={{ fontWeight: 'bold' }}>230 млн.</p>
-                <p>рублей заработали наши партнеры</p>
-            </TitleH2>
-        </BenefitsStrip>
+                <ButtonDiv>
+                    <Link to={path.Registration}>
+                        <ButtonMainContent>
+                            {t('addArea.main.button1')}
+                        </ButtonMainContent>
+                    </Link>
+                    <Link to={path.Login}>
+                        <ButtonMainContent>
+                            {t('addArea.main.button2')}
+                        </ButtonMainContent>
+                    </Link>
+                </ButtonDiv>
+            </MainContent>
 
-        {/* benefits MIDDLE */}
-        <WrapDiv sx={{ pb: 4 }}>
-            <Typography sx={{ maxWidth: '600px' }}>
-                <img src={benefitsMid1} alt="" />
-            </Typography>
-            <Box
+            {/* benefits */}
+            <Box sx={{ m: '0 30px 20px 30px' }}>
+                <TitleH1 sx={{ mb: '0!important' }}>
+                    {t('addArea.benefits.title1')}
+                </TitleH1>
+                <TitleH2>{t('addArea.benefits.title2')}</TitleH2>
+            </Box>
+            <WrapDiv
                 sx={{
-                    pr: 4,
-                    maxWidth: { sm: '320px', md: '600px' },
-                    pl: 4,
-                    margin: 'auto',
+                    justifyContent: 'space-evenly',
+                    m: 4,
                 }}
             >
-                <TitleH1BenefitsMid sx={{ margin: '0 0 20px 0 !important' }}>
-                    Самая широкая линейка продуктов на рынке.
-                </TitleH1BenefitsMid>
-                <TitleH2 sx={{ fontSize: '20px' }}>
-                    Ваши площадки и услуги будут доступны для бронирования во
-                    всех наших продуктах. Каталог, мобильное приложение и виджет
-                    для бронирования позволят продавать доступное время и услуги
-                    максимально широкой аудитории.
+                <Box>
+                    <img
+                        src={benefitsItem1}
+                        alt='Benefits'
+                        style={{ maxHeight: '200px' }}
+                    />
+                    <TitleH2>{t('addArea.benefits.subtitle1')}</TitleH2>
+                </Box>
+                <Box>
+                    <img
+                        src={benefitsItem2}
+                        alt='Benefits'
+                        style={{ maxHeight: '200px' }}
+                    />
+                    <TitleH2>{t('addArea.benefits.subtitle2')}</TitleH2>
+                </Box>
+                <Box>
+                    <img
+                        src={benefitsItem3}
+                        alt='Benefits'
+                        style={{ maxHeight: '200px' }}
+                    />
+                    <TitleH2>{t('addArea.benefits.subtitle3')}</TitleH2>
+                </Box>
+            </WrapDiv>
+            <BenefitsStrip>
+                <TitleH2>
+                    <p style={{ fontWeight: 'bold' }}>2 200</p>
+                    <p>{t('addArea.benefits.stripDesc1')}</p>
                 </TitleH2>
-            </Box>
-        </WrapDiv>
-        <WrapDiv
-            sx={{
-                justifyContent: {
-                    xs: 'center',
-                    sm: 'right',
-                },
-                flexWrap: { xs: 'wrap-reverse', sm: 'nowrap' },
-                pb: 4,
-            }}
-        >
-            <BenefitsMid1>
-                <TitleH1BenefitsMid sx={{ margin: '0 0 20px 0 !important' }}>
-                    Личный кабинет с любого устройства.
-                </TitleH1BenefitsMid>
-                <TitleH2 sx={{ fontSize: '20px' }}>
-                    анализ бронирований и заказанных услуг;
-                    <br />
-                    редактирование информации о площадках и услугах;
-                    <br />
-                    гибкие отношения с клиентом, система штрафов, скидок и
-                    условий оплаты;
-                    <br />
-                    работа с отзывами пользователей.
+                <TitleH2>
+                    <p style={{ fontWeight: 'bold' }}>15 000</p>
+                    <p>{t('addArea.benefits.stripDesc2')}</p>
                 </TitleH2>
-            </BenefitsMid1>
-            <Typography sx={{ maxWidth: '600px' }}>
-                <img src={benefitsMid2} alt="" />
-            </Typography>
-        </WrapDiv>
-        <WrapDiv
-            sx={{
-                justifyContent: 'center',
-                pr: 4,
-                pl: 4,
-            }}
-        >
-            <Typography sx={{ maxWidth: '600px' }}>
-                <img style={{ maxHeight: '350px' }} src={benefitsMid3} alt="" />
-            </Typography>
-            <Box
-                sx={{ maxWidth: { sm: '270px', md: '500px' }, margin: 'auto' }}
+                <TitleH2>
+                    <p style={{ fontWeight: 'bold' }}>75 000</p>
+                    <p>{t('addArea.benefits.stripDesc3')}</p>
+                </TitleH2>
+                <TitleH2>
+                    <p style={{ fontWeight: 'bold' }}>
+                        230 {t('addArea.benefits.stripDesc4Mln')}
+                    </p>
+                    <p>{t('addArea.benefits.stripDesc4')}</p>
+                </TitleH2>
+            </BenefitsStrip>
+
+            {/* benefits MIDDLE */}
+            <WrapDiv sx={{ pb: 4 }}>
+                <Typography sx={{ maxWidth: '600px' }}>
+                    <img src={benefitsMid1} alt='' />
+                </Typography>
+                <Box
+                    sx={{
+                        pr: 4,
+                        maxWidth: { sm: '320px', md: '600px' },
+                        pl: 4,
+                        margin: 'auto',
+                    }}
+                >
+                    <TitleH1BenefitsMid
+                        sx={{ margin: '0 0 20px 0 !important' }}
+                    >
+                        {t('addArea.benefits.middle.title1')}
+                    </TitleH1BenefitsMid>
+                    <TitleH2 sx={{ fontSize: '20px' }}>
+                        {t('addArea.benefits.middle.subtitle1')}
+                    </TitleH2>
+                </Box>
+            </WrapDiv>
+            <WrapDiv
+                sx={{
+                    justifyContent: {
+                        xs: 'center',
+                        sm: 'right',
+                    },
+                    flexWrap: { xs: 'wrap-reverse', sm: 'nowrap' },
+                    pb: 4,
+                }}
             >
-                <TitleH1BenefitsMid sx={{ margin: '0 0 20px 0 !important' }}>
-                    Простая интеграция и персональная поддержка.
-                </TitleH1BenefitsMid>
-                <TitleH2 sx={{ fontSize: '20px' }}>
-                    полная синхронизация с вашей crm/erp платформой;
-                    <br />
-                    мгновенная синхронизация с Google/Outlook календарями;
-                    <br />
-                    email и смс уведомления;
-                    <br />
-                    персональная поддержка и бесплатные консультации при
-                    публикации;
-                    <br />
-                    прием онлайн платежей напрямую на ваш расчетный счет.
-                </TitleH2>
-            </Box>
-        </WrapDiv>
+                <BenefitsMid1>
+                    <TitleH1BenefitsMid
+                        sx={{ margin: '0 0 20px 0 !important' }}
+                    >
+                        {t('addArea.benefits.middle.title2')}
+                    </TitleH1BenefitsMid>
+                    <TitleH2 sx={{ fontSize: '20px' }}>
+                        {t('addArea.benefits.middle.subtitle2.1')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle2.2')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle2.3')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle2.4')}
+                    </TitleH2>
+                </BenefitsMid1>
+                <Typography sx={{ maxWidth: '600px' }}>
+                    <img src={benefitsMid2} alt='' />
+                </Typography>
+            </WrapDiv>
+            <WrapDiv
+                sx={{
+                    justifyContent: 'center',
+                    pr: 4,
+                    pl: 4,
+                }}
+            >
+                <Typography sx={{ maxWidth: '600px' }}>
+                    <img
+                        style={{ maxHeight: '350px' }}
+                        src={benefitsMid3}
+                        alt=''
+                    />
+                </Typography>
+                <Box
+                    sx={{
+                        maxWidth: { sm: '270px', md: '500px' },
+                        margin: 'auto',
+                    }}
+                >
+                    <TitleH1BenefitsMid
+                        sx={{ margin: '0 0 20px 0 !important' }}
+                    >
+                        {t('addArea.benefits.middle.title3')}
+                    </TitleH1BenefitsMid>
+                    <TitleH2 sx={{ fontSize: '20px' }}>
+                        {t('addArea.benefits.middle.subtitle3.1')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle3.2')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle3.3')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle3.4')}
+                        <br />
+                        {t('addArea.benefits.middle.subtitle3.5')}
+                    </TitleH2>
+                </Box>
+            </WrapDiv>
 
-        {/* benefits cards */}
-        <TitleH1>Уникальные преимущества MUSbooking</TitleH1>
-        <FlexDiv
-            sx={{
-                flexWrap: 'wrap',
-                ml: { xs: 2, sm: 5, md: 8, lg: 20 },
-                mr: { xs: 2, sm: 5, md: 8, lg: 20 },
-            }}
-        >
-            {dbCardBenefits.map((card: CardBeneftsDB) => (
-                <CardBenefits
-                    key={card.id}
-                    img={card.img}
-                    description={card.description}
-                />
-            ))}
-        </FlexDiv>
+            {/* benefits cards */}
+            <TitleH1>{t('addArea.benefits.cards.title')}</TitleH1>
+            <FlexDiv
+                sx={{
+                    flexWrap: 'wrap',
+                    ml: { xs: 2, sm: 5, md: 8, lg: 20 },
+                    mr: { xs: 2, sm: 5, md: 8, lg: 20 },
+                }}
+            >
+                {dbCardBenefits.map((card: CardBeneftsDB, i: number) => (
+                    <CardBenefits
+                        key={card.id}
+                        img={card.img}
+                        description={t(`dbCardBenefits.item${i}`)}
+                    />
+                ))}
+            </FlexDiv>
 
-        {/* partners */}
-        <TitleH1>С нами работают более 500 компаний</TitleH1>
-        <img src={partners} style={{ width: '100%' }} alt="Partners" />
+            {/* partners */}
+            <TitleH1>{t('addArea.benefits.partners.title')}</TitleH1>
+            <img src={partners} style={{ width: '100%' }} alt='Partners' />
 
-        {/* slider */}
-        <TitleH1>Отзывы наших партнеров</TitleH1>
-        <Slider />
-        <Footer />
-    </>
-);
+            {/* slider */}
+            <TitleH1>{t('addArea.benefits.reviews.title')}</TitleH1>
+            <Slider />
+            <Footer />
+        </>
+    );
+};

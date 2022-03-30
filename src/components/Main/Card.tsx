@@ -1,8 +1,10 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import { styled } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { useActions } from 'hooks/useActions';
 import { CardProps } from 'types/Main';
+import { path } from 'enum';
 
 const Card = styled('div')({
     margin: 'auto',
@@ -29,7 +31,7 @@ const CardFrontImage = styled('div')({
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     display: 'flex',
-    alignItems: 'end',
+    alignItems: 'flex-end',
     width: '100%',
     height: '100%',
     transform: 'rotateY(360deg)',
@@ -126,6 +128,7 @@ export const Cards: React.FC<CardProps> = ({
             setStyle('front-card');
         }
     };
+    const { t } = useTranslation();
 
     return (
         <Card onClick={() => flipCard()}>
@@ -143,14 +146,14 @@ export const Cards: React.FC<CardProps> = ({
                 <CardBackContent>
                     <img src={icon} alt={description} />
                     <CardBackText>{description}</CardBackText>
-                    <Link to="/search">
+                    <Link to={path.Search}>
                         <CardBackBottom
                             onClick={() => {
                                 chooseServices(id);
                                 window.scrollTo(0, 0);
                             }}
                         >
-                            Найти площадку
+                            {t('main.card.frontDesc')}
                         </CardBackBottom>
                     </Link>
                 </CardBackContent>

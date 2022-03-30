@@ -148,9 +148,9 @@ export const input = (
         | undefined
 ) => (
     <TextField
-        id="standard-multiline-flexible"
+        id='standard-multiline-flexible'
         multiline
-        variant="standard"
+        variant='standard'
         value={value}
         onChange={onChange}
         sx={{ width: '100%' }}
@@ -172,7 +172,7 @@ export const DefaultTextValidator = (
         validators={validators}
         errorMessages={error}
         multiline
-        variant="standard"
+        variant='standard'
         sx={{ width: '100%' }}
     />
 );
@@ -229,10 +229,10 @@ export const FormModal = styled('div')({
 
 export const TextFieldModal = (value: string, label: string) => (
     <TextField
-        id="filled-textarea"
+        id='filled-textarea'
         label={label}
         multiline
-        variant="filled"
+        variant='filled'
         value={value}
     />
 );

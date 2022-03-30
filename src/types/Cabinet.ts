@@ -72,6 +72,7 @@ export interface ContentCompanyImages {
     path: string;
     size: number;
     preview?: string | undefined;
+    name?: string | undefined;
 }
 
 export interface TablePaginationActionsProps {

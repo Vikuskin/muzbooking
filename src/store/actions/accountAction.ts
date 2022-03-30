@@ -3,13 +3,14 @@ import { Dispatch } from 'redux';
 import { ContentCompanyImages, ProductsState } from 'types/Cabinet';
 import { CheckedPlaceDB } from 'types/Databases';
 import { DataAction, DataActionTypes } from 'store/reducers/dataReducer';
+import { path } from 'enum';
 
 export const fetchLogin =
     (email: string, password: string) =>
     async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
-            const response = await axios.get('http://localhost:5000/login', {
+            const response = await axios.get(path.SERVER_URL + path.Login, {
                 params: { email, password },
             });
             dispatch({
@@ -18,8 +19,8 @@ export const fetchLogin =
             });
             localStorage.setItem('token', response.data.token);
             window.setTimeout(() => {
-                window.location.replace('http://localhost:3000/account');
-            }, 2000);
+                window.location.replace(path.PUBLIC_URL + path.Content);
+            }, 1000);
             return response.data.message;
         } catch (e) {
             dispatch({
@@ -45,7 +46,7 @@ export const fetchRegistration =
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
-                'http://localhost:5000/registration',
+                path.SERVER_URL + path.Registration,
                 {
                     city,
                     email,
@@ -62,8 +63,8 @@ export const fetchRegistration =
                 payload: response.data,
             });
             window.setTimeout(() => {
-                window.location.replace('http://localhost:3000/login');
-            }, 2000);
+                window.location.replace(path.PUBLIC_URL + path.Login);
+            }, 1000);
             return response.data.message;
         } catch (e) {
             dispatch({
@@ -78,7 +79,7 @@ export const fetchAccountContent =
     (token: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
-            const response = await axios.get('http://localhost:5000/account', {
+            const response = await axios.get(path.SERVER_URL + path.Content, {
                 headers: { Authorization: `Bearer ${token}` },
             });
             dispatch({
@@ -112,7 +113,7 @@ export const fetchAccountContentUpdate =
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.put(
-                'http://localhost:5000/account',
+                path.SERVER_URL + path.Content,
                 {
                     city,
                     nameCompany,
@@ -169,7 +170,7 @@ export const fetchAccountPlatform =
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.post(
-                'http://localhost:5000/account',
+                path.SERVER_URL + path.Content,
                 data,
                 {
                     headers: {
@@ -197,7 +198,7 @@ export const fetchAccountPlatformDelete =
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.delete(
-                'http://localhost:5000/account',
+                path.SERVER_URL + path.Content,
                 {
                     data: { token, id },
                     headers: { Authorization: `Bearer ${token}` },
@@ -221,12 +222,9 @@ export const fetchOrders =
     (token: string) => async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
-            const response = await axios.get(
-                'http://localhost:5000/account/orders',
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
+            const response = await axios.get(path.SERVER_URL + path.Orders, {
+                headers: { Authorization: `Bearer ${token}` },
+            });
             dispatch({
                 type: DataActionTypes.FETCH_DATA_SUCCESS,
                 payload: response.data,
@@ -250,7 +248,7 @@ export const fetchCalendar =
             };
             dispatch({ type: DataActionTypes.FETCH_DATA });
             const response = await axios.get(
-                'http://localhost:5000/account/calendar',
+                path.SERVER_URL + path.Calendar,
                 config
             );
             dispatch({

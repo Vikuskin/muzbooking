@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Typography,
     Box,
@@ -82,9 +83,10 @@ export const Registration: React.FC = () => {
         };
 
     const { fetchRegistration } = useActions();
+    const { t } = useTranslation();
 
-    const handleSubmit = () => {
-        const res = fetchRegistration(
+    const handleSubmit = async () => {
+        const res = await fetchRegistration(
             registration.city,
             registration.email,
             registration.nameCompany,
@@ -97,7 +99,7 @@ export const Registration: React.FC = () => {
         if (res) {
             alert(res);
         } else {
-            alert('Учетная запись партнера успешно создана');
+            alert(t('cabinet.registration.alert'));
         }
     };
     return (
@@ -112,14 +114,14 @@ export const Registration: React.FC = () => {
                                 marginBottom: '10px',
                             }}
                             src={logo}
-                            alt="Logo"
+                            alt='Logo'
                         />
                         <Typography sx={{ fontWeight: 'bold' }}>
-                            Регистрация
+                            {t('cabinet.registration.title')}
                         </Typography>
                     </FlexDiv>
                     <Typography sx={{ mb: '20px', lineHeight: 1 }}>
-                        Создание учетной записи партнера
+                        {t('cabinet.registration.desc')}
                     </Typography>
 
                     <Box
@@ -133,34 +135,42 @@ export const Registration: React.FC = () => {
                     >
                         <FormColumn sx={{ mr: { xs: '0', sm: '15px' } }}>
                             <Typography sx={{ fontWeight: 'bold', mb: '10px' }}>
-                                Контактная информация
+                                {t('cabinet.registration.contactInfo')}
                             </Typography>
 
-                            <Typography>Название компании</Typography>
+                            <Typography>
+                                {t('cabinet.contentPage.mainInfo.nameCompany')}
+                            </Typography>
                             {DefaultTextValidator(
                                 registration.nameCompany,
                                 handleChange('nameCompany'),
                                 ['required'],
-                                ['Это поле обязательно']
+                                [t('validation.error.required')]
                             )}
 
-                            <Typography sx={{ mt: '20px' }}>Город</Typography>
+                            <Typography sx={{ mt: '20px' }}>
+                                {t('cabinet.contentPage.mainInfo.city')}
+                            </Typography>
                             {DefaultTextValidator(
                                 registration.city,
                                 handleChange('city'),
                                 ['required'],
-                                ['Это поле обязательно']
+                                [t('validation.error.required')]
                             )}
 
-                            <Typography sx={{ mt: '20px' }}>Адрес</Typography>
+                            <Typography sx={{ mt: '20px' }}>
+                                {t('cabinet.contentPage.mainInfo.address')}
+                            </Typography>
                             {DefaultTextValidator(
                                 registration.address,
                                 handleChange('address'),
                                 ['required'],
-                                ['Это поле обязательно']
+                                [t('validation.error.required')]
                             )}
 
-                            <Typography sx={{ mt: '20px' }}>Пароль</Typography>
+                            <Typography sx={{ mt: '20px' }}>
+                                {t('cabinet.login.password')}
+                            </Typography>
                             {DefaultTextValidator(
                                 registration.password,
                                 handleChange('password'),
@@ -170,37 +180,41 @@ export const Registration: React.FC = () => {
                                     'matchRegexp:^.*(?=.*[0-9])(?=.*[A-Z])(?=.*[a-z])(?=.*[!@#$%^&*?]).*$',
                                 ],
                                 [
-                                    'Это поле обязательно',
-                                    'Пароль не может быть меньше 6 символов',
-                                    'Пароль должен содержать заглавные и строчные латинские буквы, цифры и специальные символы',
+                                    t('validation.error.required'),
+                                    t('validation.error.smallPassword'),
+                                    t('validation.error.simplePassword'),
                                 ]
                             )}
 
                             <Typography sx={{ mt: '20px' }}>
-                                Телефоны
+                                {t('cabinet.contentPage.mainInfo.phone')}
                             </Typography>
                             <TextField
-                                type="number"
-                                id="standard-multiline-flexible"
+                                type='number'
+                                id='standard-multiline-flexible'
                                 multiline
                                 value={phone}
                                 onChange={(event) =>
                                     setPhone([
                                         event.target.value
                                             .replace(/\D/g, '')
-                                            .replace(/^[0-9]/, '+7')
+                                            .replace(/^[0-9]/, '+7'),
                                     ])
                                 }
-                                variant="standard"
+                                variant='standard'
                                 sx={{ width: '100%' }}
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment
-                                            position="end"
+                                            position='end'
                                             onClick={() => {
                                                 if (phone[0].length !== 12) {
-                                                    alert('Номер не верен')
-                                                    return
+                                                    alert(
+                                                        t(
+                                                            'cabinet.contentPage.mainInfo.alert.phone'
+                                                        )
+                                                    );
+                                                    return;
                                                 }
                                                 setRegistration({
                                                     ...registration,
@@ -212,7 +226,7 @@ export const Registration: React.FC = () => {
                                             }}
                                         >
                                             <Icon
-                                                fontSize="small"
+                                                fontSize='small'
                                                 sx={{ cursor: 'pointer' }}
                                             >
                                                 add_circle
@@ -228,7 +242,7 @@ export const Registration: React.FC = () => {
                                         maxWidth: 360,
                                         bgcolor: 'background.paper',
                                     }}
-                                    aria-label="contacts"
+                                    aria-label='contacts'
                                 >
                                     {registration.phone.map(
                                         (item: string[], i: number) => (
@@ -270,39 +284,43 @@ export const Registration: React.FC = () => {
                         </FormColumn>
                         <FormColumn>
                             <Typography sx={{ fontWeight: 'bold', mb: '10px' }}>
-                                Основная информация
+                                {t('cabinet.contentPage.title1')}
                             </Typography>
-                            <Typography>Сфера</Typography>
+                            <Typography>{t('sphera.sphera')}</Typography>
                             <TextValidator
-                                name="sphera"
-                                id="standard-multiline-flexible"
+                                name='sphera'
+                                id='standard-multiline-flexible'
                                 multiline
                                 select
                                 value={registration.sphera}
                                 onChange={handleChange('sphera')}
-                                variant="standard"
+                                variant='standard'
                                 validators={['required']}
-                                errorMessages={['Это поле обязательно']}
+                                errorMessages={[t('validation.error.required')]}
                                 sx={{ width: '100%' }}
                             >
-                                <MenuItem value="RECORD">
-                                    Студии звукозаписи
+                                <MenuItem value='RECORD'>
+                                    {t('sphera.record')}
                                 </MenuItem>
-                                <MenuItem value="PHOTO">Фотостудии</MenuItem>
-                                <MenuItem value="TEACHING">
-                                    Школы и педагоги
+                                <MenuItem value='PHOTO'>
+                                    {t('sphera.photo')}
                                 </MenuItem>
-                                <MenuItem value="DANCE">
-                                    Танцевальные залы
+                                <MenuItem value='TEACHING'>
+                                    {t('sphera.teaching')}
+                                </MenuItem>
+                                <MenuItem value='DANCE'>
+                                    {t('sphera.dance')}
                                 </MenuItem>
                             </TextValidator>
 
-                            <Typography sx={{ mt: '20px' }}>Метро</Typography>
+                            <Typography sx={{ mt: '20px' }}>
+                                {t('cabinet.contentPage.mainInfo.subway')}
+                            </Typography>
                             {DefaultTextValidator(
                                 registration.subway,
                                 handleChange('subway'),
                                 ['required'],
-                                ['Это поле обязательно']
+                                [t('validation.error.required')]
                             )}
 
                             <Typography sx={{ mt: '20px' }}>Email</Typography>
@@ -310,11 +328,16 @@ export const Registration: React.FC = () => {
                                 registration.email,
                                 handleChange('email'),
                                 ['required', 'isEmail'],
-                                ['Это поле обязательно', 'Email не верен']
+                                [
+                                    t('validation.error.required'),
+                                    t('validation.error.email'),
+                                ]
                             )}
                         </FormColumn>
                     </Box>
-                    <Button type="submit">зарегестрироваться</Button>
+                    <Button type='submit'>
+                        {t('cabinet.registration.button')}
+                    </Button>
                 </ValidatorForm>
             </RegistrationWindow>
         </Background>

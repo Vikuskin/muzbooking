@@ -1,5 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Typography, Button, styled, Box, Modal } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
@@ -9,6 +10,7 @@ import { FlexDiv, TitleH2, styleModal } from 'style/otherStyles';
 import { CatalogPlatformCardProps } from 'types/Search';
 import { CheckedPlaceDB } from 'types/Databases';
 import { ContentCompanyImages } from 'types/Cabinet';
+import { path } from 'enum';
 
 const Subtitle = styled(TitleH2)({
     padding: 0,
@@ -70,6 +72,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
     });
 
     const [open, setOpen] = React.useState<boolean>(false);
+    const { t } = useTranslation();
 
     return (
         <Card>
@@ -78,12 +81,13 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                 <FlexDiv
                     sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
                 >
-                    <CropSquareIcon fontSize="small" />
+                    <CropSquareIcon fontSize='small' />
                     <Typography>
-                        {square} м<sup>2</sup>
+                        {square} {t('search.catalogPlatformCard.metre')}
+                        <sup>2</sup>
                     </Typography>
                 </FlexDiv>
-                <Subtitle>О площадке</Subtitle>
+                <Subtitle>{t('search.catalogPlatformCard.subtitle')}</Subtitle>
 
                 {!showMore ? (
                     <>
@@ -100,7 +104,7 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                             }}
                             onClick={() => setShowMore(true)}
                         >
-                            Еще
+                            {t('search.catalogPlatformCard.more')}
                         </Button>
                     </>
                 ) : (
@@ -111,18 +115,26 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                     <>
                         {comfortChecked[0] && (
                             <>
-                                <Subtitle>Комфорт</Subtitle>
+                                <Subtitle>
+                                    {t('search.catalogPlatformCard.comfort')}
+                                </Subtitle>
                                 {comfortChecked.map((item: CheckedPlaceDB) => (
-                                    <Typography key={item.id}>{item.value}</Typography>
+                                    <Typography key={item.id}>
+                                        {t(`dbComfortPlace.item${item.id}`)}
+                                    </Typography>
                                 ))}
                             </>
                         )}
 
                         {servicesChecked[0] && (
                             <>
-                                <Subtitle>Удобства</Subtitle>
+                                <Subtitle>
+                                    {t('search.catalogPlatformCard.service')}
+                                </Subtitle>
                                 {servicesChecked.map((item: CheckedPlaceDB) => (
-                                    <Typography key={item.id}>{item.value}</Typography>
+                                    <Typography key={item.id}>
+                                        {t(`dbServicesPlace.item${item.id}`)}
+                                    </Typography>
                                 ))}
                             </>
                         )}
@@ -133,8 +145,8 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                 {images.map((img: ContentCompanyImages) => (
                     <Fancybox options={{ infinite: false }} key={img.filename}>
                         <Button
-                            data-fancybox="gallery"
-                            data-src={`http://localhost:5000/${img.destination}/${img.filename}`}
+                            data-fancybox='gallery'
+                            data-src={`${path.SERVER_URL}/${img.destination}${img.filename}`}
                         >
                             <img
                                 style={{
@@ -142,8 +154,8 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                                     height: '130px',
                                     marginRight: '5px',
                                 }}
-                                src={`http://localhost:5000/${img.destination}/${img.filename}`}
-                                alt="Images of platform"
+                                src={`${path.SERVER_URL}/${img.destination}${img.filename}`}
+                                alt='Images of platform'
                             />
                         </Button>
                     </Fancybox>
@@ -153,14 +165,14 @@ export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
                 onClick={() => setOpen(true)}
                 sx={{ m: { xs: 'auto', md: '0 10px 0 0' } }}
             >
-                Забронировать
+                {t('search.catalogPlatformCard.buttonBooking')}
             </Button>
             {open && (
                 <Modal
                     open={open}
                     onClose={() => setOpen(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
+                    aria-labelledby='modal-modal-title'
+                    aria-describedby='modal-modal-description'
                     sx={{ overflow: 'scroll' }}
                 >
                     <Box sx={styleModal}>

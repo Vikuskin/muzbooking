@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { BookingState } from 'types/Cabinet';
 import { FormModal, TextFieldModal } from 'style/otherStyles';
@@ -13,25 +14,29 @@ export const CalendarModal: React.FC<BookingState> = ({
     _id,
     date,
     comment,
-}) => (
-    <FormModal key={_id}>
-        {TextFieldModal(namePlatform, 'Площадка')}
-        {TextFieldModal(product, 'Выбранная услуга')}
-        {TextFieldModal(price, 'Цена')}
-        {TextFieldModal(time, 'Время')}
-        {TextFieldModal(date, 'Дата')}
-        {TextFieldModal(nameClient, 'Имя клиента')}
-        {TextFieldModal(phone, 'Телефон')}
-        {comment ? (
-            <TextField
-                id="filled-multiline-static"
-                label="Комментарий к заказу"
-                multiline
-                rows={4}
-                variant="filled"
-                value={comment}
-                disabled
-            />
-        ) : null}
-    </FormModal>
-);
+}) => {
+    const { t } = useTranslation();
+
+    return (
+        <FormModal key={_id}>
+            {TextFieldModal(namePlatform, t('cabinet.calendar.namePlatform'))}
+            {TextFieldModal(product, t('cabinet.calendar.service'))}
+            {TextFieldModal(price, t('cabinet.calendar.price'))}
+            {TextFieldModal(time, t('cabinet.calendar.time'))}
+            {TextFieldModal(date, t('cabinet.calendar.date'))}
+            {TextFieldModal(nameClient, t('cabinet.calendar.nameClient'))}
+            {TextFieldModal(phone, t('cabinet.calendar.phone'))}
+            {comment ? (
+                <TextField
+                    id='filled-multiline-static'
+                    label={t('cabinet.calendar.comment')}
+                    multiline
+                    rows={4}
+                    variant='filled'
+                    value={comment}
+                    disabled
+                />
+            ) : null}
+        </FormModal>
+    );
+};

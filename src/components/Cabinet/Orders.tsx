@@ -1,4 +1,5 @@
-import React, { useEffect, useState, useMemo } from 'react';
+import React, { useEffect, useState, useMemo, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Container,
@@ -26,6 +27,7 @@ import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { TableCellCenter } from 'style/otherStyles';
 import { TablePaginationActionsProps, BookingState } from 'types/Cabinet';
+import { path } from 'enum';
 
 const TablePaginationActions = (props: TablePaginationActionsProps) => {
     const theme = useTheme();
@@ -60,14 +62,14 @@ const TablePaginationActions = (props: TablePaginationActionsProps) => {
             <IconButton
                 onClick={handleFirstPageButtonClick}
                 disabled={page === 0}
-                aria-label="first page"
+                aria-label='first page'
             >
                 {theme.direction === 'rtl' ? <LastPage /> : <FirstPage />}
             </IconButton>
             <IconButton
                 onClick={handleBackButtonClick}
                 disabled={page === 0}
-                aria-label="previous page"
+                aria-label='previous page'
             >
                 {theme.direction === 'rtl' ? (
                     <KeyboardArrowRight />
@@ -78,7 +80,7 @@ const TablePaginationActions = (props: TablePaginationActionsProps) => {
             <IconButton
                 onClick={handleNextButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="next page"
+                aria-label='next page'
             >
                 {theme.direction === 'rtl' ? (
                     <KeyboardArrowLeft />
@@ -89,7 +91,7 @@ const TablePaginationActions = (props: TablePaginationActionsProps) => {
             <IconButton
                 onClick={handleLastPageButtonClick}
                 disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-                aria-label="last page"
+                aria-label='last page'
             >
                 {theme.direction === 'rtl' ? <FirstPage /> : <LastPage />}
             </IconButton>
@@ -99,16 +101,27 @@ const TablePaginationActions = (props: TablePaginationActionsProps) => {
 
 export const Orders: React.FC = () => {
     const { fetchOrders } = useActions();
-    useEffect(() => {
-        if (localStorage.token) {
-            fetchOrders(localStorage.token);
-        } else {
-            alert('Войдите в аккаунт');
-            setTimeout(() => {
-                window.location.replace('http://localhost:3000/login');
-            }, 1000);
-        }
-    }, []);
+    const { t } = useTranslation();
+
+    const FetchOrders = (params: string) => {
+        const prevParams = useRef(params);
+
+        useEffect(() => {
+            if (prevParams.current === params) {
+                if (localStorage.token) {
+                    fetchOrders(localStorage.token);
+                } else {
+                    alert(t('cabinet.orders.alert'));
+                    setTimeout(() => {
+                        window.location.replace(path.PUBLIC_URL + path.Login);
+                    }, 1000);
+                }
+                prevParams.current = params;
+            }
+        }, [params]);
+    };
+    FetchOrders(localStorage.token);
+
     const { data } = useTypedSelector((state) => state.data);
 
     // TABLE
@@ -135,8 +148,8 @@ export const Orders: React.FC = () => {
             phone,
         };
     }
-
-    const rows = data[0]
+    let rows = useMemo(() => [], []);
+    rows = data[0]
         ? data
               .map((item: BookingState) =>
                   createData(
@@ -201,13 +214,13 @@ export const Orders: React.FC = () => {
         <Box>
             <AccountHeader />
             <Container
-                maxWidth="xl"
+                maxWidth='xl'
                 sx={{ p: '30px', textAlign: 'left', pt: '100px' }}
             >
                 <TableContainer component={Paper}>
                     <Table
                         sx={{ minWidth: 290 }}
-                        aria-label="custom pagination table"
+                        aria-label='custom pagination table'
                     >
                         <TableHead>
                             <TableRow>
@@ -221,14 +234,20 @@ export const Orders: React.FC = () => {
                                             setRowsSortDesc(!rowsSortDesc)
                                         }
                                     >
-                                        Дата
+                                        {t('cabinet.calendar.date')}
                                     </TableSortLabel>
                                 </TableCellCenter>
-                                <TableCellCenter>Площадка</TableCellCenter>
-                                <TableCellCenter>Стоимость</TableCellCenter>
-                                <TableCellCenter>Вид работ</TableCellCenter>
                                 <TableCellCenter>
-                                    Комментарий к заказу
+                                    {t('cabinet.calendar.namePlatform')}
+                                </TableCellCenter>
+                                <TableCellCenter>
+                                    {t('cabinet.calendar.price')}
+                                </TableCellCenter>
+                                <TableCellCenter>
+                                    {t('cabinet.calendar.service')}
+                                </TableCellCenter>
+                                <TableCellCenter>
+                                    {t('cabinet.calendar.comment')}
                                 </TableCellCenter>
                             </TableRow>
                         </TableHead>
@@ -241,26 +260,26 @@ export const Orders: React.FC = () => {
                                 : rows
                             ).map((row: BookingState) => (
                                 <TableRow key={row._id}>
-                                    <TableCellCenter component="th" scope="row">
+                                    <TableCellCenter component='th' scope='row'>
                                         {row.nameClient}
                                         <br />
                                         {row.phone}
                                     </TableCellCenter>
-                                    <TableCellCenter align="right">
+                                    <TableCellCenter align='right'>
                                         {row.date}
                                         <br />
                                         {row.time}
                                     </TableCellCenter>
-                                    <TableCellCenter align="right">
+                                    <TableCellCenter align='right'>
                                         {row.namePlatform}
                                     </TableCellCenter>
-                                    <TableCellCenter align="right">
+                                    <TableCellCenter align='right'>
                                         {row.price}
                                     </TableCellCenter>
-                                    <TableCellCenter align="right">
+                                    <TableCellCenter align='right'>
                                         {row.product}
                                     </TableCellCenter>
-                                    <TableCellCenter align="right">
+                                    <TableCellCenter align='right'>
                                         {row.comment}
                                     </TableCellCenter>
                                 </TableRow>

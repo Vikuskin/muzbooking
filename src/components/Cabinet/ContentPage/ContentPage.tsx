@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     Container,
@@ -24,6 +25,7 @@ import {
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
 import { ContentPagePlatformProps } from 'types/Cabinet';
+import { path } from 'enum';
 
 const OrangeCircleIcon = styled(AddCircle)({
     color: '#f89623',
@@ -72,16 +74,25 @@ export const ContentPage: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);
     const { fetchAccountContent, fetchAccountPlatformDelete } = useActions();
 
-    useEffect(() => {
-        if (localStorage.token) {
-            fetchAccountContent(localStorage.token);
-        } else {
-            alert('Войдите в аккаунт');
-            setTimeout(() => {
-                window.location.replace('http://localhost:3000/login');
-            }, 1000);
-        }
-    }, []);
+    const FetchAccountContent = (params: string) => {
+        const prevParams = useRef(params);
+
+        useEffect(() => {
+            if (prevParams.current === params) {
+                if (localStorage.token) {
+                    fetchAccountContent(localStorage.token);
+                } else {
+                    alert('Войдите в аккаунт');
+                    setTimeout(() => {
+                        window.location.replace(path.PUBLIC_URL + path.Login);
+                    }, 1000);
+                }
+                prevParams.current = params;
+            }
+        }, [params]);
+    };
+    FetchAccountContent(localStorage.token);
+
     const [modal, setModal] = React.useState<ContentPagePlatformProps>({
         namePlatform: '',
         square: '0',
@@ -93,19 +104,22 @@ export const ContentPage: React.FC = () => {
         images: [],
     });
     const [open, setOpen] = React.useState<boolean>(false);
+    const { t } = useTranslation();
 
     return (
         <>
             <AccountHeader />
             <Container
-                maxWidth="xl"
+                maxWidth='xl'
                 sx={{ p: '30px', textAlign: 'left', pt: '100px' }}
             >
                 <Wrapper>
                     <MainInfo>
-                        <AccountTitleH1>Основная информация</AccountTitleH1>
+                        <AccountTitleH1>
+                            {t('cabinet.contentPage.title1')}
+                        </AccountTitleH1>
                         {loading ? (
-                            <>Загрузка...</>
+                            <>{t('loading')}</>
                         ) : (
                             data.place && (
                                 <ContentPageMainInfo
@@ -124,9 +138,11 @@ export const ContentPage: React.FC = () => {
                         )}
                     </MainInfo>
                     <Platforms>
-                        <AccountTitleH1>Площадки</AccountTitleH1>
+                        <AccountTitleH1>
+                            {t('cabinet.contentPage.title2')}
+                        </AccountTitleH1>
                         {loading ? (
-                            <>Загрузка...</>
+                            <>{t('loading')}</>
                         ) : (
                             data.platform &&
                             !showPlatform &&
@@ -135,7 +151,7 @@ export const ContentPage: React.FC = () => {
                                     <ContentPageListItem
                                         key={item._id}
                                         sx={{
-                                            backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(http://localhost:5000/${item.images[0].path})`,
+                                            backgroundImage: `linear-gradient(to right, rgba(55, 44, 64, .60) 0%, rgba(55, 44, 64, .60) 100%), url(${path.SERVER_URL}/${item.images[0].path})`,
                                             minHeight: '200px',
                                             backgroundPosition: 'center',
                                             backgroundSize: 'cover',
@@ -174,7 +190,9 @@ export const ContentPage: React.FC = () => {
                                                         item._id
                                                     );
                                                     alert(
-                                                        'Площадка успешно удалена'
+                                                        t(
+                                                            'cabinet.contentPage.deleted'
+                                                        )
                                                     );
                                                     fetchAccountContent(
                                                         localStorage.token
@@ -189,13 +207,13 @@ export const ContentPage: React.FC = () => {
                         {showPlatform ? (
                             <>
                                 <ContentPagePlatform
-                                    namePlatform=""
-                                    square="0"
-                                    rider=""
+                                    namePlatform=''
+                                    square='0'
+                                    rider=''
                                     products={[]}
                                     services={dbServicesPlace}
                                     comfort={dbComfortPlace}
-                                    _id=""
+                                    _id=''
                                     images={[]}
                                 />
                                 <ButtonPrimary
@@ -205,7 +223,7 @@ export const ContentPage: React.FC = () => {
                                         p: '10px 25px !important',
                                     }}
                                 >
-                                    Назад
+                                    {t('cabinet.contentPage.back')}
                                 </ButtonPrimary>
                             </>
                         ) : (
@@ -219,8 +237,8 @@ export const ContentPage: React.FC = () => {
                     <Modal
                         open={open}
                         onClose={() => setOpen(false)}
-                        aria-labelledby="modal-modal-title"
-                        aria-describedby="modal-modal-description"
+                        aria-labelledby='modal-modal-title'
+                        aria-describedby='modal-modal-description'
                         sx={{ overflow: 'scroll' }}
                     >
                         <Box sx={styleModal}>

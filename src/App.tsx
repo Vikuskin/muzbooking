@@ -9,20 +9,21 @@ import { Catalog } from 'components/Search/Catalog';
 import { Orders } from 'components/Cabinet/Orders';
 import { ContentPage } from 'components/Cabinet/ContentPage/ContentPage';
 import { Calendar } from 'components/Cabinet/Calendar/Calendar';
+import { path } from 'enum';
 
 export const App = () => (
     <BrowserRouter>
         <GlobalStyles />
         <Routes>
-            <Route path="/" element={<Main />} />
-            <Route path="/addArea" element={<AddAreaPage />} />
-            <Route path="/search" element={<SearchPage />} />
-            <Route path="/account" element={<ContentPage />} />
-            <Route path="/registration" element={<Registration />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/catalog" element={<Catalog />} />
-            <Route path="/account/orders" element={<Orders />} />
-            <Route path="/account/calendar" element={<Calendar />} />
+            <Route path='/' element={<Main />} />
+            <Route path={path.AddArea} element={<AddAreaPage />} />
+            <Route path={path.Search} element={<SearchPage />} />
+            <Route path={path.Content} element={<ContentPage />} />
+            <Route path={path.Registration} element={<Registration />} />
+            <Route path={path.Login} element={<Login />} />
+            <Route path={path.Catalog} element={<Catalog />} />
+            <Route path={path.Orders} element={<Orders />} />
+            <Route path={path.Calendar} element={<Calendar />} />
         </Routes>
     </BrowserRouter>
 );

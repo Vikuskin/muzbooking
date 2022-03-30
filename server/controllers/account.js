@@ -167,8 +167,8 @@ module.exports.accountOrders = async (req, res) => {
             email: req.user.email,
         });
         const booking = await Booking.find({
-            placeId: place._id
-        })
+            placeId: place._id,
+        });
         res.status(200).json(booking);
     } catch (e) {
         console.log(e);
@@ -178,19 +178,19 @@ module.exports.accountOrders = async (req, res) => {
 
 module.exports.accountCalendar = async (req, res) => {
     try {
-        console.log(req.query)
-        console.log(req.user)
+        console.log(req.query);
+        console.log(req.user);
         const place = await Place.findOne({
             email: req.user.email,
         });
         const platforms = await Platform.find({
-            placeId: place._id
-        })
+            placeId: place._id,
+        });
         const booking = await Booking.find({
             placeId: place._id,
-            date: req.query.date
-        })
-        res.status(200).json({booking, platforms});
+            date: req.query.date,
+        });
+        res.status(200).json({ booking, platforms });
     } catch (e) {
         console.log(e);
         res.status(400).json({ message: e });

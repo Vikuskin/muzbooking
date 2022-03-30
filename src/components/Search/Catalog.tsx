@@ -1,5 +1,6 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { styled, Button, Box } from '@mui/material';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Carousel from 'react-elastic-carousel';
@@ -15,6 +16,7 @@ import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
 import noImage from 'image/noImage.png';
 import { ContentCompanyImages, ContentPagePlatformProps } from 'types/Cabinet';
+import { path } from 'enum';
 
 const BoxMainInfo = styled(Box)({
     display: 'flex',
@@ -40,7 +42,7 @@ const MainInfoDesc = styled(FlexDiv)({
 
 const Title = styled(TitleH1)({
     textAlign: 'left',
-    margin: '0 5px',
+    margin: '0',
     '@media (max-width: 600px)': {
         textAlign: 'center',
     },
@@ -48,12 +50,13 @@ const Title = styled(TitleH1)({
 
 export const Catalog: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);
+    const { t } = useTranslation();
 
     return (
         <>
             <Header />
             {loading ? (
-                <>Загрузка...</>
+                <>{t('loading')}</>
             ) : (
                 <Box sx={{ maxWidth: '1600px', margin: 'auto' }}>
                     <Box sx={{ m: '100px 70px 0 70px' }}>
@@ -62,7 +65,7 @@ export const Catalog: React.FC = () => {
                             <MainInfoDesc>
                                 <img
                                     src={addressIcon}
-                                    alt="Address icon"
+                                    alt='Address icon'
                                     style={{ marginRight: '5px' }}
                                 />
                                 {data.place.address}
@@ -70,7 +73,7 @@ export const Catalog: React.FC = () => {
                             <MainInfoDesc>
                                 <img
                                     src={subwayIcon}
-                                    alt="Subway icon"
+                                    alt='Subway icon'
                                     style={{ marginRight: '5px' }}
                                 />
                                 {data.place.subway}
@@ -78,7 +81,7 @@ export const Catalog: React.FC = () => {
                             <MainInfoDesc>
                                 <img
                                     src={timetableIcon}
-                                    alt="Timetable icon"
+                                    alt='Timetable icon'
                                     style={{ marginRight: '5px' }}
                                 />
                                 {data.place.timetable}
@@ -110,12 +113,12 @@ export const Catalog: React.FC = () => {
                                                     }}
                                                 >
                                                     <Button
-                                                        data-fancybox="gallery"
-                                                        data-src={`http://localhost:5000/${img.destination}/${img.filename}`}
+                                                        data-fancybox='gallery'
+                                                        data-src={`${path.SERVER_URL}/${img.destination}/${img.filename}`}
                                                     >
                                                         <img
-                                                            src={`http://localhost:5000/${img.destination}/${img.filename}`}
-                                                            alt="Images of platform"
+                                                            src={`${path.SERVER_URL}/${img.destination}/${img.filename}`}
+                                                            alt='Images of platform'
                                                         />
                                                     </Button>
                                                 </Fancybox>
@@ -131,8 +134,8 @@ export const Catalog: React.FC = () => {
                         </Carousel>
                     </Box>
 
-                    <Box sx={{ textAlign: 'left', m: '0 70px' }}>
-                        <Title>Площадки объекта</Title>
+                    <Box sx={{ textAlign: 'left', m: '20px 70px' }}>
+                        <Title>{t('search.catalog.platforms')}</Title>
                         {data.platforms.map(
                             (platform: ContentPagePlatformProps) => (
                                 <CatalogPlatformCard
@@ -151,7 +154,7 @@ export const Catalog: React.FC = () => {
                             )
                         )}
 
-                        <Title>Описание</Title>
+                        <Title>{t('search.catalog.desc')}</Title>
                         <Box sx={{ mb: '30px', fontSize: '18px' }}>
                             <ReactMarkdown children={data.place.description} />
                         </Box>

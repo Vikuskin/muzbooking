@@ -1,7 +1,8 @@
 /* eslint-disable consistent-return */
 /* eslint-disable array-callback-return */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Table,
     TableBody,
@@ -27,6 +28,7 @@ import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingState } from 'types/Cabinet';
+import { path } from 'enum';
 
 export const Calendar: React.FC = () => {
     const [date, setDate] = React.useState<Date>(new Date());
@@ -43,37 +45,48 @@ export const Calendar: React.FC = () => {
         comment: '',
     });
     const { fetchCalendar } = useActions();
+    const FetchCalendar = (params: Date) => {
+        const prevParams = useRef(params);
+        useEffect(() => {
+            if (
+                prevParams.current !== params ||
+                prevParams.current === params
+            ) {
+                if (localStorage.token) {
+                    fetchCalendar(localStorage.token, getReadDate(params));
+                } else {
+                    alert('Войдите в аккаунт');
+                    setTimeout(() => {
+                        window.location.replace(path.PUBLIC_URL + path.Login);
+                    }, 1000);
+                }
+                prevParams.current = params;
+            }
+        }, [params]);
+    };
+    FetchCalendar(date);
 
-    useEffect(() => {
-        if (localStorage.token) {
-            fetchCalendar(localStorage.token, getReadDate(date));
-        } else {
-            alert('Войдите в аккаунт');
-            setTimeout(() => {
-                window.location.replace('http://localhost:3000/login');
-            }, 1000);
-        }
-    }, [date]);
     const { data } = useTypedSelector((state) => state.data);
 
     function createData(hour: string, id: number) {
         return { hour, id };
     }
-    const rows: {hour: string; id: number}[] = [];
+    const rows: { hour: string; id: number }[] = [];
     const tableRows = () => {
         for (let i = 0; i < 24; i++) {
             rows.push(createData(`${i}:00`, i));
         }
     };
     tableRows();
+    const { t } = useTranslation();
 
     return (
         <Box>
             <AccountHeader />
-            <Container maxWidth="xl" sx={{ pt: '100px', textAlign: 'left' }}>
+            <Container maxWidth='xl' sx={{ pt: '100px', textAlign: 'left' }}>
                 <LocalizationProvider dateAdapter={AdapterDateFns}>
                     <DatePicker
-                        label="Дата"
+                        label={t('cabinet.calendar.date')}
                         value={date}
                         onChange={(newValue) => {
                             setDate(newValue!);
@@ -83,10 +96,12 @@ export const Calendar: React.FC = () => {
                 </LocalizationProvider>
 
                 <TableContainer component={Paper} sx={{ mt: '15px' }}>
-                    <Table sx={{ minWidth: 290 }} aria-label="simple table">
+                    <Table sx={{ minWidth: 290 }} aria-label='simple table'>
                         <TableHead>
                             <TableRow sx={{ backgroundColor: '#ebeff2' }}>
-                                <TableCellCalendar>Время</TableCellCalendar>
+                                <TableCellCalendar>
+                                    {t('cabinet.calendar.time')}
+                                </TableCellCalendar>
                                 {data.platforms ? (
                                     data.platforms.map(
                                         (platform: {
@@ -101,7 +116,9 @@ export const Calendar: React.FC = () => {
                                     )
                                 ) : (
                                     <TableCellCalendar>
-                                        Площадки не найдены
+                                        {t(
+                                            'cabinet.calendar.tableHeadUndefined'
+                                        )}
                                     </TableCellCalendar>
                                 )}
                             </TableRow>
@@ -120,8 +137,8 @@ export const Calendar: React.FC = () => {
                                         }}
                                     >
                                         <TableCellCalendar
-                                            component="th"
-                                            scope="row"
+                                            component='th'
+                                            scope='row'
                                         >
                                             {row.hour}
                                         </TableCellCalendar>
@@ -189,8 +206,8 @@ export const Calendar: React.FC = () => {
                 <Modal
                     open={open}
                     onClose={() => setOpen(false)}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
+                    aria-labelledby='modal-modal-title'
+                    aria-describedby='modal-modal-description'
                     sx={{ overflow: 'scroll' }}
                 >
                     <Box sx={styleModal}>

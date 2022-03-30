@@ -1,5 +1,5 @@
-const mongoose = require('mongoose')
-const Schema = mongoose.Schema
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
 const placesSchema = new Schema({
     userId: {
@@ -8,44 +8,44 @@ const placesSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
     },
     city: {
         type: String,
-        required: true
-    }, 
+        required: true,
+    },
     nameCompany: {
         type: String,
-        required: true
+        required: true,
     },
     phone: {
         type: Array,
-        required: true
+        required: true,
     },
     sphera: {
         type: String,
-        required: true
+        required: true,
     },
     address: {
         type: String,
-        required: true
+        required: true,
     },
     subway: {
         type: String,
-        required: true
+        required: true,
     },
     description: {
         type: String,
     },
     images: {
-        type: Array
+        type: Array,
     },
     timetable: {
         type: String,
     },
     price: {
-        type: Number
-    }
-})
+        type: Number,
+    },
+});
 
-module.exports = mongoose.model('places', placesSchema)
+module.exports = mongoose.model('places', placesSchema);

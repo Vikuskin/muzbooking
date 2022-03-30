@@ -5,6 +5,7 @@ import {
     BookingDataAction,
     BookingDataActionTypes,
 } from 'store/reducers/bookingReducer';
+import { path } from 'enum';
 
 export const postBooking =
     (
@@ -22,7 +23,7 @@ export const postBooking =
     async (dispatch: Dispatch<DataAction>) => {
         try {
             dispatch({ type: DataActionTypes.FETCH_DATA });
-            const response = await axios.post('http://localhost:5000/booking', {
+            const response = await axios.post(path.SERVER_URL + path.Booking, {
                 idPlace,
                 date,
                 time,
@@ -53,7 +54,7 @@ export const getBooking =
     async (dispatch: Dispatch<BookingDataAction>) => {
         try {
             dispatch({ type: BookingDataActionTypes.FETCH_BOOKING_DATA });
-            const response = await axios.get('http://localhost:5000/booking', {
+            const response = await axios.get(path.SERVER_URL + path.Booking, {
                 params: { idPlatform, selectProduct },
             });
             dispatch({

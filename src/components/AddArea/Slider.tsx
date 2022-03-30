@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Typography, styled, Box, Button } from '@mui/material';
 import Carousel from 'react-elastic-carousel';
 import logo1 from 'image/AddAreaPage/sliderLogo.png';
@@ -18,6 +19,7 @@ const Slide = styled('div')({
 });
 
 export const Slider: React.FC = () => {
+    const { t } = useTranslation();
     const myArrow = (
         type: string,
         onClick: React.MouseEventHandler | undefined
@@ -27,13 +29,13 @@ export const Slider: React.FC = () => {
                 <img
                     style={{ width: '40px', height: 'auto' }}
                     src={arrowLeft}
-                    alt="Arrow left"
+                    alt='Arrow left'
                 />
             ) : (
                 <img
                     style={{ width: '40px', height: 'auto' }}
                     src={arrowRight}
-                    alt="Arrow right"
+                    alt='Arrow right'
                 />
             );
         return <Button onClick={onClick}>{pointer}</Button>;
@@ -47,55 +49,31 @@ export const Slider: React.FC = () => {
         >
             <Slide>
                 <Typography sx={{ maxWidth: '200px' }}>
-                    <img src={logo1} alt="Logo" />
+                    <img src={logo1} alt='Logo' />
                 </Typography>
                 <Box sx={{ maxWidth: '700px' }}>
-                    <Typography>
-                        В самом начале своей работы мы пользовались онлайн
-                        таблицами и календарями, затем самописной CRM системой,
-                        так как ни одна из существовавших на рынке CRM систем не
-                        закрывала задачи и потребности репетиционной базы.
-                    </Typography>
-                    <Typography>
-                        Ребята из MUSbooking помогли с настройкой CRM, провели
-                        обучение для администраторов и оказали всю возможную
-                        поддержку. Переход на новую CRM прошёл очень быстро и
-                        безболезненно.
-                    </Typography>
+                    <Typography>{t('addArea.slider.slider1Desc1')}</Typography>
+                    <Typography>{t('addArea.slider.slider1Desc2')}</Typography>
                 </Box>
             </Slide>
 
             <Slide>
                 <Typography sx={{ maxWidth: '200px' }}>
-                    <img src={logo2} alt="Logo" />
+                    <img src={logo2} alt='Logo' />
                 </Typography>
                 <Box sx={{ maxWidth: '700px' }}>
-                    <Typography>
-                        MUSbooking - лучший сервис по бронированию для
-                        творческих площадок в России.
-                    </Typography>
-                    <Typography>
-                        Работаем с ними с самого запуска приложения и уже 3-й
-                        год наблюдаем постоянное и качественное развитие как
-                        внешней оболочки, так и внутренних возможностей для
-                        партнера и клиента.
-                    </Typography>
-                    <Typography>
-                        От души желаем процветания и реализации новых идей!
-                    </Typography>
+                    <Typography>{t('addArea.slider.slider2Desc1')}</Typography>
+                    <Typography>{t('addArea.slider.slider2Desc2')}</Typography>
+                    <Typography>{t('addArea.slider.slider2Desc3')}</Typography>
                 </Box>
             </Slide>
 
             <Slide>
                 <Typography sx={{ maxWidth: '200px' }}>
-                    <img src={logo3} alt="Logo" />
+                    <img src={logo3} alt='Logo' />
                 </Typography>
                 <Box sx={{ maxWidth: '700px' }}>
-                    <Typography>
-                        Достаточно удобный и выгодный сервис для привлечения
-                        новых клиентов для нашей компании. Сервис сработал
-                        намного лучше, чем я изначально ожидал.
-                    </Typography>
+                    <Typography>{t('addArea.slider.slider3Desc1')}</Typography>
                 </Box>
             </Slide>
         </Carousel>

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     AppBar,
     Box,
@@ -9,11 +10,12 @@ import {
     Container,
     Button,
     MenuItem,
-    Tooltip,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link } from 'react-router-dom';
 import logo from 'image/logoHeaderMain.png';
+import { SwitchChangeLanguage } from 'components/ChangeLanguage/SwitchChangeLanguage';
+import { path } from 'enum';
 
 export const Header: React.FC = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
@@ -28,15 +30,17 @@ export const Header: React.FC = () => {
         setAnchorElNav(null);
     };
 
+    const { t } = useTranslation();
+
     return (
-        <AppBar position="fixed" color="inherit">
-            <Container maxWidth="xl">
+        <AppBar position='fixed' color='inherit'>
+            <Container maxWidth='xl'>
                 <Toolbar disableGutters>
-                    <Link to="/">
+                    <Link to='/'>
                         <Typography
-                            variant="h6"
+                            variant='h6'
                             noWrap
-                            component="div"
+                            component='div'
                             sx={{
                                 mr: 2,
                                 ml: 3,
@@ -46,7 +50,7 @@ export const Header: React.FC = () => {
                             <img
                                 style={{ width: '40px' }}
                                 src={logo}
-                                alt="Logo"
+                                alt='Logo'
                             />
                         </Typography>
                     </Link>
@@ -59,17 +63,17 @@ export const Header: React.FC = () => {
                         }}
                     >
                         <IconButton
-                            size="large"
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
+                            size='large'
+                            aria-label='account of current user'
+                            aria-controls='menu-appbar'
+                            aria-haspopup='true'
                             onClick={handleOpenNavMenu}
-                            color="inherit"
+                            color='inherit'
                         >
                             <MenuIcon />
                         </IconButton>
                         <Menu
-                            id="menu-appbar"
+                            id='menu-appbar'
                             anchorEl={anchorElNav}
                             anchorOrigin={{
                                 vertical: 'bottom',
@@ -86,33 +90,36 @@ export const Header: React.FC = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            <Link to="/">
+                            <SwitchChangeLanguage />
+
+                            <Link to='/'>
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        Поиск площадки
+                                    <Typography textAlign='center'>
+                                        {t('header.searchArea')}
                                     </Typography>
                                 </MenuItem>
                             </Link>
-                            <Link to="/addArea">
+
+                            <Link to={path.AddArea}>
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        Добавить площадку
+                                    <Typography textAlign='center'>
+                                        {t('header.addArea')}
                                     </Typography>
                                 </MenuItem>
                             </Link>
-                            <Link to="/login">
+                            <Link to={path.Login}>
                                 <MenuItem onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">
-                                        Войти
+                                    <Typography textAlign='center'>
+                                        {t('header.login')}
                                     </Typography>
                                 </MenuItem>
                             </Link>
                         </Menu>
-                        <Link to="/">
+                        <Link to='/'>
                             <img
                                 style={{ width: '30px', height: '30px' }}
                                 src={logo}
-                                alt="Logo"
+                                alt='Logo'
                             />
                         </Link>
                     </Box>
@@ -124,48 +131,44 @@ export const Header: React.FC = () => {
                             justifyContent: 'right',
                         }}
                     >
-                        <Tooltip title="Поиск площадки">
-                            <Link to="/">
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    sx={{
-                                        my: 2,
-                                        color: 'black',
-                                        display: 'block',
-                                    }}
-                                >
-                                    Поиск площадки
-                                </Button>
-                            </Link>
-                        </Tooltip>
-                        <Tooltip title="Добавить площадку">
-                            <Link to="/addArea">
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    sx={{
-                                        my: 2,
-                                        color: 'black',
-                                        display: 'block',
-                                    }}
-                                >
-                                    Добавить площадку
-                                </Button>
-                            </Link>
-                        </Tooltip>
-                        <Tooltip title="Войти">
-                            <Link to="/login">
-                                <Button
-                                    onClick={handleCloseNavMenu}
-                                    sx={{
-                                        my: 2,
-                                        color: 'black',
-                                        display: 'block',
-                                    }}
-                                >
-                                    Войти
-                                </Button>
-                            </Link>
-                        </Tooltip>
+                        <SwitchChangeLanguage />
+
+                        <Link to='/'>
+                            <Button
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: 'black',
+                                    display: 'block',
+                                }}
+                            >
+                                {t('header.searchArea')}
+                            </Button>
+                        </Link>
+                        <Link to={path.AddArea}>
+                            <Button
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: 'black',
+                                    display: 'block',
+                                }}
+                            >
+                                {t('header.addArea')}
+                            </Button>
+                        </Link>
+                        <Link to={path.Login}>
+                            <Button
+                                onClick={handleCloseNavMenu}
+                                sx={{
+                                    my: 2,
+                                    color: 'black',
+                                    display: 'block',
+                                }}
+                            >
+                                {t('header.login')}
+                            </Button>
+                        </Link>
                     </Box>
                 </Toolbar>
             </Container>

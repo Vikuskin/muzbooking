@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     FormControlLabel,
     Checkbox,
@@ -19,7 +20,6 @@ import {
     FlexDiv,
     TitleH2,
     ContentPageListItem,
-    input,
     DefaultTextValidator,
     TypographyMarginTop,
     ButtonPrimary,
@@ -31,6 +31,7 @@ import {
     PlatformState,
     ProductsState,
 } from 'types/Cabinet';
+import { path } from 'enum';
 
 const baseStyle = {
     display: 'flex',
@@ -169,18 +170,18 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
     );
 
     const thumbs = files.map((file: ContentCompanyImages) => (
-        <div key={file.filename} style={{ position: 'relative' }}>
+        <div key={file.filename || file.name} style={{ position: 'relative' }}>
             <img
                 src={
                     file.preview
                         ? file.preview
-                        : `http://localhost:5000/${file.path}`
+                        : `${path.SERVER_URL}/${file.path}`
                 }
                 alt={file.originalname}
                 style={{ minHeight: '300px', marginRight: '10px' }}
             />
             <RemoveCircleIcon
-                fontSize="large"
+                fontSize='large'
                 sx={{ position: 'absolute', top: '10px', right: '10px' }}
                 onClick={() => {
                     const fileRemove: Array<ContentCompanyImages> =
@@ -214,42 +215,62 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
         );
         window.location.reload();
     };
+    const { t } = useTranslation();
 
     return (
         <Box sx={{ textAlign: 'left' }}>
             <ValidatorForm onSubmit={handleSubmit}>
-                <Typography>Название</Typography>
+                <Typography>
+                    {t('cabinet.contentPage.platform.name')}
+                </Typography>
                 {DefaultTextValidator(
                     platform.namePlatform,
                     handleChange('namePlatform'),
                     ['required'],
-                    ['Это поле обязательно']
+                    [t('validation.error.required')]
                 )}
 
-                <TypographyMarginTop>Площадь</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.platform.square')}
+                </TypographyMarginTop>
                 {DefaultTextValidator(
                     platform.square,
                     handleChange('square'),
-                    ['required', 'isNumber'],
-                    ['Это поле обязательно', 'Здесь должно быть число']
+                    ['required', 'isNumber', 'minNumber:1'],
+                    [
+                        t('validation.error.required'),
+                        t('validation.error.number'),
+                        t('validation.error.square'),
+                    ]
                 )}
 
-                <TypographyMarginTop>Райдер</TypographyMarginTop>
-                {input(platform.rider, handleChange('rider'))}
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.platform.rider')}
+                </TypographyMarginTop>
+                {DefaultTextValidator(
+                    platform.rider,
+                    handleChange('rider'),
+                    ['required'],
+                    [t('validation.error.required')]
+                )}
 
                 {/* IMAGES */}
-                <TypographyMarginTop>Изображения</TypographyMarginTop>
+                <TypographyMarginTop>
+                    {t('cabinet.contentPage.platform.images')}
+                </TypographyMarginTop>
                 <Box {...getRootProps({ style })}>
                     <input {...getInputProps()} />
-                    <Box>Перетащите изображения сюда</Box>
+                    <Box>{t('cabinet.contentPage.platform.imagesDesc')}</Box>
                 </Box>
                 <Box>{files[0] && thumbs}</Box>
 
                 {/* COMFORT SERVICES */}
                 <Comfort sx={{ fontSize: '10px' }}>
-                    <Grid flexWrap="wrap">
-                        <Grid item xs="auto" md="auto">
-                            <Typography>Удобства</Typography>
+                    <Grid flexWrap='wrap'>
+                        <Grid item xs='auto' md='auto'>
+                            <TitleH2>
+                                {t('cabinet.contentPage.platform.comfort')}
+                            </TitleH2>
                             <List sx={{ p: 0, fontSize: '10px' }}>
                                 {comfortChecked.map(
                                     ({ value, id, checked }) => (
@@ -267,19 +288,24 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                                         }}
                                                     />
                                                 }
-                                                label={value}
+                                                label=''
                                                 checked={checked}
                                                 onChange={() =>
                                                     handleChangeComfort(id)
                                                 }
                                             />
+                                            <Typography>
+                                                {t(`dbComfortPlace.item${id}`)}
+                                            </Typography>
                                         </ListItem>
                                     )
                                 )}
                             </List>
                         </Grid>
-                        <Grid item xs="auto" md="auto">
-                            <Typography>Сервис</Typography>
+                        <Grid item xs='auto' md='auto'>
+                            <TitleH2>
+                                {t('cabinet.contentPage.platform.service')}
+                            </TitleH2>
                             <List sx={{ p: 0 }}>
                                 {servicesChecked.map(
                                     ({ value, id, checked }) => (
@@ -287,12 +313,15 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                             <FormControlLabel
                                                 value={value}
                                                 control={<Checkbox />}
-                                                label={value}
+                                                label=''
                                                 checked={checked}
                                                 onChange={() =>
                                                     handleChangeServices(id)
                                                 }
                                             />
+                                            <Typography>
+                                                {t(`dbServicesPlace.item${id}`)}
+                                            </Typography>
                                         </ListItem>
                                     )
                                 )}
@@ -302,7 +331,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                 </Comfort>
 
                 {/* PRICES */}
-                <TitleH2>Услуги</TitleH2>
+                <TitleH2>{t('cabinet.contentPage.platform.positions')}</TitleH2>
                 <ContentPageListItem sx={{ justifyContent: 'space-between' }}>
                     <Box sx={{ width: '80%' }}>
                         <FlexDiv>
@@ -312,7 +341,11 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                     mr: '10px',
                                 }}
                             >
-                                <Typography>Наименование</Typography>
+                                <Typography>
+                                    {t(
+                                        'cabinet.contentPage.platform.namePositions'
+                                    )}
+                                </Typography>
                                 <Box
                                     sx={{
                                         width: { sm: '100%', md: '50%' },
@@ -323,13 +356,17 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                         product.name,
                                         handleChangeProducts('name'),
                                         ['isString'],
-                                        ['Здесь должен быть текст']
+                                        [t('validation.error.text')]
                                     )}
                                 </Box>
                             </Box>
 
                             <Box sx={{ width: { sm: '100%', md: '50%' } }}>
-                                <Typography>Цена</Typography>
+                                <Typography>
+                                    {t(
+                                        'cabinet.contentPage.platform.pricePositions'
+                                    )}
+                                </Typography>
                                 <Box
                                     sx={{
                                         width: { sm: '100%', md: '50%' },
@@ -340,105 +377,103 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                         product.price,
                                         handleChangeProducts('price'),
                                         ['isNumber'],
-                                        ['Здесь должно быть число']
+                                        [t('validation.error.number')]
                                     )}
                                 </Box>
                             </Box>
                         </FlexDiv>
 
-                        <Typography>Время работы</Typography>
+                        <Typography>
+                            {t('cabinet.contentPage.mainInfo.timetable')}
+                        </Typography>
                         <FlexDiv>
                             <TypographyTimetable>
-                                Понедельник
+                                {t('weekDays.mon')}
                             </TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.mon,
                                     handleChangeProducts('mon'),
                                     ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>Вторник</TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.tue,
-                                    handleChangeProducts('tue'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>Среда</TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.wed,
-                                    handleChangeProducts('wed'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>Четверг</TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.thu,
-                                    handleChangeProducts('thu'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>Пятница</TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.fri,
-                                    handleChangeProducts('fri'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>Суббота</TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.sat,
-                                    handleChangeProducts('sat'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
+                                    [t('validation.error.hours')]
                                 )}
                             </Box>
                         </FlexDiv>
                         <FlexDiv>
                             <TypographyTimetable>
-                                Воскресенье
+                                {t('weekDays.tue')}
+                            </TypographyTimetable>
+                            <Box sx={{ width: '70%' }}>
+                                {DefaultTextValidator(
+                                    product.tue,
+                                    handleChangeProducts('tue'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
+                                    [t('validation.error.hours')]
+                                )}
+                            </Box>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <TypographyTimetable>
+                                {t('weekDays.wed')}
+                            </TypographyTimetable>
+                            <Box sx={{ width: '70%' }}>
+                                {DefaultTextValidator(
+                                    product.wed,
+                                    handleChangeProducts('wed'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
+                                    [t('validation.error.hours')]
+                                )}
+                            </Box>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <TypographyTimetable>
+                                {t('weekDays.thu')}
+                            </TypographyTimetable>
+                            <Box sx={{ width: '70%' }}>
+                                {DefaultTextValidator(
+                                    product.thu,
+                                    handleChangeProducts('thu'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
+                                    [t('validation.error.hours')]
+                                )}
+                            </Box>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <TypographyTimetable>
+                                {t('weekDays.fri')}
+                            </TypographyTimetable>
+                            <Box sx={{ width: '70%' }}>
+                                {DefaultTextValidator(
+                                    product.fri,
+                                    handleChangeProducts('fri'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
+                                    [t('validation.error.hours')]
+                                )}
+                            </Box>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <TypographyTimetable>
+                                {t('weekDays.sat')}
+                            </TypographyTimetable>
+                            <Box sx={{ width: '70%' }}>
+                                {DefaultTextValidator(
+                                    product.sat,
+                                    handleChangeProducts('sat'),
+                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
+                                    [t('validation.error.hours')]
+                                )}
+                            </Box>
+                        </FlexDiv>
+                        <FlexDiv>
+                            <TypographyTimetable>
+                                {t('weekDays.sun')}
                             </TypographyTimetable>
                             <Box sx={{ width: '70%' }}>
                                 {DefaultTextValidator(
                                     product.sun,
                                     handleChangeProducts('sun'),
                                     ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [
-                                        'Пожалуйста, введите часы в таком формате: "HH - HH"',
-                                    ]
+                                    [t('validation.error.hours')]
                                 )}
                             </Box>
                         </FlexDiv>
@@ -483,7 +518,11 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                         mr: '10px',
                                     }}
                                 >
-                                    <Typography>Наименование</Typography>
+                                    <Typography>
+                                        {t(
+                                            'cabinet.contentPage.platform.namePositions'
+                                        )}
+                                    </Typography>
                                     <Box
                                         sx={{
                                             width: { sm: '100%', md: '50%' },
@@ -502,7 +541,11 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
 
                                 <Box sx={{ width: { sm: '100%', md: '50%' } }}>
-                                    <Typography>Цена</Typography>
+                                    <Typography>
+                                        {t(
+                                            'cabinet.contentPage.platform.pricePositions'
+                                        )}
+                                    </Typography>
                                     <Box
                                         sx={{
                                             width: { sm: '100%', md: '50%' },
@@ -521,10 +564,12 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
 
-                            <Typography>Время работы</Typography>
+                            <Typography>
+                                {t('cabinet.contentPage.mainInfo.timetable')}
+                            </Typography>
                             <FlexDiv>
                                 <TypographyTimetable>
-                                    Понедельник
+                                    {t('weekDays.mon')}
                                 </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
@@ -538,7 +583,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </FlexDiv>
                             <FlexDiv>
                                 <TypographyTimetable>
-                                    Вторник
+                                    {t('weekDays.tue')}
                                 </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
@@ -551,7 +596,9 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                                 </Box>
                             </FlexDiv>
                             <FlexDiv>
-                                <TypographyTimetable>Среда</TypographyTimetable>
+                                <TypographyTimetable>
+                                    {t('weekDays.wed')}
+                                </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
                                         sx={{
@@ -564,7 +611,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </FlexDiv>
                             <FlexDiv>
                                 <TypographyTimetable>
-                                    Четверг
+                                    {t('weekDays.thu')}
                                 </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
@@ -578,7 +625,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </FlexDiv>
                             <FlexDiv>
                                 <TypographyTimetable>
-                                    Пятница
+                                    {t('weekDays.fri')}
                                 </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
@@ -592,7 +639,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </FlexDiv>
                             <FlexDiv>
                                 <TypographyTimetable>
-                                    Суббота
+                                    {t('weekDays.sat')}
                                 </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
@@ -606,7 +653,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                             </FlexDiv>
                             <FlexDiv>
                                 <TypographyTimetable>
-                                    Воскресенье
+                                    {t('weekDays.sun')}
                                 </TypographyTimetable>
                                 <Box sx={{ width: '70%' }}>
                                     <Typography
@@ -639,10 +686,10 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                 ))}
 
                 <ButtonPrimary
-                    type="submit"
+                    type='submit'
                     sx={{ p: '10px 25px !important', mb: '20px' }}
                 >
-                    Сохранить
+                    {t('cabinet.contentPage.mainInfo.saveButton')}
                 </ButtonPrimary>
             </ValidatorForm>
         </Box>

@@ -1,7 +1,7 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable consistent-return */
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     FormControl,
@@ -18,10 +18,17 @@ import {
     TableRow,
     Paper,
     Typography,
-    styled
+    styled,
 } from '@mui/material';
 import { ProductsState } from 'types/Cabinet';
-import { FlexDiv, InputTitle, TitleH1, FormModal, ButtonPrimary, TableCellCalendar } from 'style/otherStyles';
+import {
+    FlexDiv,
+    InputTitle,
+    TitleH1,
+    FormModal,
+    ButtonPrimary,
+    TableCellCalendar,
+} from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingModalProps, BookingState, ClientState } from 'types/Search';
@@ -31,18 +38,18 @@ const Title = styled(TitleH1)({
     textAlign: 'left',
     margin: '0 5px',
     '@media (max-width: 600px)': {
-        textAlign: 'center'
+        textAlign: 'center',
     },
-})
+});
 
 const TitleInfo = styled(FlexDiv)({
     justifyContent: 'space-between',
     '@media (max-width: 600px)': {
         flexDirection: 'column',
         textAlign: 'center',
-        marginBottom: '15px'
+        marginBottom: '15px',
     },
-})
+});
 
 export const BookingModal: React.FC<BookingModalProps> = ({
     idPlace,
@@ -51,24 +58,26 @@ export const BookingModal: React.FC<BookingModalProps> = ({
     namePlatform,
     products,
 }) => {
+    const { t } = useTranslation();
+
     // NEXT WEEK ARRAY
     const days = [
-        'Вск',
-        'Пн',
-        'Вт',
-        'Ср',
-        'Чт',
-        'Пт',
-        'Сб',
+        t('weekDays.sun'),
+        t('weekDays.mon'),
+        t('weekDays.tue'),
+        t('weekDays.wed'),
+        t('weekDays.thu'),
+        t('weekDays.fri'),
+        t('weekDays.sat'),
     ];
     let now = new Date();
+    const hours = now.getHours();
     const time = now.getTime();
     now = new Date(time - (time % 86400000));
     const nextWeek: Date[] = [];
     for (let i = 0; i < 7; i++, now.setDate(now.getDate() + 1)) {
         nextWeek.push(new Date(now.getTime()));
     }
-
 
     const [selectProduct, setSelectProduct] = React.useState<ProductsState>({
         id: products[0].id,
@@ -103,7 +112,11 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 ) {
                     return;
                 }
-                return createData(`${possibleTime}:00`, selectProduct.price, possibleTime);
+                return createData(
+                    `${possibleTime}:00`,
+                    selectProduct.price,
+                    possibleTime
+                );
             }
         }
     };
@@ -137,10 +150,20 @@ export const BookingModal: React.FC<BookingModalProps> = ({
         };
     const { postBooking, fetchCatalogPlace, getBooking } = useActions();
 
-    useEffect(() => {
-        getBooking(idPlatform, selectProduct.name);
-    }, [idPlatform]);
+    const FetchBooking = (params: string) => {
+        const prevParams = useRef(params);
+
+        useEffect(() => {
+            if (prevParams.current === params) {
+                getBooking(params, selectProduct.name);
+                prevParams.current = params;
+            }
+        }, [params]);
+    };
+    FetchBooking(idPlatform);
+
     const { bookingData } = useTypedSelector((state) => state.bookingData);
+
     return (
         <>
             <TitleInfo>
@@ -151,18 +174,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <Box sx={{ minWidth: 120, maxWidth: 300 }}>
                     <FormControl fullWidth sx={{ border: 'none' }}>
                         <InputLabel
-                            variant="standard"
+                            variant='standard'
                             sx={{
                                 top: 0,
                                 left: '50%',
                                 transform: 'translateX(-50%)',
                             }}
                         >
-                            Вид работ
+                            {t('search.bookingModal.service')}
                         </InputLabel>
 
                         <Select
-                            id="product"
+                            id='product'
                             defaultValue={products[0].name}
                             onChange={(event: SelectChangeEvent) => {
                                 const selectInInput = products.filter(
@@ -205,7 +228,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <Box>
                     {clientWindow ? (
                         <ButtonPrimary onClick={() => setClientWindow(false)}>
-                            Назад
+                            {t('search.bookingModal.backButton')}
                         </ButtonPrimary>
                     ) : (
                         <ButtonPrimary
@@ -217,7 +240,7 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                 setClientWindow(true);
                             }}
                         >
-                            Далее
+                            {t('search.bookingModal.nextButton')}
                         </ButtonPrimary>
                     )}
                 </Box>
@@ -227,44 +250,53 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                 <Box>
                     <FormModal>
                         <TextField
-                            id="filled-textarea"
-                            label="*На чьё имя будет заказ"
-                            placeholder="*На чьё имя будет заказ"
+                            id='filled-textarea'
+                            label={t('search.bookingModal.formName')}
+                            placeholder={t('search.bookingModal.formName')}
                             multiline
-                            variant="filled"
+                            required
+                            variant='filled'
                             value={client.name}
                             onChange={handleChange('name')}
                         />
                         <TextField
-                            id="filled-multiline-static"
-                            label="Добавьте свой комментарий для заказа"
+                            id='filled-multiline-static'
+                            label={t('search.bookingModal.formComment')}
                             multiline
-                            placeholder="Добавьте свой комментарий для заказа"
+                            placeholder={t('search.bookingModal.formComment')}
                             rows={4}
-                            variant="filled"
+                            variant='filled'
                             value={client.comment}
                             onChange={handleChange('comment')}
                         />
                         <TextField
-                            id="filled-textarea"
-                            label="*Контактный номер телефона"
-                            placeholder="*Контактный номер телефона"
+                            id='filled-textarea'
+                            label={t('search.bookingModal.formPhone')}
+                            placeholder={t('search.bookingModal.formPhone')}
                             multiline
-                            variant="filled"
+                            required
+                            variant='filled'
                             value={client.phone}
                             onChange={(event) => {
                                 setClient({
                                     ...client,
                                     phone: event.target.value
                                         .replace(/\D/g, '')
-                                        .replace(/^[0-9]/, '+7')
-                                        .replace(/^(\S{13,})?$/, ''),
+                                        .replace(/^[0-9]/, '+7'),
                                 });
                             }}
                         />
                     </FormModal>
                     <ButtonPrimary
                         onClick={() => {
+                            if (client.phone.length !== 12) {
+                                alert(
+                                    t(
+                                        'cabinet.contentPage.mainInfo.alert.phone'
+                                    )
+                                );
+                                return;
+                            }
                             postBooking(
                                 idPlace,
                                 booking.date,
@@ -277,23 +309,28 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                 client.comment,
                                 client.phone
                             );
-                            alert('Заявка успешно оформлена');
+                            alert(t('search.bookingModal.alert.success'));
                             fetchCatalogPlace(idPlace);
                         }}
                     >
-                        Оставить заявку
+                        {t('search.bookingModal.buttonForm')}
                     </ButtonPrimary>
                 </Box>
             ) : (
                 // TABLE
                 <Box>
                     <TableContainer component={Paper}>
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                        <Table sx={{ minWidth: 650 }} aria-label='simple table'>
                             <TableHead>
                                 <TableRow>
-                                    <TableCellCalendar>Время</TableCellCalendar>
+                                    <TableCellCalendar>
+                                        {t('cabinet.calendar.time')}
+                                    </TableCellCalendar>
                                     {nextWeek.map((dayWeek: Date) => (
-                                        <TableCellCalendar align="center" key={days[dayWeek.getDay()]}>
+                                        <TableCellCalendar
+                                            align='center'
+                                            key={days[dayWeek.getDay()]}
+                                        >
                                             {days[dayWeek.getDay()]}
                                             <br />
                                             {dayWeek.getDate()}
@@ -303,16 +340,18 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                             </TableHead>
                             <TableBody>
                                 {rows
-                                    .filter((e: {
-                                        hour: string;
-                                        price: string;
-                                        id: number
-                                    }) => e)
+                                    .filter(
+                                        (e: {
+                                            hour: string;
+                                            price: string;
+                                            id: number;
+                                        }) => e
+                                    )
                                     .map(
                                         (row: {
                                             hour: string;
                                             price: string;
-                                            id: number
+                                            id: number;
                                         }) => (
                                             <TableRow
                                                 key={row.id}
@@ -324,26 +363,37 @@ export const BookingModal: React.FC<BookingModalProps> = ({
                                                 }}
                                             >
                                                 <TableCellCalendar
-                                                    component="th"
-                                                    scope="row"
+                                                    component='th'
+                                                    scope='row'
                                                 >
                                                     {row.hour}
                                                 </TableCellCalendar>
                                                 {nextWeek.map((day: Date) => (
-                                                    <TableCellCalendar align="center" key={day.getDate()}>
+                                                    <TableCellCalendar
+                                                        align='center'
+                                                        key={day.getDate()}
+                                                    >
                                                         {bookingData.some(
                                                             (
                                                                 item: BookingState
                                                             ) =>
-                                                                +item.date.split(
+                                                                (+item.date.split(
                                                                     '/'
                                                                 )[0] ===
                                                                     day.getDate() &&
-                                                                item.time ===
-                                                                    row.hour
+                                                                    item.time ===
+                                                                        row.hour) ||
+                                                                (+hours + 3 >=
+                                                                    +row.hour.split(
+                                                                        ':'
+                                                                    )[0] &&
+                                                                    nextWeek[0] ===
+                                                                        day)
                                                         ) ? (
                                                             <Button disabled>
-                                                                Бронь
+                                                                {t(
+                                                                    'search.bookingModal.bookingTable'
+                                                                )}
                                                             </Button>
                                                         ) : (
                                                             <Button

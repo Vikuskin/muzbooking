@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
     Box,
     MenuItem,
@@ -23,10 +25,12 @@ import { CardPlaceProps } from 'types/Search';
 import {
     YMaps,
     Map,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ObjectManager,
     ObjectManagerFeatures,
 } from 'react-yandex-maps';
 import axios from 'axios';
+import { path } from 'enum';
 
 const Main = styled(FlexDiv)({
     alignItems: 'flex-start',
@@ -94,8 +98,6 @@ export const SearchPage: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);
     const { chooseServices, fetchPlaces, fetchCatalogPlace } = useActions();
 
-   
-
     // FILTERS
     const autoComplete: Array<string> = data[0]
         ? data.map((item: CardPlaceProps) => item.nameCompany)
@@ -107,16 +109,19 @@ export const SearchPage: React.FC = () => {
         setSort(event.target.value as string);
     };
 
-    let findPlace: CardPlaceProps[] = [];
+    const [findPlace, setFindPlace] = useState([]);
     useMemo(() => {
         if (valueAutoComplete) {
-            findPlace = data.filter(
-                (item: CardPlaceProps) => item.nameCompany === valueAutoComplete
+            setFindPlace(
+                data.filter(
+                    (item: CardPlaceProps) =>
+                        item.nameCompany === valueAutoComplete
+                )
             );
         } else {
-            findPlace = [];
+            setFindPlace([]);
         }
-    }, [valueAutoComplete]);
+    }, [valueAutoComplete, data]);
 
     useMemo(() => {
         if (data[0]) {
@@ -149,15 +154,18 @@ export const SearchPage: React.FC = () => {
     };
     useMemo(() => {
         if (data[0]) {
-            findPlace = data.filter(
-                (item: CardPlaceProps) =>
-                    item.price >= rangePrice[0] && item.price <= rangePrice[1]
+            setFindPlace(
+                data.filter(
+                    (item: CardPlaceProps) =>
+                        item.price >= rangePrice[0] &&
+                        item.price <= rangePrice[1]
+                )
             );
         }
-    }, [rangePrice]);
+    }, [rangePrice, data]);
 
     // MAP
-    const [mapState, setMapState] = useState(true)
+    const [mapState, setMapState] = useState(true);
     const coords: ObjectManagerFeatures = [];
     const getCoordinate = async (city: string, address: string) => {
         try {
@@ -166,7 +174,6 @@ export const SearchPage: React.FC = () => {
             );
             return response.data;
         } catch (e) {
-            console.log(e);
             return e.response;
         }
     };
@@ -194,10 +201,23 @@ export const SearchPage: React.FC = () => {
         });
     }
 
-    useEffect(() => {
-        fetchPlaces(services || 'RECORD');
-        setMapState(true)
-    }, [services]);
+    const FetchPlaces = (params: string) => {
+        const prevParams = useRef(params);
+
+        useEffect(() => {
+            if (
+                prevParams.current !== params ||
+                prevParams.current === params
+            ) {
+                fetchPlaces(params);
+                setMapState(true);
+                prevParams.current = params;
+            }
+        }, [params]);
+    };
+    FetchPlaces(services || 'RECORD');
+    const { t } = useTranslation();
+
     return (
         <>
             <Header />
@@ -205,23 +225,27 @@ export const SearchPage: React.FC = () => {
                 <Box sx={{ minWidth: 120, maxWidth: 300, margin: 'auto' }}>
                     <FormControl fullWidth sx={{ border: 'none' }}>
                         <Select
-                            id="service"
+                            id='service'
                             key={`service-${services}`}
                             defaultValue={services || 'RECORD'}
                             onChange={(event: SelectChangeEvent) => {
                                 chooseServices(event.target.value);
-                                setMapState(false)
+                                setMapState(false);
                             }}
                             input={<InputTitle />}
                         >
-                            <MenuItem value="RECORD">
-                                Студии звукозаписи
+                            <MenuItem value='RECORD'>
+                                {t('sphera.record')}
                             </MenuItem>
-                            <MenuItem value="PHOTO">Фотостудии</MenuItem>
-                            <MenuItem value="TEACHING">
-                                Школы и педагоги
+                            <MenuItem value='PHOTO'>
+                                {t('sphera.photo')}
                             </MenuItem>
-                            <MenuItem value="DANCE">Танцевальные залы</MenuItem>
+                            <MenuItem value='TEACHING'>
+                                {t('sphera.teaching')}
+                            </MenuItem>
+                            <MenuItem value='DANCE'>
+                                {t('sphera.dance')}
+                            </MenuItem>
                         </Select>
                     </FormControl>
                 </Box>
@@ -232,11 +256,11 @@ export const SearchPage: React.FC = () => {
                         <Filters>
                             <Box sx={{ mb: '15px' }}>
                                 <Typography sx={{ fontWeight: 'bold' }}>
-                                    Поиск по названию
+                                    {t('search.searchPage.filtersName')}
                                 </Typography>
                                 <Autocomplete
                                     disablePortal
-                                    id="searchName"
+                                    id='searchName'
                                     options={autoComplete}
                                     sx={{ minWidth: 200, p: 0 }}
                                     onChange={(
@@ -258,34 +282,40 @@ export const SearchPage: React.FC = () => {
                                 }}
                             >
                                 <Typography sx={{ fontWeight: 'bold' }}>
-                                    Сортировать
+                                    {t(
+                                        'search.searchPage.filtersSort.filtersSort'
+                                    )}
                                 </Typography>
                                 <FormControl fullWidth sx={{ border: 'none' }}>
                                     <Select
-                                        id="sort"
+                                        id='sort'
                                         value={sort}
                                         onChange={handleChangeSort}
                                         input={<InputSearch />}
                                     >
-                                        <MenuItem value="increase price">
-                                            По возрастанию цены
+                                        <MenuItem value='increase price'>
+                                            {t(
+                                                'search.searchPage.filtersSort.increase'
+                                            )}
                                         </MenuItem>
-                                        <MenuItem value="decrease price">
-                                            По убыванию цены
+                                        <MenuItem value='decrease price'>
+                                            {t(
+                                                'search.searchPage.filtersSort.decrease'
+                                            )}
                                         </MenuItem>
                                     </Select>
                                 </FormControl>
                             </Box>
                             <Box>
                                 <Typography sx={{ fontWeight: 'bold' }}>
-                                    Стоимость, ₽/ч
+                                    {t('search.searchPage.price')}
                                 </Typography>
                                 <Slider
                                     value={rangePrice}
                                     onChange={handleChangeRangePrice}
                                     min={0}
                                     max={maxPrice}
-                                    valueLabelDisplay="auto"
+                                    valueLabelDisplay='auto'
                                     sx={{ color: '#f79521' }}
                                 />
                             </Box>
@@ -294,13 +324,13 @@ export const SearchPage: React.FC = () => {
                         {/* PLACES */}
                         <Places>
                             {loading ? (
-                                <>Загрузка...</>
+                                <>{t('loading')}</>
                             ) : (
                                 (findPlace[0] &&
                                     findPlace.map((item: CardPlaceProps) => (
                                         <Link
                                             key={item._id}
-                                            to="/catalog"
+                                            to={path.Catalog}
                                             style={{ width: '100%' }}
                                         >
                                             <CardWrapper
@@ -330,12 +360,12 @@ export const SearchPage: React.FC = () => {
                                     data.map((item: CardPlaceProps) => (
                                         <Link
                                             key={item._id}
-                                            to="/catalog"
+                                            to={path.Catalog}
                                             style={{ width: '100%' }}
                                         >
                                             <CardWrapper
                                                 sx={{
-                                                    color: ' black',
+                                                    color: 'black',
                                                     textTransform: 'inherit',
                                                     width: '100%',
                                                 }}
@@ -357,7 +387,11 @@ export const SearchPage: React.FC = () => {
                                         </Link>
                                     ))
                                 ) : (
-                                    <Box>Площадки не найдены</Box>
+                                    <Box>
+                                        {t(
+                                            'cabinet.calendar.tableHeadUndefined'
+                                        )}
+                                    </Box>
                                 ))
                             )}
                         </Places>
@@ -366,35 +400,39 @@ export const SearchPage: React.FC = () => {
                     {/* MAP */}
 
                     <MapWrapper>
-                        {mapState ? <YMaps>
-                            <Map
-                                defaultState={{
-                                    center: [59.935413, 30.331365],
-                                    zoom: 9,
-                                }}
-                                width="100%"
-                                height="100%"
-                            >
-                                <ObjectManager
-                                    options={{
-                                        clusterize: true,
-                                        gridSize: 32,
-                                        clusterDisableClickZoom: true,
+                        {mapState ? (
+                            <YMaps>
+                                <Map
+                                    defaultState={{
+                                        center: [59.935413, 30.331365],
+                                        zoom: 9,
                                     }}
-                                    objects={{
-                                        preset: 'islands#greenDotIcon',
-                                    }}
-                                    clusters={{
-                                        preset: 'islands#greenClusterIcons',
-                                    }}
-                                    features={coords}
-                                    modules={[
-                                        'objectManager.addon.objectsBalloon',
-                                        'objectManager.addon.objectsHint',
-                                    ]}
-                                />
-                            </Map>
-                        </YMaps> : <Box>Загрузка...</Box>}
+                                    width='100%'
+                                    height='100%'
+                                >
+                                    <ObjectManager
+                                        options={{
+                                            clusterize: true,
+                                            gridSize: 32,
+                                            clusterDisableClickZoom: true,
+                                        }}
+                                        objects={{
+                                            preset: 'islands#greenDotIcon',
+                                        }}
+                                        clusters={{
+                                            preset: 'islands#greenClusterIcons',
+                                        }}
+                                        features={coords}
+                                        modules={[
+                                            'objectManager.addon.objectsBalloon',
+                                            'objectManager.addon.objectsHint',
+                                        ]}
+                                    />
+                                </Map>
+                            </YMaps>
+                        ) : (
+                            <Box>{t('loading')}</Box>
+                        )}
                     </MapWrapper>
                 </Main>
             </Box>

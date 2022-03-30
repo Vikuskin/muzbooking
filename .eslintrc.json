@@ -56,7 +56,9 @@
         ],
         "@typescript-eslint/default-param-last": ["off"],
         "no-underscore-dangle": "off",
-        "no-plusplus": "off"
+        "no-plusplus": "off",
+        "quotes": [2, "single", { "avoidEscape": true }],
+        "no-alert": "off"
     },
     "settings": {
         "import/resolver": {

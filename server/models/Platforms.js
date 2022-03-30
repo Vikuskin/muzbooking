@@ -4,7 +4,7 @@ const Schema = mongoose.Schema;
 const platformsSchema = new Schema({
     placeId: {
         ref: 'places',
-        type: Schema.Types.ObjectId
+        type: Schema.Types.ObjectId,
     },
     namePlatform: {
         type: String,
@@ -29,10 +29,8 @@ const platformsSchema = new Schema({
         type: Array,
     },
     images: {
-        type: Array
-    }
+        type: Array,
+    },
 });
 
 module.exports = mongoose.model('platforms', platformsSchema);
-
-
