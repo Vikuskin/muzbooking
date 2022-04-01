@@ -1,22 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, styled, Box, Button } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import Carousel from 'react-elastic-carousel';
 import logo1 from 'image/AddAreaPage/sliderLogo.png';
 import logo2 from 'image/AddAreaPage/sliderLogo2.png';
 import logo3 from 'image/AddAreaPage/sliderLogo3.png';
 import arrowLeft from 'image/AddAreaPage/sliderArrowLeft.webp';
 import arrowRight from 'image/AddAreaPage/sliderArrowRight.webp';
-
-const Slide = styled('div')({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-evenly',
-    width: '100%',
-    '@media (max-width: 899px)': {
-        flexWrap: 'wrap',
-    },
-});
+import { Slide } from 'style/addArea/slider';
 
 export const Slider: React.FC = () => {
     const { t } = useTranslation();

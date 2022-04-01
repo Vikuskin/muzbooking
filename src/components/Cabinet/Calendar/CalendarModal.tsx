@@ -2,7 +2,17 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { TextField } from '@material-ui/core';
 import { BookingState } from 'types/Cabinet';
-import { FormModal, TextFieldModal } from 'style/otherStyles';
+import { FormModal } from 'style/otherStyles';
+
+const TextFieldModal = (value: string, label: string) => (
+    <TextField
+        id='filled-textarea'
+        label={label}
+        multiline
+        variant='filled'
+        value={value}
+    />
+);
 
 export const CalendarModal: React.FC<BookingState> = ({
     namePlatform,

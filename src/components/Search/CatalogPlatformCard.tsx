@@ -1,49 +1,17 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, Button, styled, Box, Modal } from '@mui/material';
+import { Typography, Button, Box, Modal } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import Fancybox from 'components/Fancybox/Fancybox';
 import { BookingModal } from 'components/Search/BookingModal';
-import { FlexDiv, TitleH2, styleModal } from 'style/otherStyles';
+import { FlexDiv, styleModal } from 'style/otherStyles';
+import { CardWrapper, Card, Subtitle } from 'style/search/catalogPlatformCard';
 import { CatalogPlatformCardProps } from 'types/Search';
 import { CheckedPlaceDB } from 'types/Databases';
 import { ContentCompanyImages } from 'types/Cabinet';
 import { path } from 'enum';
-
-const Subtitle = styled(TitleH2)({
-    padding: 0,
-    marginBottom: '5px',
-    marginTop: '20px',
-});
-
-const Card = styled(FlexDiv)({
-    padding: '20px',
-    border: '2px solid #e2e2e2',
-    borderRadius: '4px',
-    backgroundColor: '#ebeff2',
-    marginBottom: '30px',
-    display: 'flex',
-    justifyContent: 'space-between',
-    textAlign: 'left',
-    '@media (max-width: 900px)': {
-        flexWrap: 'wrap',
-        textAlign: 'center',
-    },
-    '@media (max-width: 600px)': {
-        padding: '10px',
-    },
-});
-
-const CardWrapper = styled(Box)({
-    maxWidth: '400px',
-    fontSize: '1rem',
-    lineHeight: 1.5,
-    '@media (max-width: 600px)': {
-        maxWidth: '100%',
-    },
-});
 
 export const CatalogPlatformCard: React.FC<CatalogPlatformCardProps> = ({
     idPlace,

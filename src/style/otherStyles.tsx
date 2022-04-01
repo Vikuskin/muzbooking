@@ -22,33 +22,6 @@ export const InputTitle = styled(InputBase)({
     },
 });
 
-export const InputSearch = styled(InputBase)({
-    '& .MuiInputBase-input': {
-        border: '1px solid rgba(0, 0, 0, 0.23)',
-        borderRadius: '4px',
-        color: 'rgba(0, 0, 0, 0.6)',
-        padding: '16px 39px 16px 9px',
-        fontWeight: 400,
-        fontSize: '1rem',
-        lineHeight: '1.4375em',
-        letterSpacing: '0.00938em',
-    },
-});
-
-export const InputDefault = styled(InputBase)({
-    '& .MuiInputBase-input': {
-        border: '1px solid rgba(0, 0, 0, 0.23)',
-        borderRadius: '4px',
-        color: 'rgba(0, 0, 0, 0.6)',
-        padding: '8px 39px 8px 9px',
-        fontWeight: 400,
-        fontSize: '1rem',
-        lineHeight: '1.4375em',
-        letterSpacing: '0.00938em',
-        marginBottom: '10px',
-    },
-});
-
 export const TitleH1 = styled('h1')({
     textAlign: 'center',
     fontSize: '35px',
@@ -113,23 +86,6 @@ export const TitleH2 = styled('h2')({
     },
     '@media (max-width: 600px)': {
         fontSize: '15px',
-    },
-});
-
-export const AccountTitleH1 = styled('h1')({
-    textAlign: 'left',
-    margin: 0,
-    marginBottom: '23px',
-    backgroundColor: '#f89623',
-    color: 'white',
-    padding: '20px',
-    fontSize: '25px',
-    '@media (max-width: 1200px)': {
-        fontSize: '20px',
-        minHeight: '80px',
-    },
-    '@media (max-width: 600px)': {
-        fontSize: '18px',
     },
 });
 
@@ -227,16 +183,6 @@ export const FormModal = styled('div')({
     },
 });
 
-export const TextFieldModal = (value: string, label: string) => (
-    <TextField
-        id='filled-textarea'
-        label={label}
-        multiline
-        variant='filled'
-        value={value}
-    />
-);
-
 export const ButtonPrimary = styled(Button)({
     backgroundColor: '#f79521',
     color: 'white',
@@ -251,4 +197,14 @@ export const ButtonPrimary = styled(Button)({
 
 export const TypographyMarginTop = styled(Typography)({
     marginTop: '20px',
+});
+
+export const OverlayForm = styled('div')({
+    width: '100%',
+    minHeight: '100vh',
+    backgroundColor: '#eee',
+    position: 'relative',
+    display: 'grid',
+    justifyItems: 'center',
+    alignItems: 'center',
 });

@@ -11,7 +11,6 @@ import {
     Grid,
     ListItem,
     Icon,
-    styled,
 } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { ValidatorForm } from 'react-material-ui-form-validator';
@@ -24,6 +23,14 @@ import {
     TypographyMarginTop,
     ButtonPrimary,
 } from 'style/otherStyles';
+import {
+    baseStyle,
+    activeStyle,
+    acceptStyle,
+    rejectStyle,
+    Comfort,
+    TypographyTimetable,
+} from 'style/cabinet/contentPage/contentPagePlatform';
 import { useActions } from 'hooks/useActions';
 import {
     ContentCompanyImages,
@@ -32,46 +39,6 @@ import {
     ProductsState,
 } from 'types/Cabinet';
 import { path } from 'enum';
-
-const baseStyle = {
-    display: 'flex',
-    alignItems: 'center',
-    padding: '20px',
-    borderWidth: 2,
-    borderRadius: 2,
-    borderColor: '#eeeeee',
-    borderStyle: 'dashed',
-    backgroundColor: '#fafafa',
-    color: '#bdbdbd',
-    transition: 'border .3s ease-in-out',
-    marginBottom: '30px',
-};
-const activeStyle = {
-    borderColor: '#2196f3',
-};
-const acceptStyle = {
-    borderColor: '#00e676',
-};
-const rejectStyle = {
-    borderColor: '#ff1744',
-};
-const Comfort = styled('div')({
-    display: 'flex',
-    flexGrow: 1,
-    justifyContent: 'space-between',
-    maxHeight: '420px',
-    overflow: 'scroll',
-    overflowX: 'hidden',
-    maxWidth: '100%',
-    padding: '20px',
-    border: '2px solid #e2e2e2',
-    borderRadius: '4px',
-    backgroundColor: '#ebeff2',
-    marginBottom: '30px',
-});
-const TypographyTimetable = styled(Typography)({
-    minWidth: '110px',
-});
 
 export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
     namePlatform,

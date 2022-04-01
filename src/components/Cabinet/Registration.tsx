@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import {
     Typography,
     Box,
-    styled,
     TextField,
     MenuItem,
     List,
@@ -16,53 +15,14 @@ import {
 import { Phone, RemoveCircle } from '@mui/icons-material';
 import { ValidatorForm, TextValidator } from 'react-material-ui-form-validator';
 import logo from 'image/logoRegistration.svg';
-import { FlexDiv, DefaultTextValidator } from 'style/otherStyles';
+import { FlexDiv, DefaultTextValidator, OverlayForm } from 'style/otherStyles';
+import {
+    RegistrationWindow,
+    FormColumn,
+    Button,
+} from 'style/cabinet/registration';
 import { useActions } from 'hooks/useActions';
 import { RegistrationState } from 'types/Cabinet';
-
-const Background = styled('div')({
-    width: '100%',
-    minHeight: '100vh',
-    backgroundColor: '#eee',
-    position: 'relative',
-    display: 'grid',
-    justifyItems: 'center',
-    alignItems: 'center',
-});
-
-const RegistrationWindow = styled('div')({
-    backgroundColor: '#fff',
-    maxWidth: '55%',
-    padding: '40px 30px',
-    textAlign: 'left',
-    '@media (max-width: 599px)': {
-        maxWidth: '80%',
-    },
-});
-
-const FormColumn = styled('div')({
-    width: '267px',
-    '@media (max-width: 599px)': {
-        width: '100%',
-    },
-});
-
-const Button = styled('button')({
-    textTransform: 'uppercase',
-    padding: '5px',
-    fontSize: '15px',
-    lineHeight: '36px',
-    color: '#000000',
-    borderRadius: '4px',
-    background: '#FFDBB8',
-    marginTop: '20px',
-    marginBottom: '20px',
-    width: '267px',
-    '@media (max-width: 899px)': {
-        width: '100%',
-        maxWidth: '267px',
-    },
-});
 
 export const Registration: React.FC = () => {
     const [registration, setRegistration] = React.useState<RegistrationState>({
@@ -86,6 +46,10 @@ export const Registration: React.FC = () => {
     const { t } = useTranslation();
 
     const handleSubmit = async () => {
+        if (!registration.phone[0]) {
+            alert('Добавьте номер телефона');
+            return;
+        }
         const res = await fetchRegistration(
             registration.city,
             registration.email,
@@ -103,7 +67,7 @@ export const Registration: React.FC = () => {
         }
     };
     return (
-        <Background>
+        <OverlayForm>
             <RegistrationWindow>
                 <ValidatorForm onSubmit={handleSubmit}>
                     <FlexDiv sx={{ justifyContent: 'flex-start' }}>
@@ -340,6 +304,6 @@ export const Registration: React.FC = () => {
                     </Button>
                 </ValidatorForm>
             </RegistrationWindow>
-        </Background>
+        </OverlayForm>
     );
 };

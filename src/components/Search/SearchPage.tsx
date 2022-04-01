@@ -11,12 +11,19 @@ import {
     TextField,
     Autocomplete,
     Typography,
-    styled,
-    Card,
     Slider,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { InputSearch, InputTitle, FlexDiv } from 'style/otherStyles';
+import { InputTitle } from 'style/otherStyles';
+import {
+    MainWrapper,
+    Main,
+    Filters,
+    Places,
+    CardWrapper,
+    InputSearch,
+    MapWrapper,
+} from 'style/search/searchPage';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
 import { CardPlace } from 'components/Search/CardPlace';
@@ -25,70 +32,11 @@ import { CardPlaceProps } from 'types/Search';
 import {
     YMaps,
     Map,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     ObjectManager,
     ObjectManagerFeatures,
 } from 'react-yandex-maps';
 import axios from 'axios';
 import { path } from 'enum';
-
-const Main = styled(FlexDiv)({
-    alignItems: 'flex-start',
-    minHeight: '800px',
-    padding: '5px 20px',
-    '@media (max-width: 600px)': {
-        flexWrap: 'wrap',
-    },
-});
-
-const MainWrapper = styled(Box)({
-    display: 'flex',
-    width: '100%',
-    '@media (max-width: 600px)': {
-        flexWrap: 'wrap',
-    },
-});
-
-const Filters = styled(Box)({
-    flexBasis: '40%',
-    textAlign: 'left',
-    paddingRight: '20px',
-    '@media (max-width: 600px)': {
-        paddingRight: 0,
-        flexBasis: '100%',
-    },
-});
-
-const Places = styled(Box)({
-    width: '100%',
-    minWidth: '280px',
-    paddingRight: '20px',
-    height: '800px',
-    overflowY: 'scroll',
-    '@media (max-width: 900px)': {
-        paddingRight: 0,
-    },
-});
-
-const MapWrapper = styled('div')({
-    minWidth: '45%',
-    borderRadius: '10px',
-    height: '800px',
-    '@media (max-width: 900px)': {
-        minWidth: '100%',
-        height: '500px',
-        marginTop: '20px',
-    },
-    '@media (max-width: 600px)': {
-        height: '300px',
-    },
-});
-
-const CardWrapper = styled(Card)({
-    overflow: 'visible',
-    boxShadow: 'none',
-    padding: '5px',
-});
 
 export const SearchPage: React.FC = () => {
     const [sort, setSort] = useState<string>('');

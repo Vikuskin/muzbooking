@@ -6,15 +6,20 @@ import {
     ListItemText,
     ListItemIcon,
     Modal,
-    styled,
 } from '@mui/material';
-import { AddCircle, RemoveCircle, Edit } from '@mui/icons-material';
+import { RemoveCircle, Edit } from '@mui/icons-material';
 import {
-    AccountTitleH1,
     ContentPageListItem,
     styleModal,
     ButtonPrimary,
 } from 'style/otherStyles';
+import {
+    Wrapper,
+    MainInfo,
+    AccountTitleH1,
+    Platforms,
+    OrangeCircleIcon,
+} from 'style/cabinet/contentPage/contentPage';
 import { AccountHeader } from 'components/Cabinet/AccountHeader';
 import { ContentPagePlatform } from 'components/Cabinet/ContentPage/ContentPagePlatform';
 import { ContentPageMainInfo } from 'components/Cabinet/ContentPage/ContentPageMainInfo';
@@ -26,48 +31,6 @@ import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
 import { ContentPagePlatformProps } from 'types/Cabinet';
 import { path } from 'enum';
-
-const OrangeCircleIcon = styled(AddCircle)({
-    color: '#f89623',
-    fontSize: '60px',
-    textAlign: 'center',
-    width: '100%',
-});
-
-const Wrapper = styled(Box)({
-    display: 'flex',
-    alignItems: 'flex-start',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-});
-
-const MainInfo = styled(Box)({
-    width: '45%',
-    minWidth: '300px',
-    marginRight: '15px',
-    marginBottom: '30px',
-    padding: '30px',
-    '@media (max-width: 900px)': {
-        width: '100%',
-        marginRight: 0,
-    },
-    '@media (max-width: 600px)': {
-        padding: 0,
-    },
-});
-
-const Platforms = styled(Box)({
-    width: '45%',
-    minWidth: '300px',
-    padding: '30px',
-    '@media (max-width: 900px)': {
-        width: '100%',
-        marginRight: 0,
-    },
-    '@media (max-width: 600px)': {
-        padding: 0,
-    },
-});
 
 export const ContentPage: React.FC = () => {
     const [showPlatform, setShowPlatform] = React.useState<boolean>(false);

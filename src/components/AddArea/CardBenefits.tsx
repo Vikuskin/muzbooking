@@ -1,23 +1,7 @@
 import React from 'react';
-import { styled } from '@mui/material';
 import { TitleH2, FlexDiv } from 'style/otherStyles';
 import { CardBenefitsProps } from 'types/AddArea';
-
-const Card = styled('div')({
-    width: '275px',
-    height: '270px',
-    fontSize: '20px',
-    backgroundColor: '#FFEAC2',
-    margin: 'auto',
-    marginBottom: '10px',
-    borderRadius: '25px',
-    padding: '28px 22px 20px',
-    textAlign: 'center',
-    verticalAlign: 'baseline',
-    '@media (max-width: 599px)': {
-        height: '200px',
-    },
-});
+import { Card } from 'style/addArea/cardBenefits';
 
 export const CardBenefits: React.FC<CardBenefitsProps> = ({
     img,

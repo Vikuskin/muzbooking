@@ -18,38 +18,19 @@ import {
     TableRow,
     Paper,
     Typography,
-    styled,
 } from '@mui/material';
 import { ProductsState } from 'types/Cabinet';
 import {
-    FlexDiv,
     InputTitle,
-    TitleH1,
     FormModal,
     ButtonPrimary,
     TableCellCalendar,
 } from 'style/otherStyles';
+import { TitleInfo, Title } from 'style/search/bookingModal';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { BookingModalProps, BookingState, ClientState } from 'types/Search';
 import { getReadDate } from 'functions/functions';
-
-const Title = styled(TitleH1)({
-    textAlign: 'left',
-    margin: '0 5px',
-    '@media (max-width: 600px)': {
-        textAlign: 'center',
-    },
-});
-
-const TitleInfo = styled(FlexDiv)({
-    justifyContent: 'space-between',
-    '@media (max-width: 600px)': {
-        flexDirection: 'column',
-        textAlign: 'center',
-        marginBottom: '15px',
-    },
-});
 
 export const BookingModal: React.FC<BookingModalProps> = ({
     idPlace,

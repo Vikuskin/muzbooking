@@ -1,11 +1,10 @@
 /* eslint-disable react/no-children-prop */
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { styled, Button, Box } from '@mui/material';
+import { Button, Box } from '@mui/material';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import Carousel from 'react-elastic-carousel';
 import ReactMarkdown from 'react-markdown';
-import { FlexDiv, TitleH1 } from 'style/otherStyles';
 import Fancybox from 'components/Fancybox/Fancybox';
 import { Header } from 'components/Header/Header';
 import { Footer } from 'components/Footer/Footer';
@@ -16,37 +15,8 @@ import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
 import noImage from 'image/noImage.png';
 import { ContentCompanyImages, ContentPagePlatformProps } from 'types/Cabinet';
+import { MainInfoDesc, Title, BoxMainInfo } from 'style/search/catalog';
 import { path } from 'enum';
-
-const BoxMainInfo = styled(Box)({
-    display: 'flex',
-    marginBottom: '20px',
-    alignItems: 'left',
-    flexWrap: 'wrap',
-    '@media (max-width: 600px)': {
-        flexDirection: 'column',
-    },
-});
-
-const MainInfoDesc = styled(FlexDiv)({
-    marginRight: '5px',
-    fontSize: '16px',
-    textAlign: 'left',
-    justifyContent: 'center',
-    '@media (max-width: 600px)': {
-        marginRight: '0',
-        fontSize: '14px',
-        marginBottom: '5px',
-    },
-});
-
-const Title = styled(TitleH1)({
-    textAlign: 'left',
-    margin: '0',
-    '@media (max-width: 600px)': {
-        textAlign: 'center',
-    },
-});
 
 export const Catalog: React.FC = () => {
     const { data, loading } = useTypedSelector((state) => state.data);

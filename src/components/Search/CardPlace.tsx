@@ -1,30 +1,14 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Typography, Box, styled, Button } from '@mui/material';
+import { Typography, Box, Button } from '@mui/material';
 import Fancybox from 'components/Fancybox/Fancybox';
 import addressIcon from 'image/SearchPage/address.svg';
 import subwayIcon from 'image/SearchPage/subway.svg';
 import timetableIcon from 'image/SearchPage/timetable.svg';
 import noImages from 'image/noImage.png';
-import { FlexDiv } from 'style/otherStyles';
 import { CardPlaceProps } from 'types/Search';
+import { DescCard, Card } from 'style/search/cardPlace';
 import { path } from 'enum';
-
-const Card = styled('div')({
-    fontSize: '20px',
-    margin: 'auto',
-    marginBottom: '10px',
-    borderRadius: '10px',
-    padding: '20px',
-    textAlign: 'left',
-    verticalAlign: 'baseline',
-    boxShadow: '0px 0px 10px rgba(0,0,0,.25)',
-});
-
-const DescCard = styled(FlexDiv)({
-    justifyContent: 'flex-start',
-    marginBottom: '10px',
-});
 
 export const CardPlace: React.FC<CardPlaceProps> = ({
     images,
