@@ -4,32 +4,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     Box,
-    FormControl,
-    Select,
-    MenuItem,
-    SelectChangeEvent,
     Button,
-    InputLabel,
-    TextField,
     Table,
     TableBody,
     TableContainer,
     TableHead,
     TableRow,
     Paper,
-    Typography,
+    SelectChangeEvent,
 } from '@mui/material';
+import { TitleInfoBookingModal } from 'components/Search/BookingModal/TitleInfoBookingModal';
+import { FormBookingModal } from 'components/Search/BookingModal/FormBookingModal';
 import { ProductsState } from 'types/Cabinet';
-import {
-    InputTitle,
-    FormModal,
-    ButtonPrimary,
-    TableCellCalendar,
-} from 'style/otherStyles';
-import { TitleInfo, Title } from 'style/search/bookingModal';
+import { TableCellCalendar } from 'style/otherStyles';
 import { useActions } from 'hooks/useActions';
 import { useTypedSelector } from 'hooks/useTypedSelector';
-import { BookingModalProps, BookingState, ClientState } from 'types/Search';
+import { BookingModalProps, BookingState } from 'types/Search';
 import { getReadDate } from 'functions/functions';
 
 export const BookingModal: React.FC<BookingModalProps> = ({
@@ -119,17 +109,14 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
     // client data
     const [clientWindow, setClientWindow] = useState<boolean>(false);
-    const [client, setClient] = useState<ClientState>({
-        name: '',
-        comment: '',
-        phone: '',
-    });
-    const handleChange =
-        (prop: keyof ClientState) =>
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            setClient({ ...client, [prop]: event.target.value });
-        };
-    const { postBooking, fetchCatalogPlace, getBooking } = useActions();
+    const showClientWindow = () => {
+        setClientWindow(true);
+    };
+    const hideClientWindow = () => {
+        setClientWindow(false);
+    };
+
+    const { getBooking } = useActions();
 
     const FetchBooking = (params: string) => {
         const prevParams = useRef(params);
@@ -145,158 +132,42 @@ export const BookingModal: React.FC<BookingModalProps> = ({
 
     const { bookingData } = useTypedSelector((state) => state.bookingData);
 
+    const handleChangeSelectProduct = (event: SelectChangeEvent) => {
+        const selectInInput = products.filter((item: ProductsState) => {
+            if (item.name === event.target.value) {
+                return item;
+            }
+            return false;
+        })[0];
+        setSelectProduct(selectInInput);
+        setBooking({
+            date: '',
+            time: '',
+            chooseProduct: '',
+            price: '',
+        });
+        getBooking(idPlatform, selectInInput.name);
+    };
+
     return (
         <>
-            <TitleInfo>
-                <Box sx={{ textAlign: 'left' }}>
-                    <Title sx={{ margin: '0 !important' }}>{nameCompany}</Title>
-                    <Typography>{namePlatform}</Typography>
-                </Box>
-                <Box sx={{ minWidth: 120, maxWidth: 300 }}>
-                    <FormControl fullWidth sx={{ border: 'none' }}>
-                        <InputLabel
-                            variant='standard'
-                            sx={{
-                                top: 0,
-                                left: '50%',
-                                transform: 'translateX(-50%)',
-                            }}
-                        >
-                            {t('search.bookingModal.service')}
-                        </InputLabel>
-
-                        <Select
-                            id='product'
-                            defaultValue={products[0].name}
-                            onChange={(event: SelectChangeEvent) => {
-                                const selectInInput = products.filter(
-                                    (item: ProductsState) => {
-                                        if (item.name === event.target.value) {
-                                            return item;
-                                        }
-                                        return false;
-                                    }
-                                )[0];
-                                setSelectProduct(selectInInput);
-                                setBooking({
-                                    date: '',
-                                    time: '',
-                                    chooseProduct: '',
-                                    price: '',
-                                });
-                                getBooking(idPlatform, selectInInput.name);
-                            }}
-                            input={<InputTitle style={{ padding: 0 }} />}
-                        >
-                            {products.map((item: ProductsState) => (
-                                <MenuItem value={item.name} key={item.id}>
-                                    {item.name}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Box>
-                <Box>
-                    {booking.date && (
-                        <Box>
-                            <Typography>
-                                {booking.date} {booking.time}
-                            </Typography>
-                            <Typography>{booking.price} ₽</Typography>
-                        </Box>
-                    )}
-                </Box>
-                <Box>
-                    {clientWindow ? (
-                        <ButtonPrimary onClick={() => setClientWindow(false)}>
-                            {t('search.bookingModal.backButton')}
-                        </ButtonPrimary>
-                    ) : (
-                        <ButtonPrimary
-                            onClick={() => {
-                                if (!booking.date) {
-                                    alert('Выберите время и дату!');
-                                    return;
-                                }
-                                setClientWindow(true);
-                            }}
-                        >
-                            {t('search.bookingModal.nextButton')}
-                        </ButtonPrimary>
-                    )}
-                </Box>
-            </TitleInfo>
-
+            <TitleInfoBookingModal
+                nameCompany={nameCompany}
+                namePlatform={namePlatform}
+                handleChangeSelectProduct={handleChangeSelectProduct}
+                booking={booking}
+                products={products}
+                clientWindow={clientWindow}
+                showClientWindow={showClientWindow}
+                hideClientWindow={hideClientWindow}
+            />
             {clientWindow ? (
-                <Box>
-                    <FormModal>
-                        <TextField
-                            id='filled-textarea'
-                            label={t('search.bookingModal.formName')}
-                            placeholder={t('search.bookingModal.formName')}
-                            multiline
-                            required
-                            variant='filled'
-                            value={client.name}
-                            onChange={handleChange('name')}
-                        />
-                        <TextField
-                            id='filled-multiline-static'
-                            label={t('search.bookingModal.formComment')}
-                            multiline
-                            placeholder={t('search.bookingModal.formComment')}
-                            rows={4}
-                            variant='filled'
-                            value={client.comment}
-                            onChange={handleChange('comment')}
-                        />
-                        <TextField
-                            id='filled-textarea'
-                            label={t('search.bookingModal.formPhone')}
-                            placeholder={t('search.bookingModal.formPhone')}
-                            multiline
-                            required
-                            variant='filled'
-                            value={client.phone}
-                            onChange={(event) => {
-                                setClient({
-                                    ...client,
-                                    phone: event.target.value
-                                        .replace(/\D/g, '')
-                                        .replace(/^[0-9]/, '+7'),
-                                });
-                            }}
-                        />
-                    </FormModal>
-                    <ButtonPrimary
-                        onClick={() => {
-                            if (client.phone.length !== 12) {
-                                alert(
-                                    t(
-                                        'cabinet.contentPage.mainInfo.alert.phone'
-                                    )
-                                );
-                                return;
-                            }
-                            postBooking(
-                                idPlace,
-                                booking.date,
-                                booking.time,
-                                booking.chooseProduct,
-                                namePlatform,
-                                idPlatform,
-                                booking.price,
-                                client.name,
-                                client.comment,
-                                client.phone
-                            );
-                            alert(t('search.bookingModal.alert.success'));
-                            fetchCatalogPlace(idPlace);
-                        }}
-                    >
-                        {t('search.bookingModal.buttonForm')}
-                    </ButtonPrimary>
-                </Box>
+                <FormBookingModal
+                    idPlace={idPlace}
+                    booking={booking}
+                    namePlatform={namePlatform}
+                    idPlatform={idPlatform}
+                />
             ) : (
                 // TABLE
                 <Box>

@@ -31,7 +31,7 @@ export const MainWrapper = styled(Box)({
     },
 });
 
-export const Filters = styled(Box)({
+export const FiltersWrapper = styled(Box)({
     flexBasis: '40%',
     textAlign: 'left',
     paddingRight: '20px',

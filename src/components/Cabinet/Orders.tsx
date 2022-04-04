@@ -224,7 +224,9 @@ export const Orders: React.FC = () => {
                     >
                         <TableHead>
                             <TableRow>
-                                <TableCellCenter>Клиент</TableCellCenter>
+                                <TableCellCenter>
+                                    {t('cabinet.calendar.client')}
+                                </TableCellCenter>
                                 <TableCellCenter>
                                     <TableSortLabel
                                         direction={

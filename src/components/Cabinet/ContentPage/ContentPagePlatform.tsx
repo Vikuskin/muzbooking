@@ -2,23 +2,12 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-    FormControlLabel,
-    Checkbox,
-    Box,
-    Typography,
-    List,
-    Grid,
-    ListItem,
-    Icon,
-} from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
 import { ValidatorForm } from 'react-material-ui-form-validator';
 import { useDropzone } from 'react-dropzone';
 import {
-    FlexDiv,
     TitleH2,
-    ContentPageListItem,
     DefaultTextValidator,
     TypographyMarginTop,
     ButtonPrimary,
@@ -28,9 +17,10 @@ import {
     activeStyle,
     acceptStyle,
     rejectStyle,
-    Comfort,
-    TypographyTimetable,
 } from 'style/cabinet/contentPage/contentPagePlatform';
+import { ComfortServices } from 'components/Cabinet/ContentPage/ComfortServices';
+import { AddPosition } from 'components/Cabinet/ContentPage/AddPosition';
+import { Positions } from 'components/Cabinet/ContentPage/Positions';
 import { useActions } from 'hooks/useActions';
 import {
     ContentCompanyImages,
@@ -61,44 +51,7 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
         (event: React.ChangeEvent<HTMLInputElement>) => {
             setPlatform({ ...platform, [prop]: event.target.value });
         };
-    const [servicesChecked, setServicesChecked] = React.useState(services);
-    const [comfortChecked, setComfortChecked] = React.useState(comfort);
-    const handleChangeServices = (position: number) => {
-        const updatedCheckedState = servicesChecked.map((item, index) =>
-            index === position
-                ? { ...item, checked: !item.checked }
-                : { ...item }
-        );
-        setServicesChecked(updatedCheckedState);
-    };
 
-    const handleChangeComfort = (position: number) => {
-        const updatedCheckedState = comfortChecked.map((item, index) =>
-            index === position
-                ? { ...item, checked: !item.checked }
-                : { ...item }
-        );
-        setComfortChecked(updatedCheckedState);
-    };
-
-    const [product, setProduct] = React.useState<ProductsState>({
-        id: Date.now().toString(),
-        name: '',
-        price: '',
-        mon: '00-23',
-        tue: '00-23',
-        wed: '00-23',
-        thu: '00-23',
-        fri: '00-23',
-        sat: '00-23',
-        sun: '00-23',
-    });
-
-    const handleChangeProducts =
-        (prop: keyof ProductsState) =>
-        (event: React.ChangeEvent<HTMLInputElement>) => {
-            setProduct({ ...product, [prop]: event.target.value });
-        };
     const { fetchAccountPlatform } = useActions();
 
     // images
@@ -168,6 +121,40 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
         [files]
     );
 
+    const [servicesChecked, setServicesChecked] = useState(services);
+    const [comfortChecked, setComfortChecked] = useState(comfort);
+    const handleChangeServices = (position: number) => {
+        const updatedCheckedState = servicesChecked.map((item, index) =>
+            index === position
+                ? { ...item, checked: !item.checked }
+                : { ...item }
+        );
+        setServicesChecked(updatedCheckedState);
+    };
+
+    const handleChangeComfort = (position: number) => {
+        const updatedCheckedState = comfortChecked.map((item, index) =>
+            index === position
+                ? { ...item, checked: !item.checked }
+                : { ...item }
+        );
+        setComfortChecked(updatedCheckedState);
+    };
+
+    const addProduct = (product: ProductsState) => {
+        setPlatform({
+            ...platform,
+            products: [...platform.products, product],
+        });
+    };
+
+    const removeProduct = (item: ProductsState) => {
+        platform.products = platform.products.filter(
+            (n: ProductsState) => n !== item
+        );
+        setPlatform({ ...platform });
+    };
+
     const handleSubmit = async () => {
         await fetchAccountPlatform(
             localStorage.token,
@@ -231,426 +218,21 @@ export const ContentPagePlatform: React.FC<ContentPagePlatformProps> = ({
                 </Box>
                 <Box>{files[0] && thumbs}</Box>
 
-                {/* COMFORT SERVICES */}
-                <Comfort sx={{ fontSize: '10px' }}>
-                    <Grid flexWrap='wrap'>
-                        <Grid item xs='auto' md='auto'>
-                            <TitleH2>
-                                {t('cabinet.contentPage.platform.comfort')}
-                            </TitleH2>
-                            <List sx={{ p: 0, fontSize: '10px' }}>
-                                {comfortChecked.map(
-                                    ({ value, id, checked }) => (
-                                        <ListItem
-                                            sx={{ p: 0, fontSize: '10px' }}
-                                            key={id}
-                                        >
-                                            <FormControlLabel
-                                                sx={{ fontSize: '10px' }}
-                                                value={value}
-                                                control={
-                                                    <Checkbox
-                                                        sx={{
-                                                            fontSize: '10px',
-                                                        }}
-                                                    />
-                                                }
-                                                label=''
-                                                checked={checked}
-                                                onChange={() =>
-                                                    handleChangeComfort(id)
-                                                }
-                                            />
-                                            <Typography>
-                                                {t(`dbComfortPlace.item${id}`)}
-                                            </Typography>
-                                        </ListItem>
-                                    )
-                                )}
-                            </List>
-                        </Grid>
-                        <Grid item xs='auto' md='auto'>
-                            <TitleH2>
-                                {t('cabinet.contentPage.platform.service')}
-                            </TitleH2>
-                            <List sx={{ p: 0 }}>
-                                {servicesChecked.map(
-                                    ({ value, id, checked }) => (
-                                        <ListItem key={id} sx={{ p: 0 }}>
-                                            <FormControlLabel
-                                                value={value}
-                                                control={<Checkbox />}
-                                                label=''
-                                                checked={checked}
-                                                onChange={() =>
-                                                    handleChangeServices(id)
-                                                }
-                                            />
-                                            <Typography>
-                                                {t(`dbServicesPlace.item${id}`)}
-                                            </Typography>
-                                        </ListItem>
-                                    )
-                                )}
-                            </List>
-                        </Grid>
-                    </Grid>
-                </Comfort>
+                {/* COMFORT AND SERVICES */}
+                <ComfortServices
+                    servicesChecked={servicesChecked}
+                    comfortChecked={comfortChecked}
+                    handleChangeServices={handleChangeServices}
+                    handleChangeComfort={handleChangeComfort}
+                />
 
-                {/* PRICES */}
+                {/* POSITIONS AND PRICES */}
                 <TitleH2>{t('cabinet.contentPage.platform.positions')}</TitleH2>
-                <ContentPageListItem sx={{ justifyContent: 'space-between' }}>
-                    <Box sx={{ width: '80%' }}>
-                        <FlexDiv>
-                            <Box
-                                sx={{
-                                    width: { sm: '100%', md: '50%' },
-                                    mr: '10px',
-                                }}
-                            >
-                                <Typography>
-                                    {t(
-                                        'cabinet.contentPage.platform.namePositions'
-                                    )}
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        width: { sm: '100%', md: '50%' },
-                                        mb: '30px',
-                                    }}
-                                >
-                                    {DefaultTextValidator(
-                                        product.name,
-                                        handleChangeProducts('name'),
-                                        ['isString'],
-                                        [t('validation.error.text')]
-                                    )}
-                                </Box>
-                            </Box>
-
-                            <Box sx={{ width: { sm: '100%', md: '50%' } }}>
-                                <Typography>
-                                    {t(
-                                        'cabinet.contentPage.platform.pricePositions'
-                                    )}
-                                </Typography>
-                                <Box
-                                    sx={{
-                                        width: { sm: '100%', md: '50%' },
-                                        mb: '30px',
-                                    }}
-                                >
-                                    {DefaultTextValidator(
-                                        product.price,
-                                        handleChangeProducts('price'),
-                                        ['isNumber'],
-                                        [t('validation.error.number')]
-                                    )}
-                                </Box>
-                            </Box>
-                        </FlexDiv>
-
-                        <Typography>
-                            {t('cabinet.contentPage.mainInfo.timetable')}
-                        </Typography>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.mon')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.mon,
-                                    handleChangeProducts('mon'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.tue')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.tue,
-                                    handleChangeProducts('tue'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.wed')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.wed,
-                                    handleChangeProducts('wed'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.thu')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.thu,
-                                    handleChangeProducts('thu'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.fri')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.fri,
-                                    handleChangeProducts('fri'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.sat')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.sat,
-                                    handleChangeProducts('sat'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                        <FlexDiv>
-                            <TypographyTimetable>
-                                {t('weekDays.sun')}
-                            </TypographyTimetable>
-                            <Box sx={{ width: '70%' }}>
-                                {DefaultTextValidator(
-                                    product.sun,
-                                    handleChangeProducts('sun'),
-                                    ['matchRegexp:^[0-2][0-9]-[0-2][0-9]$'],
-                                    [t('validation.error.hours')]
-                                )}
-                            </Box>
-                        </FlexDiv>
-                    </Box>
-                    <Icon
-                        sx={{
-                            cursor: 'pointer',
-                            fontSize: { xs: 'large', md: '30px', xl: '40px' },
-                        }}
-                        onClick={() => {
-                            setPlatform({
-                                ...platform,
-                                products: [...platform.products, product],
-                            });
-                            setProduct({
-                                id: Date.now().toString(),
-                                name: '',
-                                price: '',
-                                mon: '00-23',
-                                tue: '00-23',
-                                wed: '00-23',
-                                thu: '00-23',
-                                fri: '00-23',
-                                sat: '00-23',
-                                sun: '00-23',
-                            });
-                        }}
-                    >
-                        add_circle
-                    </Icon>
-                </ContentPageListItem>
-                {platform.products.map((item: ProductsState) => (
-                    <ContentPageListItem
-                        sx={{ justifyContent: 'space-between' }}
-                        key={item.id}
-                    >
-                        <Box sx={{ width: '80%' }}>
-                            <FlexDiv sx={{ alignItems: 'flex-start' }}>
-                                <Box
-                                    sx={{
-                                        width: { sm: '100%', md: '50%' },
-                                        mr: '10px',
-                                    }}
-                                >
-                                    <Typography>
-                                        {t(
-                                            'cabinet.contentPage.platform.namePositions'
-                                        )}
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            width: { sm: '100%', md: '50%' },
-                                            mb: '30px',
-                                        }}
-                                    >
-                                        <Typography
-                                            sx={{
-                                                borderBottom: '1px solid black',
-                                                width: '100%',
-                                            }}
-                                        >
-                                            {item.name}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-
-                                <Box sx={{ width: { sm: '100%', md: '50%' } }}>
-                                    <Typography>
-                                        {t(
-                                            'cabinet.contentPage.platform.pricePositions'
-                                        )}
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            width: { sm: '100%', md: '50%' },
-                                            mb: '30px',
-                                        }}
-                                    >
-                                        <Typography
-                                            sx={{
-                                                borderBottom: '1px solid black',
-                                                width: '100%',
-                                            }}
-                                        >
-                                            {item.price}
-                                        </Typography>
-                                    </Box>
-                                </Box>
-                            </FlexDiv>
-
-                            <Typography>
-                                {t('cabinet.contentPage.mainInfo.timetable')}
-                            </Typography>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.mon')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.mon}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.tue')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.tue}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.wed')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.wed}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.thu')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.thu}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.fri')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.fri}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.sat')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.sat}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                            <FlexDiv>
-                                <TypographyTimetable>
-                                    {t('weekDays.sun')}
-                                </TypographyTimetable>
-                                <Box sx={{ width: '70%' }}>
-                                    <Typography
-                                        sx={{
-                                            borderBottom: '1px solid black',
-                                        }}
-                                    >
-                                        {item.sun}
-                                    </Typography>
-                                </Box>
-                            </FlexDiv>
-                        </Box>
-                        <RemoveCircleIcon
-                            sx={{
-                                cursor: 'pointer',
-                                fontSize: {
-                                    xs: 'large',
-                                    md: '30px',
-                                    xl: '40px',
-                                },
-                            }}
-                            onClick={() => {
-                                platform.products = platform.products.filter(
-                                    (n: ProductsState) => n !== item
-                                );
-                                setPlatform({ ...platform });
-                            }}
-                        />
-                    </ContentPageListItem>
-                ))}
+                <AddPosition addProduct={addProduct} />
+                <Positions
+                    products={platform.products}
+                    removeProduct={removeProduct}
+                />
 
                 <ButtonPrimary
                     type='submit'

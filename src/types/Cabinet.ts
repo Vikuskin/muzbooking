@@ -96,3 +96,19 @@ export interface BookingState {
     date: string;
     comment: string;
 }
+
+export interface PositionsProps {
+    products: Array<ProductsState>;
+    removeProduct: (item: ProductsState) => void;
+}
+
+export interface ComfortServicesProps {
+    servicesChecked: Array<CheckedPlaceDB>;
+    comfortChecked: Array<CheckedPlaceDB>;
+    handleChangeServices: (position: number) => void;
+    handleChangeComfort: (position: number) => void;
+}
+
+export interface AddPositionProps {
+    addProduct: (product: ProductsState) => void;
+}

@@ -8,34 +8,22 @@ import {
     FormControl,
     Select,
     SelectChangeEvent,
-    TextField,
-    Autocomplete,
-    Typography,
-    Slider,
 } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { InputTitle } from 'style/otherStyles';
 import {
     MainWrapper,
     Main,
-    Filters,
     Places,
     CardWrapper,
-    InputSearch,
-    MapWrapper,
 } from 'style/search/searchPage';
 import { useTypedSelector } from 'hooks/useTypedSelector';
 import { useActions } from 'hooks/useActions';
 import { CardPlace } from 'components/Search/CardPlace';
 import { Header } from 'components/Header/Header';
+import { Filters } from 'components/Search/Filters';
+import { YandexMap } from 'components/Search/Map';
 import { CardPlaceProps } from 'types/Search';
-import {
-    YMaps,
-    Map,
-    ObjectManager,
-    ObjectManagerFeatures,
-} from 'react-yandex-maps';
-import axios from 'axios';
 import { path } from 'enum';
 
 export const SearchPage: React.FC = () => {
@@ -53,6 +41,9 @@ export const SearchPage: React.FC = () => {
     const [valueAutoComplete, setValueAutoComplete] = useState<string | null>(
         ''
     );
+    const handleChangeAutocomplete = (newValue: string | null) => {
+        setValueAutoComplete(newValue);
+    };
     const handleChangeSort = (event: SelectChangeEvent) => {
         setSort(event.target.value as string);
     };
@@ -85,7 +76,7 @@ export const SearchPage: React.FC = () => {
         }
     }, [sort, data]);
 
-    const maxPrice =
+    const maxPrice: number =
         data[0] &&
         data.reduce(
             (item: { price: string }, current: { price: string }) =>
@@ -114,40 +105,6 @@ export const SearchPage: React.FC = () => {
 
     // MAP
     const [mapState, setMapState] = useState(true);
-    const coords: ObjectManagerFeatures = [];
-    const getCoordinate = async (city: string, address: string) => {
-        try {
-            const response = await axios.get(
-                `https://catalog.api.2gis.com/3.0/items/geocode?q=${city}, ${address}, 3&fields=items.point,items.geometry.centroid&key=ruxutq4755`
-            );
-            return response.data;
-        } catch (e) {
-            return e.response;
-        }
-    };
-
-    if (data[0]) {
-        data.forEach(async (item: CardPlaceProps) => {
-            const result = await getCoordinate(item.city, item.address);
-            coords.push({
-                type: 'Feature',
-                id: item._id,
-                geometry: {
-                    type: 'Point',
-                    coordinates: [
-                        result.result.items[0].point.lat,
-                        result.result.items[0].point.lon,
-                    ],
-                },
-                properties: {
-                    balloonContentHeader: `<font size=3><b>${item.nameCompany}</b></font>`,
-                    balloonContentBody: `<p>${item.address}</p>${item.subway}<p></p><p></p>`,
-                    balloonContentFooter: `<font size=1>${item.price}</font>`,
-                    hintContent: `<strong>${item.nameCompany}</strong>`,
-                },
-            });
-        });
-    }
 
     const FetchPlaces = (params: string) => {
         const prevParams = useRef(params);
@@ -201,73 +158,15 @@ export const SearchPage: React.FC = () => {
                 <Main>
                     <MainWrapper>
                         {/* FILTERS */}
-                        <Filters>
-                            <Box sx={{ mb: '15px' }}>
-                                <Typography sx={{ fontWeight: 'bold' }}>
-                                    {t('search.searchPage.filtersName')}
-                                </Typography>
-                                <Autocomplete
-                                    disablePortal
-                                    id='searchName'
-                                    options={autoComplete}
-                                    sx={{ minWidth: 200, p: 0 }}
-                                    onChange={(
-                                        event: any,
-                                        newValue: string | null
-                                    ) => {
-                                        setValueAutoComplete(newValue);
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField {...params} />
-                                    )}
-                                />
-                            </Box>
-                            <Box
-                                sx={{
-                                    minWidth: 120,
-                                    margin: 'auto',
-                                    mb: '15px',
-                                }}
-                            >
-                                <Typography sx={{ fontWeight: 'bold' }}>
-                                    {t(
-                                        'search.searchPage.filtersSort.filtersSort'
-                                    )}
-                                </Typography>
-                                <FormControl fullWidth sx={{ border: 'none' }}>
-                                    <Select
-                                        id='sort'
-                                        value={sort}
-                                        onChange={handleChangeSort}
-                                        input={<InputSearch />}
-                                    >
-                                        <MenuItem value='increase price'>
-                                            {t(
-                                                'search.searchPage.filtersSort.increase'
-                                            )}
-                                        </MenuItem>
-                                        <MenuItem value='decrease price'>
-                                            {t(
-                                                'search.searchPage.filtersSort.decrease'
-                                            )}
-                                        </MenuItem>
-                                    </Select>
-                                </FormControl>
-                            </Box>
-                            <Box>
-                                <Typography sx={{ fontWeight: 'bold' }}>
-                                    {t('search.searchPage.price')}
-                                </Typography>
-                                <Slider
-                                    value={rangePrice}
-                                    onChange={handleChangeRangePrice}
-                                    min={0}
-                                    max={maxPrice}
-                                    valueLabelDisplay='auto'
-                                    sx={{ color: '#f79521' }}
-                                />
-                            </Box>
-                        </Filters>
+                        <Filters
+                            handleChangeAutoComplete={handleChangeAutocomplete}
+                            autoComplete={autoComplete}
+                            handleChangeSort={handleChangeSort}
+                            sort={sort}
+                            rangePrice={rangePrice}
+                            handleChangeRangePrice={handleChangeRangePrice}
+                            maxPrice={maxPrice}
+                        />
 
                         {/* PLACES */}
                         <Places>
@@ -346,42 +245,7 @@ export const SearchPage: React.FC = () => {
                     </MainWrapper>
 
                     {/* MAP */}
-
-                    <MapWrapper>
-                        {mapState ? (
-                            <YMaps>
-                                <Map
-                                    defaultState={{
-                                        center: [59.935413, 30.331365],
-                                        zoom: 9,
-                                    }}
-                                    width='100%'
-                                    height='100%'
-                                >
-                                    <ObjectManager
-                                        options={{
-                                            clusterize: true,
-                                            gridSize: 32,
-                                            clusterDisableClickZoom: true,
-                                        }}
-                                        objects={{
-                                            preset: 'islands#greenDotIcon',
-                                        }}
-                                        clusters={{
-                                            preset: 'islands#greenClusterIcons',
-                                        }}
-                                        features={coords}
-                                        modules={[
-                                            'objectManager.addon.objectsBalloon',
-                                            'objectManager.addon.objectsHint',
-                                        ]}
-                                    />
-                                </Map>
-                            </YMaps>
-                        ) : (
-                            <Box>{t('loading')}</Box>
-                        )}
-                    </MapWrapper>
+                    <YandexMap data={data} mapState={mapState} />
                 </Main>
             </Box>
         </>

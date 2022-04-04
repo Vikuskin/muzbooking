@@ -80,7 +80,8 @@
             "date": "Date",
             "nameClient": "Name client",
             "pgone": "Phone",
-            "comment": "Comment"
+            "comment": "Comment",
+            "client": "Client"
         },
         "contentPage": {
             "title1": "Main info",

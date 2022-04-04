@@ -5,7 +5,7 @@ import { Typography, Button, Box, Modal } from '@mui/material';
 import ReactMarkdown from 'react-markdown';
 import CropSquareIcon from '@mui/icons-material/CropSquare';
 import Fancybox from 'components/Fancybox/Fancybox';
-import { BookingModal } from 'components/Search/BookingModal';
+import { BookingModal } from 'components/Search/BookingModal/BookingModal';
 import { FlexDiv, styleModal } from 'style/otherStyles';
 import { CardWrapper, Card, Subtitle } from 'style/search/catalogPlatformCard';
 import { CatalogPlatformCardProps } from 'types/Search';

@@ -27,7 +27,7 @@ export const CardPlace: React.FC<CardPlaceProps> = ({
                     {title && title.toUpperCase()}
                 </Typography>
                 <DescCard sx={{ justifyContent: 'space-evenly' }}>
-                    {images[0] ? (
+                    {images ? (
                         images.map((img: any) => (
                             <Fancybox
                                 key={img.filename}

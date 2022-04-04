@@ -1,3 +1,4 @@
+import { SelectChangeEvent } from '@mui/material';
 import { CheckedPlaceDB } from './Databases';
 import { ProductsState, ContentCompanyImages } from './Cabinet';
 
@@ -45,4 +46,37 @@ export interface ClientState {
     name: string;
     comment: string;
     phone: string;
+}
+
+export interface YandexMapProps {
+    data: Array<CardPlaceProps>;
+    mapState: boolean;
+}
+
+export interface FiltersProps {
+    handleChangeAutoComplete: (newValue: string | null) => void;
+    autoComplete: Array<string>;
+    handleChangeSort: (event: SelectChangeEvent) => void;
+    sort: string;
+    rangePrice: Array<number>;
+    handleChangeRangePrice: (event: Event, newValue: number | number[]) => void;
+    maxPrice: number;
+}
+
+export interface TitleInfoProps {
+    nameCompany: string;
+    namePlatform: string;
+    handleChangeSelectProduct: (event: SelectChangeEvent) => void;
+    booking: BookingState;
+    products: ProductsState[];
+    clientWindow: boolean;
+    showClientWindow: () => void;
+    hideClientWindow: () => void;
+}
+
+export interface FormBookingModalProps {
+    idPlace: string;
+    booking: BookingState;
+    namePlatform: string;
+    idPlatform: string;
 }
