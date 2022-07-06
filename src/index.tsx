@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
-import {Provider} from 'react-redux';
-import {store} from './store/index';
+import { Provider } from 'react-redux';
+import { App } from 'App';
+import { store } from 'store/index';
+import './i18n';
 
 ReactDOM.render(
-  <Provider store={store}>
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-  </Provider>,
-  document.getElementById('root')
+    <Provider store={store}>
+        <React.StrictMode>
+            <Suspense fallback={<div>Loading...</div>}>
+                <App />
+            </Suspense>
+        </React.StrictMode>
+    </Provider>,
+    document.getElementById('root')
 );

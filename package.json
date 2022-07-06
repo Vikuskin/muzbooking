@@ -1,57 +1,94 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.7.1",
-    "@emotion/styled": "^11.6.0",
-    "@material-ui/core": "^4.12.3",
-    "@mui/icons-material": "^5.3.1",
-    "@mui/material": "^5.4.0",
-    "@mui/styles": "^5.4.1",
-    "@testing-library/jest-dom": "^5.16.1",
-    "@testing-library/react": "^12.1.2",
-    "@testing-library/user-event": "^13.5.0",
-    "@types/jest": "^27.4.0",
-    "@types/node": "^16.11.22",
-    "@types/react": "^17.0.38",
-    "@types/react-dom": "^17.0.11",
-    "@types/react-redux": "^7.1.22",
-    "axios": "^0.25.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "react-elastic-carousel": "^0.11.5",
-    "react-redux": "^7.2.6",
-    "react-router-dom": "^6.2.1",
-    "react-scripts": "5.0.0",
-    "redux": "^4.1.2",
-    "redux-saga": "^1.1.3",
-    "redux-thunk": "^2.4.1",
-    "typescript": "^4.5.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "my-app",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@2gis/mapgl": "^1.24.1",
+        "@emotion/react": "^11.7.1",
+        "@emotion/styled": "^11.6.0",
+        "@fancyapps/ui": "^4.0.26",
+        "@material-ui/core": "^4.12.3",
+        "@mui/icons-material": "^5.4.1",
+        "@mui/lab": "^5.0.0-alpha.72",
+        "@mui/material": "^5.4.0",
+        "@mui/styles": "^5.4.1",
+        "@mui/system": "^5.4.1",
+        "@mui/x-data-grid": "^5.5.1",
+        "@reduxjs/toolkit": "^1.7.2",
+        "@rjsf/core": "^4.0.1",
+        "@testing-library/jest-dom": "^5.16.1",
+        "@testing-library/react": "^12.1.2",
+        "@testing-library/user-event": "^13.5.0",
+        "@types/jest": "^27.4.0",
+        "@types/node": "^16.11.22",
+        "@types/react": "^17.0.38",
+        "@types/react-dom": "^17.0.11",
+        "@types/react-redux": "^7.1.22",
+        "2gis-maps": "^3.7.0",
+        "axios": "^0.25.0",
+        "date-fns": "^2.28.0",
+        "eslint-plugin-import": "^2.25.4",
+        "i18next": "^21.6.14",
+        "i18next-browser-languagedetector": "^6.1.4",
+        "i18next-http-backend": "^1.4.0",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-dropzone": "^12.0.4",
+        "react-elastic-carousel": "^0.11.5",
+        "react-i18next": "^11.16.2",
+        "react-markdown": "^8.0.0",
+        "react-material-ui-form-validator": "^3.0.0",
+        "react-redux": "^7.2.6",
+        "react-router-dom": "^6.2.1",
+        "react-scripts": "^5.0.0",
+        "react-yandex-maps": "^4.6.0",
+        "redux": "^4.1.2",
+        "redux-devtools-extension": "^2.13.9",
+        "redux-thunk": "^2.4.1",
+        "require-context": "^1.1.0",
+        "typescript": "^4.5.5",
+        "use-position": "^1.0.0",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "@types/lodash": "^4.14.179",
+        "@types/react-input-mask": "^3.0.1",
+        "@types/react-material-ui-form-validator": "^2.1.1",
+        "@types/use-position": "^0.0.0",
+        "@types/webpack-env": "^1.16.3",
+        "@typescript-eslint/eslint-plugin": "^5.11.0",
+        "@typescript-eslint/parser": "^5.11.0",
+        "eslint": "^8.9.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-airbnb-typescript": "^16.1.0",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-jsx-a11y": "^6.5.1",
+        "eslint-plugin-react": "^7.29.4",
+        "eslint-plugin-react-hooks": "^4.3.0",
+        "prettier": "2.5.1"
+    }
 }

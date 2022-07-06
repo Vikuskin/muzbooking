@@ -1,0 +1,250 @@
+{
+    "header": {
+        "addArea": "Add a platform",
+        "searchArea": "Search a platform",
+        "login": "Login"
+    },
+    "main": {
+        "title1": "Search and booking of creative platforms and services",
+        "title2": "An indispensable assistant",
+        "description1": "More than 1500 variants of platforms and services in various fields of creative activity",
+        "description2": "Automated booking and cancellation process. No calls or confirmations",
+        "description3": "Convenient search using numerous parameters",
+        "description4": "Cumulative system of discounts and bonuses.",
+        "card": {
+            "frontDesc": "Search a platform"
+        }
+    },
+    "addArea": {
+        "main": {
+            "title1": "Become a part of the only ecosystem of creative platforms and services in Russia",
+            "desc1": "First bookings on the day of publication",
+            "subtitle1": "*our record is 4 minutes from the moment of publication in the service",
+            "desc2": "Commission only for paid services",
+            "subtitle2": "*all other products of the service are free of charge",
+            "button1": "Registration",
+            "button2": "Login"
+        },
+        "benefits": {
+            "title1": "MUSbooking is not just another CRM system or an online booking system.",
+            "title2": "This is a service that will bring a new customer directly to your schedule at the lowest price.",
+            "subtitle1": "Your target audience",
+            "subtitle2": "The ecosystem of MUSbooking products",
+            "subtitle3": "An empty slot in your schedule",
+            "stripDesc1": "users are looking for sites every day",
+            "stripDesc2": "unique users monthly",
+            "stripDesc3": "bookings are made monthly",
+            "stripDesc4": "our partners earned",
+            "stripDesc4Mln": "mln",
+            "middle": {
+                "title1": "The widest product line on the market.",
+                "subtitle1": "Your sites and services will be available for booking in all our products. The catalog, mobile application and booking widget will allow you to sell affordable time and services to the widest possible audience.",
+                "title2": "Personal account from any device.",
+                "subtitle2.1": "analysis of bookings and ordered services;",
+                "subtitle2.2": "editing information about sites and services;",
+                "subtitle2.3": "flexible customer relations, system of fines, discounts and payment terms;",
+                "subtitle2.4": "working with user reviews.",
+                "title3": "Easy integration and personal support.",
+                "subtitle3.1": "full synchronization with your CRM/ERP platform;",
+                "subtitle3.2": "instant synchronization with Google/Outlook calendars;",
+                "subtitle3.3": "email and sms notifications;",
+                "subtitle3.4": "personal support and free consultations when publishing;",
+                "subtitle3.5": "accepting online payments directly to your checking account."
+            },
+            "cards": {
+                "title": "Unique advantages of Musbooking"
+            },
+            "partners": {
+                "title": "More than 500 companies work with us"
+            },
+            "reviews": {
+                "title": "Feedback from our partners"
+            }
+        },
+        "slider": {
+            "slider1Desc1": "At the very beginning of our work, we used online tables and calendars, then a self-written CRM system, since none of the CRM systems that existed on the market did not cover the tasks and needs of the rehearsal base.",
+            "slider1Desc2": "The guys from MUSbooking helped with the CRM setup, conducted training for administrators and provided all possible support. The transition to the new CRM was very quick and painless.",
+            "slider2Desc1": "MUSbooking is the best booking service for creative platforms in Russia.",
+            "slider2Desc2": "We have been working with them since the launch of the application and for the 3rd year we have been observing the constant and qualitative development of both the external shell and internal capabilities for the partner and the client.",
+            "slider2Desc3": "We sincerely wish you prosperity and the implementation of new ideas!",
+            "slider3Desc1": "Quite a convenient and profitable service to attract new customers for our company. The service worked much better than I initially expected."
+        }
+    },
+    "cabinet": {
+        "calendar": {
+            "tableHeadUndefined": "Platforms not found",
+            "namePlatform": "Platform",
+            "service": "Selected service",
+            "price": "Price",
+            "time": "Time",
+            "date": "Date",
+            "nameClient": "Name client",
+            "pgone": "Phone",
+            "comment": "Comment",
+            "client": "Client"
+        },
+        "contentPage": {
+            "title1": "Main info",
+            "title2": "Platforms",
+            "deleted": "The platform was successfully deleted",
+            "back": "Back",
+            "mainInfo": {
+                "nameCompany": "Name company",
+                "city": "City",
+                "address": "Address",
+                "phone": "Phone",
+                "alert.phone": "Phone is incorrect",
+                "subway": "Subway",
+                "email": "Email",
+                "desc": "Description",
+                "timetable": "Timetable",
+                "price": "Average price per hour",
+                "saveButton": "Save"
+            },
+            "platform": {
+                "name": "Name",
+                "square": "Square",
+                "rider": "Rider",
+                "images": "Images",
+                "imagesDesc": "Drag and drop the images here",
+                "comfort": "Comfort",
+                "service": "Service",
+                "positions": "Positions",
+                "namePositions": "Name",
+                "pricePositions": "Price"
+            }
+        },
+        "accountHeader": {
+            "calendar": "Calendar",
+            "content": "Content",
+            "orders": "Orders",
+            "logout": "Logout"
+        },
+        "login": {
+            "title": "Login",
+            "password": "Password",
+            "loginButton": "enter"
+        },
+        "orders": {
+            "alert": "Log in to your account"
+        },
+        "registration": {
+            "alert": "Partner account has been successfully created",
+            "title": "Registration",
+            "desc": "Creating a Partner account",
+            "contactInfo": "Contact information",
+            "button": "register"
+        }
+    },
+    "search": {
+        "bookingModal": {
+            "service": "Type of work",
+            "backButton": "Back",
+            "nextButton": "Next",
+            "formName": "*In whose name will the order be placed",
+            "formComment": "Add your comment for the order",
+            "formPhone": "*Contact phone number",
+            "alert.success": "The application has been successfully processed",
+            "buttonForm": "Leave a request",
+            "bookingTable": "Booking"
+        },
+        "cardPlace": {
+            "price": "₽/h"
+        },
+        "catalog": {
+            "platforms": "Site platforms",
+            "desc": "Description"
+        },
+        "catalogPlatformCard": {
+            "metre": "m",
+            "subtitle": "About platform",
+            "more": "More",
+            "comfort": "Comfort",
+            "service": "Services",
+            "buttonBooking": "Booking"
+        },
+        "searchPage": {
+            "filtersName": "Search by name",
+            "filtersSort": {
+                "filtersSort": "Sort",
+                "increase": "Ascending prices",
+                "decrease": "Descending prices"
+            },
+            "price": "Cost, ₽/h"
+        }
+    },
+    "footer": {
+        "address": "Moscow, 109147, Vorontsovskaya street, 35 B K.2"
+    },
+    "validation": {
+        "error": {
+            "required": "This field is required",
+            "number": "There should be a number here",
+            "text": "There should be text here",
+            "hours": "Please enter the clock in this format: 'HH - HH'",
+            "smallPassword": "The password cannot be less than 6 characters",
+            "simplePassword": "The password must contain uppercase and lowercase Latin letters, numbers and special characters",
+            "email": "Email is incorrect",
+            "square": "The number must be greater than 0"
+        }
+    },
+    "sphera": {
+        "sphera": "Sphera",
+        "record": "Records",
+        "photo": "Photo studios",
+        "teaching": "Schools and teachers",
+        "dance": "Dance halls"
+    },
+    "weekDays": {
+        "mon": "Mon",
+        "tue": "Tue",
+        "wed": "Wed",
+        "thu": "Thu",
+        "fri": "Fri",
+        "sat": "Sat",
+        "sun": "Sun"
+    },
+    "loading": "Loading...",
+    "dbServices": {
+        "card0": "Specially equipped complexes of premises designed for the production of audio products. In this area, you can find a studio for rent or order the necessary service, such as mixing or mastering a song.",
+        "card1": "Sites designed for photo and video filming. In this area you will find specially equipped halls with different designs that will help you realize any of your ideas.",
+        "card2": "Teachers and institutions engaged in teaching creative disciplines are gathered in this field. You will be able to find a teacher in vocal, sound engineering, painting, photography and other creative areas.",
+        "card3": "The halls are specially equipped for practicing any dance directions. The sphere contains halls of various sizes, which are suitable for both rehearsals of large groups and for individual classes.",
+        "title0": "records",
+        "title1": "photo studios",
+        "title2": "schools and teachers",
+        "title3": "dance halls"
+    },
+    "dbServicesPlace": {
+        "item0": "Tea/coffee",
+        "item1": "Coffee machine",
+        "item2": "Water cooler",
+        "item3": "The machine with snacks",
+        "item4": "On-site cafe"
+    },
+    "dbComfortPlace": {
+        "item0": "Smoking area",
+        "item1": "Less than 10 minutes from the metro",
+        "item2": "Free parking",
+        "item3": "Conditioner",
+        "item4": "On-site toilet",
+        "item5": "Lounge",
+        "item6": "Wi-Fi Free",
+        "item7": "No need to change shoes",
+        "item8": "Separate entrance",
+        "item9": "Luggage storage",
+        "item10": "Elevator/1st floor",
+        "item11": "On-site parking"
+    },
+    "dbCardBenefits": {
+        "item0": "Instant synchronization with any booking channel using socket connections.",
+        "item1": "A wide range of potential customers due to a larger number of fields of activity.",
+        "item2": "Publish one platform in several areas and earn income from different directions.",
+        "item3": "The extensive knowledge base, the experience of our partners and team, will help to work effectively with the service.",
+        "item4": "You pay % only from the amount of the successful application. No additional payments are required.",
+        "item5": "All payments for acquiring, refunds and transfers are included in the service commission.",
+        "item6": "A variety of promotion tools allows you to get 2 times more bookings.",
+        "item7": "The page of your object in the catalog instantly gets into the top of search engine queries.",
+        "item8": "A large selection of tools for automating price changes, setting up promotions, discounts and booking conditions."
+    }
+}
